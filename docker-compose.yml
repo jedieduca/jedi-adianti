@@ -25,24 +25,6 @@ services:
     networks:
       - my-shared-network
 
-  nginx_cadjedi:
-    image: nginx:alpine
-    container_name: nginx_cadjedi
-    restart: unless-stopped
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./:/var/www/html # 🔹 Volume normal aqui também
-      - graficos_data:/var/www/html/mad/app/output/charts:ro
-    ports:
-      - "80:80"
-    networks:
-      - my-shared-network
-
-volumes:
-  graficos_data:
-    external:
-      name: python_service_graficos_data
-
 networks:
   my-shared-network:
     external: true
