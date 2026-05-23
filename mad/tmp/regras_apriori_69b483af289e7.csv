@@ -1,0 +1,334 @@
+Antecedentes;Consequentes;Suporte;Confianca;Lift
+escola_Escola Bertoni;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+capacidade_critica_AUMENTOU;fx_idade_adolescente;0.61842105263158;1;1
+categoria_Saúde Pública;capacidade_critica_AUMENTOU;0.052631578947368;0.8;1.2936170212766
+avaliacao_jogo_Avançado;capacidade_critica_AUMENTOU;0.19736842105263;0.75;1.2127659574468
+avaliacao_jogo_Casual;capacidade_critica_AUMENTOU;0.10526315789474;0.88888888888889;1.4373522458629
+avaliacao_jogo_Noob;capacidade_critica_AUMENTOU;0.065789473684211;0.83333333333333;1.3475177304965
+escola_Colégio Aydano, capacidade_critica_AUMENTOU;turma_Turma A;0.44078947368421;1;1.3451327433628
+turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.44078947368421;1;1.3451327433628
+escola_Colégio Aydano, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.44078947368421;1;1
+capacidade_critica_AUMENTOU, categoria_Política;escola_Colégio Aydano;0.15789473684211;0.75;1.0088495575221
+categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;0.91666666666667;1.2330383480826
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.20394736842105;0.75609756097561;1.0170515864451
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;0.88888888888889;1.1956735496559
+escola_Colégio Aydano, avaliacao_jogo_Casual;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.13815789473684;0.80769230769231;1.0864533696392
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+turma_Turma B, capacidade_critica_AUMENTOU;escola_Colégio Perdro II;0.085526315789474;1;6.6086956521739
+escola_Colégio Perdro II, capacidade_critica_AUMENTOU;turma_Turma B;0.085526315789474;1;6.6086956521739
+escola_Colégio Perdro II, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+turma_Turma C, escola_Escola Bertoni;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C, capacidade_critica_AUMENTOU;escola_Escola Bertoni;0.092105263157895;1;9.5
+escola_Escola Bertoni, capacidade_critica_AUMENTOU;turma_Turma C;0.092105263157895;1;9.5
+turma_Turma C;escola_Escola Bertoni, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+escola_Escola Bertoni;turma_Turma C, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+escola_Escola Bertoni, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+escola_Escola Bertoni, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.092105263157895;1;1
+escola_Escola Bertoni;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+avaliacao_jogo_Avançado, escola_Escola Bertoni;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.44078947368421;1;1
+capacidade_critica_AUMENTOU, categoria_Política;turma_Turma A;0.15789473684211;0.75;1.0088495575221
+categoria_Tecnologia, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;0.91666666666667;1.2330383480826
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.20394736842105;0.75609756097561;1.0170515864451
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;0.88888888888889;1.1956735496559
+turma_Turma A, avaliacao_jogo_Casual;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;0.80769230769231;1.0864533696392
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A;0.065789473684211;1;1.3451327433628
+turma_Turma B, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+turma_Turma C, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.092105263157895;1;1
+turma_Turma C;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C, avaliacao_jogo_Avançado;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+categoria_Economia, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.19078947368421;1;1
+categoria_Educação, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+capacidade_critica_AUMENTOU, categoria_Política;fx_idade_adolescente;0.21052631578947;1;1
+categoria_Saúde Pública, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.052631578947368;0.8;1.2936170212766
+categoria_Saúde Pública, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+categoria_Saúde Pública;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.052631578947368;0.8;1.2936170212766
+categoria_Tecnologia, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.078947368421053;1;1
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.26973684210526;1;1
+auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+auto_avaliacao_Noob, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+avaliacao_jogo_Avançado, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.19736842105263;0.75;1.2127659574468
+avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.19736842105263;1;1
+avaliacao_jogo_Avançado;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.19736842105263;0.75;1.2127659574468
+avaliacao_jogo_Casual, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.10526315789474;0.88888888888889;1.4373522458629
+avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.10526315789474;1;1
+avaliacao_jogo_Casual;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.10526315789474;0.88888888888889;1.4373522458629
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.17105263157895;1;1
+avaliacao_jogo_Noob, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.065789473684211;0.83333333333333;1.3475177304965
+avaliacao_jogo_Noob, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+avaliacao_jogo_Noob;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.065789473684211;0.83333333333333;1.3475177304965
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+categoria_Economia, avaliacao_jogo_Avançado;capacidade_critica_AUMENTOU;0.059210526315789;0.9;1.4553191489362
+avaliacao_jogo_Avançado, categoria_Política;capacidade_critica_AUMENTOU;0.059210526315789;0.75;1.2127659574468
+auto_avaliacao_Iniciante, avaliacao_jogo_Avançado;capacidade_critica_AUMENTOU;0.065789473684211;0.76923076923077;1.2438625204583
+escola_Colégio Aydano, turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.44078947368421;1;1
+escola_Colégio Aydano, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.44078947368421;1;1.3451327433628
+turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.44078947368421;1;1.3451327433628
+escola_Colégio Aydano, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.44078947368421;1;1.3451327433628
+turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.44078947368421;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;1;1.3451327433628
+categoria_Economia, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.13815789473684;1;1.3451327433628
+escola_Colégio Aydano, capacidade_critica_AUMENTOU, categoria_Política;turma_Turma A;0.15789473684211;1;1.3451327433628
+turma_Turma A, capacidade_critica_AUMENTOU, categoria_Política;escola_Colégio Aydano;0.15789473684211;1;1.3451327433628
+capacidade_critica_AUMENTOU, categoria_Política;escola_Colégio Aydano, turma_Turma A;0.15789473684211;0.75;1.0088495575221
+escola_Colégio Aydano, categoria_Tecnologia, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;1;1.3451327433628
+turma_Turma A, categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.072368421052632;0.91666666666667;1.2330383480826
+escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.20394736842105;1;1.3451327433628
+turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.20394736842105;1;1.3451327433628
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.20394736842105;0.75609756097561;1.0170515864451
+turma_Turma A, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.085526315789474;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;turma_Turma A;0.085526315789474;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;1;1.3451327433628
+turma_Turma A, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.052631578947368;0.88888888888889;1.1956735496559
+escola_Colégio Aydano, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;turma_Turma A;0.125;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.125;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Casual;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+escola_Colégio Aydano, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Casual;turma_Turma A, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+turma_Turma A, avaliacao_jogo_Casual;escola_Colégio Aydano, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+turma_Turma A, capacidade_critica_AUMENTOU, avaliacao_jogo_Em processo;escola_Colégio Aydano;0.13815789473684;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;1;1.3451327433628
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.13815789473684;0.80769230769231;1.0864533696392
+escola_Colégio Aydano, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A;0.065789473684211;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.065789473684211;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+escola_Colégio Aydano, capacidade_critica_AUMENTOU, categoria_Política;fx_idade_adolescente;0.15789473684211;1;1
+capacidade_critica_AUMENTOU, fx_idade_adolescente, categoria_Política;escola_Colégio Aydano;0.15789473684211;0.75;1.0088495575221
+capacidade_critica_AUMENTOU, categoria_Política;escola_Colégio Aydano, fx_idade_adolescente;0.15789473684211;0.75;1.0088495575221
+escola_Colégio Aydano, categoria_Tecnologia, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+categoria_Tecnologia, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;0.91666666666667;1.2330383480826
+categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.072368421052632;0.91666666666667;1.2330383480826
+escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.20394736842105;1;1
+auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.20394736842105;0.75609756097561;1.0170515864451
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.20394736842105;0.75609756097561;1.0170515864451
+escola_Colégio Aydano, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+escola_Colégio Aydano, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+escola_Colégio Aydano, auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+auto_avaliacao_Proplayer, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;0.88888888888889;1.1956735496559
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.052631578947368;0.88888888888889;1.1956735496559
+escola_Colégio Aydano, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.125;1;1
+escola_Colégio Aydano, avaliacao_jogo_Casual, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+escola_Colégio Aydano, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+escola_Colégio Aydano, avaliacao_jogo_Casual;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+escola_Colégio Aydano, avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+avaliacao_jogo_Em processo, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.13815789473684;0.80769230769231;1.0864533696392
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.13815789473684;0.80769230769231;1.0864533696392
+escola_Colégio Aydano, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+avaliacao_jogo_Proplayer, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+capacidade_critica_AUMENTOU, auto_avaliacao_Casual, categoria_Política;escola_Colégio Aydano;0.078947368421053;0.75;1.0088495575221
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;0.78571428571429;1.0568900126422
+turma_Turma B, escola_Colégio Perdro II, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+turma_Turma B, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Perdro II;0.085526315789474;1;6.6086956521739
+escola_Colégio Perdro II, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma B;0.085526315789474;1;6.6086956521739
+turma_Turma B, capacidade_critica_AUMENTOU;escola_Colégio Perdro II, fx_idade_adolescente;0.085526315789474;1;6.6086956521739
+escola_Colégio Perdro II, capacidade_critica_AUMENTOU;turma_Turma B, fx_idade_adolescente;0.085526315789474;1;6.6086956521739
+turma_Turma C, escola_Escola Bertoni, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C, escola_Escola Bertoni, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.092105263157895;1;1
+turma_Turma C, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Escola Bertoni;0.092105263157895;1;9.5
+escola_Escola Bertoni, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma C;0.092105263157895;1;9.5
+turma_Turma C, escola_Escola Bertoni;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.092105263157895;0.875;1.4148936170213
+turma_Turma C, fx_idade_adolescente;escola_Escola Bertoni, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+turma_Turma C, capacidade_critica_AUMENTOU;escola_Escola Bertoni, fx_idade_adolescente;0.092105263157895;1;9.5
+escola_Escola Bertoni, fx_idade_adolescente;turma_Turma C, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+escola_Escola Bertoni, capacidade_critica_AUMENTOU;turma_Turma C, fx_idade_adolescente;0.092105263157895;1;9.5
+turma_Turma C;escola_Escola Bertoni, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+escola_Escola Bertoni;turma_Turma C, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.092105263157895;0.875;9.5
+turma_Turma C, avaliacao_jogo_Avançado, escola_Escola Bertoni;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+turma_Turma C, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Escola Bertoni;0.059210526315789;1;9.5
+avaliacao_jogo_Avançado, escola_Escola Bertoni, capacidade_critica_AUMENTOU;turma_Turma C;0.059210526315789;1;9.5
+turma_Turma C, avaliacao_jogo_Avançado;escola_Escola Bertoni, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+avaliacao_jogo_Avançado, escola_Escola Bertoni;turma_Turma C, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+avaliacao_jogo_Avançado, escola_Escola Bertoni, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+avaliacao_jogo_Avançado, escola_Escola Bertoni, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+avaliacao_jogo_Avançado, escola_Escola Bertoni;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+categoria_Economia, turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+turma_Turma A, capacidade_critica_AUMENTOU, categoria_Política;fx_idade_adolescente;0.15789473684211;1;1
+capacidade_critica_AUMENTOU, fx_idade_adolescente, categoria_Política;turma_Turma A;0.15789473684211;0.75;1.0088495575221
+capacidade_critica_AUMENTOU, categoria_Política;turma_Turma A, fx_idade_adolescente;0.15789473684211;0.75;1.0088495575221
+turma_Turma A, categoria_Tecnologia, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+categoria_Tecnologia, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;0.91666666666667;1.2330383480826
+categoria_Tecnologia, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.072368421052632;0.91666666666667;1.2330383480826
+turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.20394736842105;1;1
+auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.20394736842105;0.75609756097561;1.0170515864451
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.20394736842105;0.75609756097561;1.0170515864451
+turma_Turma A, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+turma_Turma A, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+auto_avaliacao_Proplayer, turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+auto_avaliacao_Proplayer, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;0.88888888888889;1.1956735496559
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.052631578947368;0.88888888888889;1.1956735496559
+turma_Turma A, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.125;1;1
+turma_Turma A, avaliacao_jogo_Casual, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+turma_Turma A, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+turma_Turma A, avaliacao_jogo_Casual;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+avaliacao_jogo_Em processo, turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+avaliacao_jogo_Em processo, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;0.80769230769231;1.0864533696392
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.13815789473684;0.80769230769231;1.0864533696392
+turma_Turma A, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+avaliacao_jogo_Proplayer, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.065789473684211;1;1.3451327433628
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+capacidade_critica_AUMENTOU, auto_avaliacao_Casual, categoria_Política;turma_Turma A;0.078947368421053;0.75;1.0088495575221
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;0.78571428571429;1.0568900126422
+turma_Turma C, avaliacao_jogo_Avançado, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+turma_Turma C, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+turma_Turma C, avaliacao_jogo_Avançado;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+categoria_Economia, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.078947368421053;1;1
+categoria_Economia, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+categoria_Economia, avaliacao_jogo_Avançado, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.059210526315789;0.9;1.4553191489362
+categoria_Economia, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+categoria_Economia, avaliacao_jogo_Avançado;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;0.9;1.4553191489362
+capacidade_critica_AUMENTOU, auto_avaliacao_Casual, categoria_Política;fx_idade_adolescente;0.10526315789474;1;1
+avaliacao_jogo_Avançado, fx_idade_adolescente, categoria_Política;capacidade_critica_AUMENTOU;0.059210526315789;0.75;1.2127659574468
+capacidade_critica_AUMENTOU, avaliacao_jogo_Avançado, categoria_Política;fx_idade_adolescente;0.059210526315789;1;1
+avaliacao_jogo_Avançado, categoria_Política;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;0.75;1.2127659574468
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU, categoria_Política;fx_idade_adolescente;0.052631578947368;1;1
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.092105263157895;1;1
+avaliacao_jogo_Em processo, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.092105263157895;1;1
+auto_avaliacao_Iniciante, avaliacao_jogo_Avançado, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.065789473684211;0.76923076923077;1.2438625204583
+auto_avaliacao_Iniciante, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+auto_avaliacao_Iniciante, avaliacao_jogo_Avançado;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.065789473684211;0.76923076923077;1.2438625204583
+categoria_Economia, escola_Colégio Aydano, turma_Turma A, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+categoria_Economia, turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.13815789473684;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;1;1.3451327433628
+categoria_Economia, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.13815789473684;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.13815789473684;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, categoria_Política, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.15789473684211;1;1
+categoria_Política, turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.15789473684211;1;1.3451327433628
+escola_Colégio Aydano, categoria_Política, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.15789473684211;1;1.3451327433628
+categoria_Política, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.15789473684211;1;1.3451327433628
+escola_Colégio Aydano, categoria_Política, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.15789473684211;1;1.3451327433628
+categoria_Política, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.15789473684211;0.75;1.0088495575221
+categoria_Política, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.15789473684211;0.75;1.0088495575221
+escola_Colégio Aydano, turma_Turma A, categoria_Tecnologia, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+turma_Turma A, categoria_Tecnologia, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, categoria_Tecnologia, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;1;1.3451327433628
+turma_Turma A, categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, categoria_Tecnologia, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+categoria_Tecnologia, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.072368421052632;0.91666666666667;1.2330383480826
+categoria_Tecnologia, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.072368421052632;0.91666666666667;1.2330383480826
+escola_Colégio Aydano, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.20394736842105;1;1
+turma_Turma A, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.20394736842105;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.20394736842105;1;1.3451327433628
+turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.20394736842105;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.20394736842105;1;1.3451327433628
+auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.20394736842105;0.75609756097561;1.0170515864451
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.20394736842105;0.75609756097561;1.0170515864451
+escola_Colégio Aydano, turma_Turma A, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.085526315789474;1;1
+fx_idade_adolescente, turma_Turma A, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.085526315789474;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Iniciante, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.085526315789474;1;1.3451327433628
+turma_Turma A, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.085526315789474;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.085526315789474;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+turma_Turma A, auto_avaliacao_Noob, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Noob, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;1;1.3451327433628
+turma_Turma A, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+escola_Colégio Aydano, auto_avaliacao_Noob, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, turma_Turma A, escola_Colégio Aydano, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+auto_avaliacao_Proplayer, turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, escola_Colégio Aydano, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, escola_Colégio Aydano, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+auto_avaliacao_Proplayer, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.052631578947368;0.88888888888889;1.1956735496559
+auto_avaliacao_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.052631578947368;0.88888888888889;1.1956735496559
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.125;1;1
+turma_Turma A, avaliacao_jogo_Avançado, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.125;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Avançado, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.125;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.125;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.125;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+fx_idade_adolescente, turma_Turma A, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Casual, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+escola_Colégio Aydano, fx_idade_adolescente, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Casual;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;1.4822695035461
+turma_Turma A, avaliacao_jogo_Casual, fx_idade_adolescente;escola_Colégio Aydano, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+escola_Colégio Aydano, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Casual, fx_idade_adolescente;turma_Turma A, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+turma_Turma A, avaliacao_jogo_Casual;escola_Colégio Aydano, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+escola_Colégio Aydano, avaliacao_jogo_Casual;turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.072368421052632;0.91666666666667;2.0796019900498
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.13815789473684;1;1
+avaliacao_jogo_Em processo, turma_Turma A, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.13815789473684;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Em processo, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.13815789473684;1;1.3451327433628
+avaliacao_jogo_Em processo, turma_Turma A, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.13815789473684;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.13815789473684;1;1.3451327433628
+avaliacao_jogo_Em processo, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.13815789473684;0.80769230769231;1.0864533696392
+avaliacao_jogo_Em processo, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.13815789473684;0.80769230769231;1.0864533696392
+escola_Colégio Aydano, turma_Turma A, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+fx_idade_adolescente, turma_Turma A, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+escola_Colégio Aydano, fx_idade_adolescente, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A;0.065789473684211;1;1.3451327433628
+turma_Turma A, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+fx_idade_adolescente, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.065789473684211;1;1.3451327433628
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+categoria_Economia, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.052631578947368;1;1.3451327433628
+categoria_Política, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.078947368421053;1;1.3451327433628
+escola_Colégio Aydano, categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.078947368421053;1;1.3451327433628
+categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.078947368421053;0.75;1.0088495575221
+avaliacao_jogo_Avançado, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;1;1.3451327433628
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.072368421052632;0.78571428571429;1.0568900126422
+avaliacao_jogo_Em processo, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Em processo, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A;0.065789473684211;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+escola_Colégio Aydano, categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.078947368421053;1;1
+categoria_Política, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.078947368421053;0.75;1.0088495575221
+categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.078947368421053;0.75;1.0088495575221
+escola_Colégio Aydano, avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano;0.072368421052632;0.78571428571429;1.0568900126422
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.072368421052632;0.78571428571429;1.0568900126422
+escola_Colégio Aydano, avaliacao_jogo_Em processo, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+avaliacao_jogo_Avançado, escola_Escola Bertoni, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma C;0.059210526315789;1;9.5
+turma_Turma C, avaliacao_jogo_Avançado, escola_Escola Bertoni, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.059210526315789;1;1
+turma_Turma C, avaliacao_jogo_Avançado, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Escola Bertoni;0.059210526315789;1;9.5
+turma_Turma C, avaliacao_jogo_Avançado, escola_Escola Bertoni, fx_idade_adolescente;capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+avaliacao_jogo_Avançado, escola_Escola Bertoni, capacidade_critica_AUMENTOU;turma_Turma C, fx_idade_adolescente;0.059210526315789;1;9.5
+turma_Turma C, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Escola Bertoni, fx_idade_adolescente;0.059210526315789;1;9.5
+avaliacao_jogo_Avançado, escola_Escola Bertoni, fx_idade_adolescente;turma_Turma C, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+turma_Turma C, avaliacao_jogo_Avançado, escola_Escola Bertoni;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;1;1.6170212765957
+turma_Turma C, avaliacao_jogo_Avançado, fx_idade_adolescente;escola_Escola Bertoni, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+avaliacao_jogo_Avançado, escola_Escola Bertoni;turma_Turma C, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+turma_Turma C, avaliacao_jogo_Avançado;escola_Escola Bertoni, fx_idade_adolescente, capacidade_critica_AUMENTOU;0.059210526315789;1;10.857142857143
+categoria_Economia, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052631578947368;1;1
+categoria_Política, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.078947368421053;1;1
+categoria_Política, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.078947368421053;0.75;1.0088495575221
+categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.078947368421053;0.75;1.0088495575221
+avaliacao_jogo_Avançado, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072368421052632;1;1
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;turma_Turma A;0.072368421052632;0.78571428571429;1.0568900126422
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.072368421052632;0.78571428571429;1.0568900126422
+avaliacao_jogo_Em processo, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.065789473684211;1;1
+categoria_Economia, turma_Turma A, capacidade_critica_AUMENTOU, escola_Colégio Aydano, auto_avaliacao_Casual;fx_idade_adolescente;0.052631578947368;1;1
+categoria_Economia, turma_Turma A, capacidade_critica_AUMENTOU, auto_avaliacao_Casual, fx_idade_adolescente;escola_Colégio Aydano;0.052631578947368;1;1.3451327433628
+categoria_Economia, capacidade_critica_AUMENTOU, escola_Colégio Aydano, auto_avaliacao_Casual, fx_idade_adolescente;turma_Turma A;0.052631578947368;1;1.3451327433628
+categoria_Economia, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+categoria_Economia, escola_Colégio Aydano, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.052631578947368;1;1.3451327433628
+turma_Turma A, capacidade_critica_AUMENTOU, escola_Colégio Aydano, categoria_Política, auto_avaliacao_Casual;fx_idade_adolescente;0.078947368421053;1;1
+turma_Turma A, capacidade_critica_AUMENTOU, categoria_Política, auto_avaliacao_Casual, fx_idade_adolescente;escola_Colégio Aydano;0.078947368421053;1;1.3451327433628
+capacidade_critica_AUMENTOU, escola_Colégio Aydano, categoria_Política, auto_avaliacao_Casual, fx_idade_adolescente;turma_Turma A;0.078947368421053;1;1.3451327433628
+categoria_Política, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.078947368421053;1;1.3451327433628
+escola_Colégio Aydano, categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.078947368421053;1;1.3451327433628
+categoria_Política, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.078947368421053;0.75;1.0088495575221
+categoria_Política, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.078947368421053;0.75;1.0088495575221
+turma_Turma A, capacidade_critica_AUMENTOU, escola_Colégio Aydano, auto_avaliacao_Casual, avaliacao_jogo_Avançado;fx_idade_adolescente;0.072368421052632;1;1
+turma_Turma A, capacidade_critica_AUMENTOU, auto_avaliacao_Casual, fx_idade_adolescente, avaliacao_jogo_Avançado;escola_Colégio Aydano;0.072368421052632;1;1.3451327433628
+capacidade_critica_AUMENTOU, escola_Colégio Aydano, auto_avaliacao_Casual, fx_idade_adolescente, avaliacao_jogo_Avançado;turma_Turma A;0.072368421052632;1;1.3451327433628
+avaliacao_jogo_Avançado, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.072368421052632;1;1.3451327433628
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A;0.072368421052632;0.78571428571429;1.0568900126422
+avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, turma_Turma A, fx_idade_adolescente;0.072368421052632;0.78571428571429;1.0568900126422
+turma_Turma A, capacidade_critica_AUMENTOU, escola_Colégio Aydano, avaliacao_jogo_Em processo, auto_avaliacao_Casual;fx_idade_adolescente;0.065789473684211;1;1
+turma_Turma A, capacidade_critica_AUMENTOU, avaliacao_jogo_Em processo, auto_avaliacao_Casual, fx_idade_adolescente;escola_Colégio Aydano;0.065789473684211;1;1.3451327433628
+capacidade_critica_AUMENTOU, escola_Colégio Aydano, avaliacao_jogo_Em processo, auto_avaliacao_Casual, fx_idade_adolescente;turma_Turma A;0.065789473684211;1;1.3451327433628
+avaliacao_jogo_Em processo, turma_Turma A, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Aydano, fx_idade_adolescente;0.065789473684211;1;1.3451327433628
+escola_Colégio Aydano, avaliacao_jogo_Em processo, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;turma_Turma A, fx_idade_adolescente;0.065789473684211;1;1.3451327433628

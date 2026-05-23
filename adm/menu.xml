@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+  <menuitem label="_t{Administration}">
+    <icon>fas:home fa-fw</icon>
+    <menu>
+      <menuitem label="_t{Programs}">
+        <action>SystemProgramList</action>
+        <icon>far:file-code fa-fw</icon>
+      </menuitem>
+      <menuitem label="_t{Groups}">
+        <action>SystemGroupList</action>
+        <icon>fas:users fa-fw</icon>
+      </menuitem>
+      <menuitem label="_t{Units}">
+        <action>SystemUnitList</action>
+        <icon>fas:university fa-fw</icon>
+      </menuitem>
+      <menuitem label="_t{Users}">
+        <action>SystemUserList</action>
+        <icon>fas:user fa-fw</icon>
+      </menuitem>
+      <menuitem label="_t{Menu editor}">
+        <action>SystemMenuEditor</action>
+        <icon>far:edit fa-fw</icon>
+      </menuitem>
+    </menu>
+  </menuitem>
+  <menuitem label="Gestão Escolar">
+    <menu>
+      <menuitem label="Escola">
+        <action>FormEscolaList</action>
+      </menuitem>
+      <menuitem label="Instância Gestora">
+        <action>FormInstanciaList</action>
+      </menuitem>
+      <menuitem label="Série">
+        <action>FormSerieEscolarList</action>
+      </menuitem>
+      <menuitem label="Turma">
+        <action>FormTurmaList</action>
+      </menuitem>
+      <menuitem label="Aluno">
+        <action>FormAlunoList</action>
+      </menuitem>
+    </menu>
+  </menuitem>
+  <menuitem label="Gestão de Conteúdo">
+    <menu>
+      <menuitem label="Categoria">
+        <action>FormCategoriaList</action>
+        <icon>fas:shapes fa-fw</icon>
+      </menuitem>
+      <menuitem label="Noticias">
+        <action>FormPerguntaList</action>
+        <icon>far:newspaper fa-fw</icon>
+      </menuitem>
+      <menuitem label="Prompt">
+        <action>FormPromptList</action>
+        <icon>fas:brain fa-fw</icon>
+      </menuitem>
+      <menuitem label="Usuários do JEDI">
+        <action>FormUserList</action>
+        <icon>fas:user-ninja fa-fw</icon>
+      </menuitem>
+      <menuitem label="Exportar JSON das Notícias">
+        <action>ExportPergunta2Json</action>
+        <icon>fas:file-export fa-fw fa-fw</icon>
+      </menuitem>
+    </menu>
+  </menuitem>
+  <menuitem label="Logout">
+    <action>LoginForm#method=onLogout#static=1</action>
+    <icon>fas:sign-out-alt fa-fw</icon>
+  </menuitem>
+</menu>

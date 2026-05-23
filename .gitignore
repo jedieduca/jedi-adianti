@@ -1,0 +1,12 @@
+# Pastas de cache e temporários do Adianti Framework
+mad/app/output/*
+mad/app/tmp/*
+adm/app/output/*
+adm/app/tmp/*
+
+# Arquivos de sessão ou upload locais coletados durante testes
+*.log
+uploads/
+
+# Bloquear arquivos .ini locais se eles contiverem senhas de banco locais
+# (O Adianti costuma guardar dados em app/config/o_nome_do_banco.php ou .ini)
