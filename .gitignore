@@ -3,9 +3,11 @@ mad/app/output/*
 mad/app/tmp/*
 adm/app/output/*
 adm/app/tmp/*
+adm/app/database/log.*
 
 # Arquivos de sessão ou upload locais coletados durante testes
 *.log
+log.*
 uploads/
 
 # Bloquear arquivos .ini locais se eles contiverem senhas de banco locais
