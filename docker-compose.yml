@@ -20,7 +20,7 @@ services:
       - PHP_OPCACHE_ENABLE=1
       - PHP_OPCACHE_MEMORY_CONSUMPTION=256
       - PHP_OPCACHE_MAX_ACCELERATED_FILES=20000
-      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=0 # 0 força o PHP a ler da memória, sem checar o HD toda hora
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1 # 0 força o PHP a ler da memória, sem checar o HD toda hora
     hostname: php_cadjedi
     networks:
       - jedieduca-network

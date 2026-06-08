@@ -29,7 +29,7 @@ return [
         'request_log' => '0',
         'request_log_types' => 'cli,web,rest',
         /* Serviço 1: Autenticação Inicial */
-        'api_auth_url' => "http://python_service:8001/api/v1",
+        'api_auth_url' => "http://python_service:8001/v1",
         /* Dados do formulário */
         'client_id' => "admin@jedieduca.com.br",
         'client_pass' => "JediEduc@2026",
