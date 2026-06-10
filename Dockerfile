@@ -5,10 +5,9 @@ FROM php:8.3-fpm
 ARG UID=1002
 ARG GID=1005
 
-# 1. Instala as dependências do sistema e ferramentas necessárias (incluindo o gosu)
+# Instala o pacote 'passwd' (que fornece groupmod/usermod no Debian) e as dependências das extensões
 RUN apt-get update && apt-get install -y \
     passwd \
-    gosu \
     libxml2-dev \
     libicu-dev \
     libpng-dev \
@@ -34,26 +33,25 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Modifica o UID e GID do www-data que JÁ EXISTE no Debian para os valores desejados
-# Removemos travas de cache modificando diretamente o arquivo do sistema se necessário,
-# mas o usermod clássico resolve se feito antes de alternar contextos.
+# Altera o UID e GID do www-data existente no Debian para os seus IDs (1002 e 1005)
+# E adiciona o www-data ao grupo root para corrigir a permissão de escrita em /proc/self/fd/2
 RUN groupmod -g ${GID} www-data \
-    && usermod -u ${UID} -g ${GID} www-data
+    && usermod -u ${UID} -g ${GID} -G root www-data
 
-# Define o diretório de trabalho
+# Define o diretório de trabalho padrão
 WORKDIR /var/www/html
 
-# 3. Copia e configura o script de inicialização
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# Cria as pastas que o Adianti exige ANTES de mapear o volume, garantindo que herdem as permissões
+RUN mkdir -p app/database app/tmp app/output app/logs \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html
 
-# Garante que o PHP-FPM escute na porta 9000 em qualquer interface de rede (0.0.0.0)
+# Garante que o PHP-FPM escute na porta 9000 globalmente
 RUN sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf
 
-# O container inicia como root para que o entrypoint possa corrigir as permissões
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+# Define o usuário que executará o PHP-FPM internamente de forma nativa e segura
+USER www-data
 
 EXPOSE 9000
 
-# Garante o argumento explícito para o IF do entrypoint
 CMD ["php-fpm"]
