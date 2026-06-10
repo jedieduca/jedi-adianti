@@ -52,4 +52,5 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 9000
 
+# Garante o argumento explícito para o IF do entrypoint
 CMD ["php-fpm"]
