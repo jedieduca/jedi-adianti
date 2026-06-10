@@ -7,13 +7,17 @@
 chown -R www-data:www-data app/database app/tmp app/output app/logs
 chmod -R 775 app/database app/tmp app/output app/logs
 
-# 3. CORREÇÃO DE LOG: Garante que o www-data consiga gravar nos logs globais do PHP se necessário
+# 3. Garante que o www-data consiga gravar nos logs globais do PHP se necessário
 chown -R www-data:www-data /var/log/
 
-# 4. Executa o PHP-FPM forçando-o a rodar em primeiro plano (-F) para o container não fechar
+# 4. Executa o PHP-FPM usando o caminho absoluto (/usr/local/sbin/php-fpm)
 if [ "$1" = 'php-fpm' ]; then
-    exec gosu www-data php-fpm -F
+    exec gosu www-data /usr/local/sbin/php-fpm -F
 fi
 
-# Caso tenha passado outro comando customizado
+# Caso venha outro comando customizado, tenta rodar com o caminho absoluto também se for php-fpm
+if [ "$1" = '/usr/local/sbin/php-fpm' ]; then
+    exec gosu www-data /usr/local/sbin/php-fpm -F
+fi
+
 exec gosu www-data "$@"

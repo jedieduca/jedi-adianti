@@ -47,7 +47,10 @@ WORKDIR /var/www/html
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# O container inicia como root para que o entrypoint possa corrigir as permissões das pastas
+# Garante que o PHP-FPM escute na porta 9000 em qualquer interface de rede (0.0.0.0)
+RUN sed -i 's/listen = 127.0.0.1:9000/listen = 0.0.0.0:9000/g' /usr/local/etc/php-fpm.d/www.conf
+
+# O container inicia como root para que o entrypoint possa corrigir as permissões
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 9000
