@@ -5,6 +5,7 @@ FROM php:8.3-fpm
 ARG UID=1002
 ARG GID=1005
 
+# 1. Instala as dependências do sistema e ferramentas necessárias (incluindo o gosu)
 RUN apt-get update && apt-get install -y \
     passwd \
     gosu \
@@ -20,27 +21,35 @@ RUN apt-get update && apt-get install -y \
     zip unzip \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
-    && docker-php-ext-install -j$(nproc) pdo_mysql pdo_pgsql soap sockets exif intl opcache \
+    && docker-php-ext-install -j$(nproc) \
+        pdo_mysql \
+        pdo_pgsql \
+        soap \
+        sockets \
+        exif \
+        intl \
+        opcache \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Agora modificamos o UID/GID do www-data existente no Debian para os seus IDs customizados
+# 2. Modifica o UID e GID do www-data que JÁ EXISTE no Debian para os valores desejados
+# Removemos travas de cache modificando diretamente o arquivo do sistema se necessário,
+# mas o usermod clássico resolve se feito antes de alternar contextos.
 RUN groupmod -g ${GID} www-data \
     && usermod -u ${UID} -g ${GID} www-data
 
 # Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Copia o script de inicialização para dentro do container
+# 3. Copia e configura o script de inicialização
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# O container inicia como root para corrigir as permissões das pastas montadas por volumes
+# O container inicia como root para que o entrypoint possa corrigir as permissões das pastas
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 EXPOSE 9000
 
-# O comando padrão que será passado para o entrypoint
 CMD ["php-fpm"]
