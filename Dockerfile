@@ -5,8 +5,8 @@ FROM php:8.3-fpm
 ARG UID=1002
 ARG GID=1005
 
-# Instala o pacote 'passwd' (que fornece groupmod/usermod no Debian) e as dependências das extensões
-RUN apt-get update && apt-get install -y \
+# Instala o pacote 'passwd' e as dependências com travas de segurança contra travamentos
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
     passwd \
     libxml2-dev \
     libicu-dev \
