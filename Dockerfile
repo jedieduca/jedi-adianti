@@ -16,7 +16,8 @@ RUN groupmod -g ${GID} www-data \
 # - docker-php-ext-install: Compila as extensões PHP
 
 # Dependências básicas
-RUN apt-get update && apt-get install -y \
+# RUN apt-get update && apt-get install -y \
+ RUN apt-get install -y \
     libxml2-dev \
     libicu-dev \
     libpng-dev \
