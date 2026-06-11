@@ -43,18 +43,8 @@ RUN groupmod -g ${GID} www-data \
 # Define o diretório de trabalho
 WORKDIR /var/www/html
 
-# Copia o script de inicialização para dentro do container
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-
-# Dá permissão de execução para o script
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# O ENTRYPOINT roda como root para ajustar as permissões no boot do container,
-# mas o 'exec "$@"' vai rodar o PHP-FPM respeitando o USER abaixo.
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
 # Define o usuário padrão para os comandos internos
-USER www-data [cite: 3]
+USER www-data 
 
 EXPOSE 9000
 
