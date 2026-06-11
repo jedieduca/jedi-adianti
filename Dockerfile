@@ -42,8 +42,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean
+#    && rm -rf /var/lib/apt/lists/*
 
 
 # Define o diretório de trabalho onde seu código PHP estará
