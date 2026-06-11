@@ -4,11 +4,11 @@ FROM php:8.3-fpm
 # ==============================
 # 🔹 UID/GID (ADICIONE AQUI)
 # ==============================
-ARG UID=1002
-ARG GID=1005
+# ARG UID=1002
+# ARG GID=1005
 
-RUN groupmod -g ${GID} www-data \
-    && usermod -u ${UID} -g ${GID} www-data
+# RUN groupmod -g ${GID} www-data \
+#     && usermod -u ${UID} -g ${GID} www-data
 
 # Instala as extensões PHP essenciais (ex: MySQL/Postgres, GD para imagens)
 # A ordem aqui é importante:
