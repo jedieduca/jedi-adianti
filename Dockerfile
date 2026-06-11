@@ -1,13 +1,22 @@
-# Imagem base oficial do PHP 8.3 FPM (Baseada em Debian)
+# Imagem base PHP 8.3 FPM com Alpine
 FROM php:8.3-fpm
 
-# Definição dos argumentos de UID e GID
+# ==============================
+# 🔹 UID/GID (ADICIONE AQUI)
+# ==============================
 ARG UID=1002
 ARG GID=1005
 
-# Instala o pacote 'passwd' e as dependências com travas de segurança contra travamentos
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    passwd \
+RUN groupmod -g ${GID} www-data \
+    && usermod -u ${UID} -g ${GID} www-data
+
+# Instala as extensões PHP essenciais (ex: MySQL/Postgres, GD para imagens)
+# A ordem aqui é importante:
+# - apk add: Instala dependências do sistema operacional
+# - docker-php-ext-install: Compila as extensões PHP
+
+# Dependências básicas
+RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libicu-dev \
     libpng-dev \
@@ -20,6 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zip unzip \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
+    \
     && docker-php-ext-install -j$(nproc) \
         pdo_mysql \
         pdo_pgsql \
@@ -28,21 +38,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         exif \
         intl \
         opcache \
+    \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
+    \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Altera o UID e GID do www-data existente no Debian para os seus IDs (1002 e 1005)
-# E adiciona o www-data ao grupo root para corrigir a permissão de escrita em /proc/self/fd/2
-RUN groupmod -g ${GID} www-data \
-    && usermod -u ${UID} -g ${GID} -G root www-data
 
-# Define o diretório de trabalho padrão
+# Define o diretório de trabalho onde seu código PHP estará
+# Se o seu código PHP estiver em uma subpasta, ajuste o WORKDIR
 WORKDIR /var/www/html
 
-USER www-data 
+# 4. Copia o arquivo de configuração do FPM (opcional, mas recomendado)
+# Use um arquivo .conf personalizado se precisar ajustar pool de workers, etc.
+# COPY ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
+USER www-data
+
+# Copia as aplicações
+#COPY ./cadJEDI/adm ./adm
+#COPY ./cadJEDI/mad ./mad
+
+
+# 5. Expõe a porta padrão do FPM (9000)
 EXPOSE 9000
 
-CMD ["php-fpm"]
+# O comando padrão (CMD) da imagem php:8.3-fpm-alpine já é para iniciar o PHP-FPM,
+# então não precisamos redefini-lo aqui.
