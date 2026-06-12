@@ -69,6 +69,7 @@ class FormPerguntaList extends TStandardList
 
         // creates the datagrid columns
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
+        //$column_id->setVisibility(false);
         $column_curadoria = new TDataGridColumn('analise_proposta', 'Curadoria', 'center');
         //$column_tema = new TDataGridColumn('idtema', 'Tema', 'left');
         $column_pergunta = new TDataGridColumn('pergunta', 'Notícia', 'left');

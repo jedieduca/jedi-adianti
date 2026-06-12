@@ -315,6 +315,9 @@ class FormAluno extends TPage
             if ( !empty( $data->password ) ) {
                 $object->password = md5( $data->password );
             }
+            else if ( !empty( $data->id ) ) {
+                unset($object->password);
+            }
             $object->frontpage_id = '41';
             $object->active = 'Y';
             $object->store();
@@ -372,6 +375,7 @@ class FormAluno extends TPage
                 // instantiates object OfertaTurmaAluno
                 $objAlunoEscola = AlunoEscola::getAluno($object->id);
                 $object->idEscola = $objAlunoEscola->idEscola; 
+                unset($object->password);
                 
                 // fill the form with the active record data
                 $this->form->setData($object);

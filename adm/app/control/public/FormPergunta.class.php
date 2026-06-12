@@ -21,6 +21,7 @@ class FormPergunta extends TPage
     public $location = "app/images/noticias"; //localhost "/trilha/uploadImage"
     public $caminhoImagem;
 
+    private $labelId;
     private $btnTocarAudio;
 
     //use Adianti\Base\AdiantiFileSaveTrait;
@@ -43,6 +44,8 @@ class FormPergunta extends TPage
         
         // create the form fields
         $id  = new THidden('id');
+        $this->labelId = new TLabel('');
+        $this->labelId->style = 'font-weight: bold';
 
         //$criteria=Tema::TemaUsuario(TSession::getValue('userid'));
 		//$idTema     = new TDBCombo('idtema','jedieduca','Tema','id','nome', 'nome', $criteria);
@@ -58,7 +61,7 @@ class FormPergunta extends TPage
 
         //$respCerta = new TCombo('respcerta');
         $respCerta = new TRadioGroup('respcerta');
-        $id = $respCerta->getId();
+        $respCertaId = $respCerta->getId();
         $respCerta->setLayout('horizontal');
         $respCerta->setUseButton('btn-sm');
         $items = ['NÃO FAKE'=>'SIM', 'FAKE'=>'NÃO'];
@@ -113,7 +116,7 @@ class FormPergunta extends TPage
         //$fields[] = $btnFalaGemini;
 
         $origemAnalise = new TRadioGroup('origem_analise');
-        $id = $origemAnalise->getId();
+        $origemAnaliseId = $origemAnalise->getId();
         $origemAnalise->setUseButton('btn-sm');
         $origemAnalise->setLayout('horizontal');
         $items = [1=>'GPT', 2=>'Gemini'];
@@ -147,7 +150,7 @@ class FormPergunta extends TPage
         //$fields[] = $btnFalaGemini;
 
         $origemFala = new TRadioGroup('origem_fala');
-        $id = $origemAnalise->getId();
+        $origemFalaId = $origemFala->getId();
         $origemFala->setUseButton('btn-sm');
         $origemFala->setLayout('horizontal');
         $items = [1=>'GPT', 2=>'Gemini'];
@@ -193,7 +196,7 @@ class FormPergunta extends TPage
         //$categoria     = new TDBCombo('categoria','jedieduca','Categoria','nome','nome');
         $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'nome', 'nome');
         $categoria->addValidation('Categoria', new TRequiredValidator);
-        $categoria->setSize('100%',60);
+        $categoria->setSize('70%',60);
 
         $publica = new TRadioGroup('publica');
         $publica->setLayout('horizontal');
@@ -225,8 +228,12 @@ class FormPergunta extends TPage
 
                
         $this->form->addFields( [$id] );
-        $row = $this->form->addFields( [new TLabel('Tema')], [$idTema], [new TLabel('Categoria')], [$categoria] );
-        $row->layout = ['col-sm-2 control-label', 'col-sm-4', 'col-sm-1 control-label', 'col-sm-4' ];
+        $row = $this->form->addFields( [new TLabel('Número da notícia')], [$this->labelId] );
+        $row->layout = ['col-sm-2 control-label', 'col-sm-1'];
+
+        //$row = $this->form->addFields( [new TLabel('Tema')], [$idTema], [new TLabel('Categoria')], [$categoria] );        
+        //$row->layout = ['col-sm-2 control-label', 'col-sm-4', 'col-sm-1 control-label', 'col-sm-4' ];
+        $this->form->addFields( [new TLabel('Categoria')], [$categoria] );
         $this->form->addFields( [new TLabel('Notícia')], [$pergunta] );
         $this->form->addFields( [new TLabel('Fato')], [$respCerta] );
         $this->form->addFields( [new TLabel('Imagem')], [$imagePath], [$btnCancelar]);
@@ -636,6 +643,11 @@ class FormPergunta extends TPage
             $object->publica = $data->publica;
             $object->store();
 
+            TSession::setValue('id',$object->id);
+            $this->labelId->setValue($object->id);
+
+            //echo '<pre>'; print_r($object); echo '</pre>';
+
             //echo '<pre>'; print_r($object);
 
             /*if ($this->ExistePerguntaCategoria($object->idtema, $object->id ))
@@ -672,6 +684,7 @@ class FormPergunta extends TPage
                 //echo '<pre>'; print_r('$param["caminhoimagem"] '.$param['caminhoimagem']); echo '</pre>';
                $this->saveFile($object, $data, 'caminhoimagem', $this->location, $targetFile );
             }
+
             $data = new stdClass;
             $data->id = $object->id;
             $data->caminhoimagem = $param['caminhoimagem'];
@@ -709,6 +722,7 @@ class FormPergunta extends TPage
                 // get the parameter $key
                 $key=$param['key'];
                 TSession::setValue('id',$key);
+                $this->labelId->setValue($key);
                                
                 // instantiates object System_user
                 $object = new Pergunta($key);
@@ -783,6 +797,7 @@ class FormPergunta extends TPage
             {
                 TSession::setValue('caminhoImagem','');
                 $this->form->clear();
+                $this->labelId->setValue('');
                 $obj = new stdClass;
                 $obj->idtema = '17'; //tema default Fake News
                 TSession::setValue('id','');
