@@ -127,15 +127,25 @@ class SystemUser extends TRecord
         $object->store();
     }
 
-        /**
-     * Add a Unit to the user
-     * @param $object Instance of SystemUnit
+    /**
+     * Add a InstanciaGestora to the user
      */
     public function addSystemUserInstancia(InstanciaGestora $instanciagestora)
     {
         $object = new UsuarioInstanciaGestora;
-        $object->idinstanciagestora = $instanciagestora->id;
-        $object->idusuario = $this->id;
+        $object->id_instancia_gestora = $instanciagestora->id;
+        $object->id_usuario = $this->id;
+        $object->store();
+    }
+
+    /**
+     * Add a Escola to the user
+     */
+    public function addSystemUserEscola(Colegio $escola)
+    {
+        $object = new UsuarioEscola;
+        $object->id_escola = $escola->id;
+        $object->id_usuario = $this->id;
         $object->store();
     }
    
@@ -166,7 +176,16 @@ class SystemUser extends TRecord
      */
     public function getSystemUserInstancias()
     {
-        return parent::loadAggregate('InstanciaGestora', 'UsuarioInstanciaGestora', 'idusuario', 'idinstanciagestora', $this->id);
+        return parent::loadAggregate('InstanciaGestora', 'UsuarioInstanciaGestora', 'id_usuario', 'id_instancia_gestora', $this->id);
+    }
+
+    /**
+     * Return the user' escola's
+     * @return Collection of Colegio
+     */
+    public function getSystemUserEscolas()
+    {
+        return parent::loadAggregate('Colegio', 'UsuarioEscola', 'id_usuario', 'id_escola', $this->id);
     }
 
     /**
@@ -449,4 +468,5 @@ class SystemUser extends TRecord
         }
         return $collection;
     }
+
 }

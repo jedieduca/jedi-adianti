@@ -284,7 +284,7 @@ class SystemUserList extends TStandardList
         SystemUserProgram::where('system_user_id', '=', $id)->delete();
         SystemUser::where('id', '=', $id)->delete();
 
-        UsuarioInstanciaGestora::where('idusuario', '=', $id)->delete();
+        UsuarioInstanciaGestora::where('id_usuario', '=', $id)->delete();
         //Utilizador::where('idusuario', '=', $id)->delete();
         //DocenteDisciplina::where('iddocente', '=', $id)->delete();
         TTransaction::close();

@@ -16,9 +16,9 @@ class Municipio extends TRecord
     {
         parent::__construct($codigo);
         parent::addAttribute('nome');
-        parent::addAttribute('numhabitantes');
-        parent::addAttribute('iduf');
-        parent::addAttribute('rendamedia');
+        parent::addAttribute('num_habitantes');
+        parent::addAttribute('id_uf');
+        parent::addAttribute('renda_media');
         parent::addAttribute('idh');
     }
 }

@@ -5,7 +5,7 @@
  */
 class UsuarioEscola extends TRecord
 {
-    const TABLENAME = 'usuarioescola';
+    const TABLENAME = 'usuario_escola';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -15,8 +15,8 @@ class UsuarioEscola extends TRecord
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        parent::addAttribute('idusuario');
-        parent::addAttribute('idescola');
+        parent::addAttribute('id_usuario');
+        parent::addAttribute('id_escola');
     }
 }
 ?>

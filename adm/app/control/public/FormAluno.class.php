@@ -60,7 +60,9 @@ class FormAluno extends TPage
 		$turma = new TDBCombo('idTurma','jedieduca','OfertaTurma','id','denominacao', 'denominacao', $criteria);
         $turma->setSize('30%');*/
 
-		$escola = new TDBCombo('idEscola','jedieduca','Colegio','id','nome');
+        $criteriaEscola = new TCriteria;
+        $criteriaEscola->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        $escola = new TDBCombo('id_escola', 'jedieduca', 'Colegio', 'id', 'nome', 'nome', $criteriaEscola);
         $escola->setSize('30%');
 
         /*$dtNasc = new TDate('dtNasc');
@@ -68,7 +70,7 @@ class FormAluno extends TPage
         $dtNasc->setDatabaseMask('yyyy-mm-dd');
         $dtNasc->setSize('20%');
         $dtNasc->setOption('triggerEvent', 'dblclick');*/
-        /*$dtReg = new TDate('dtRegistro');
+        /*$dtReg = new TDate('dt_registro');
         $dtReg->setMask('dd/mm/yyyy');
         $dtReg->setDatabaseMask('yyyy-mm-dd');
         $dtReg->setSize('20%');
@@ -79,6 +81,11 @@ class FormAluno extends TPage
         $email = new TEntry('email');
         $email->setSize('30%');
         $email->addValidation('E-mail', new TEmailValidator);
+
+        // Impede o navegador de reutilizar os dados do usuário autenticado
+        // durante o cadastro de um novo aluno.
+        $email->setProperty('autocomplete', 'off');
+        $senha->setProperty('autocomplete', 'new-password');
         /*$telefone = new TEntry('telefone');
         $telefone->setSize('30%');
         $telefone->setMask('(99) 99999-9999',true);*/
@@ -207,8 +214,8 @@ class FormAluno extends TPage
         $ano = date("Y");
         $conn = TTransaction::get();
         // run query
-        $sql="delete FROM ofertaturmaaluno ";
-        $sql.="WHERE idaluno='{$id}'";
+        $sql="delete FROM oferta_turma_aluno ";
+        $sql.="WHERE id_aluno='{$id}'";
         $conn->query($sql);
         //echo '<pre>'; print_r($sql); echo '</pre>';
     }
@@ -218,8 +225,8 @@ class FormAluno extends TPage
         $ano = date("Y");
         $conn = TTransaction::get();
         // run query
-        $sql="delete FROM alunoescola ";
-        $sql.="WHERE idaluno='{$id}'";
+        $sql="delete FROM aluno_escola ";
+        $sql.="WHERE id_aluno='{$id}'";
         $conn->query($sql);
         //echo '<pre>'; print_r($sql); echo '</pre>';
     }
@@ -227,8 +234,8 @@ class FormAluno extends TPage
     public function addAlunoTurma($turma, $id)
     {
         $object = new OfertaTurmaAluno;
-        $object->idofertaturma = $turma;
-        $object->idaluno = $id;
+        $object->id_oferta_turma = $turma;
+        $object->id_aluno = $id;
         //$object->ano = date('Y');
         $object->store();
     }
@@ -236,8 +243,8 @@ class FormAluno extends TPage
     public function addAlunoEscola($escola, $id)
     {
         $object = new AlunoEscola;
-        $object->idEscola = $escola;
-        $object->idAluno = $id;
+        $object->id_escola = $escola;
+        $object->id_aluno = $id;
         //$object->ano = date('Y');
         $object->store();
     }
@@ -269,7 +276,7 @@ class FormAluno extends TPage
             
             $data = $this->form->getData();
             //$data->senha = md5( $data->senha );
-            $data->dtRegistro = date("Y-m-d");
+            $data->dt_registro = date("Y-m-d");
             $this->form->setData($data);
             //echo '<pre>'; print_r($data); echo '</pre>';
 
@@ -332,7 +339,7 @@ class FormAluno extends TPage
             //Grava Aluno Escola   
             //echo '<pre>'; print_r($object->id); echo '</pre>';
             $this->RemoveAlunoEscola($object->id);  //data->cpf                   
-            $this->addAlunoEscola($data->idEscola, $object->id);
+            $this->addAlunoEscola($data->id_escola, $object->id);
             
             $data = new stdClass;
             $data->id = $object->id;
@@ -374,7 +381,7 @@ class FormAluno extends TPage
 
                 // instantiates object OfertaTurmaAluno
                 $objAlunoEscola = AlunoEscola::getAluno($object->id);
-                $object->idEscola = $objAlunoEscola->idEscola; 
+                $object->id_escola = $objAlunoEscola->id_escola; 
                 unset($object->password);
                 
                 // fill the form with the active record data
@@ -394,6 +401,11 @@ class FormAluno extends TPage
             else
             {
                 $this->form->clear();
+
+                $novo_aluno = new stdClass;
+                $novo_aluno->email = '';
+                $novo_aluno->password = '';
+                $this->form->setData($novo_aluno);
             }
         }
         catch (Exception $e) // in case of exception

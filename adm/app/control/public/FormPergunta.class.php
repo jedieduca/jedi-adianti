@@ -47,20 +47,15 @@ class FormPergunta extends TPage
         $this->labelId = new TLabel('');
         $this->labelId->style = 'font-weight: bold';
 
-        //$criteria=Tema::TemaUsuario(TSession::getValue('userid'));
-		//$idTema     = new TDBCombo('idtema','jedieduca','Tema','id','nome', 'nome', $criteria);
-        
         $lblTema = new TLabel('Tema');
-        $idTema  = new TEntry('idtema');
-        $idTema->setEditable(false);
-        $idTema->setSize('40%');
+        $idTema  = new THidden('id_tema');
 
         $lblPergunta = new TLabel('Noticia');
         $pergunta = new TText('pergunta');
         $pergunta->setSize('70%',120);
 
         //$respCerta = new TCombo('respcerta');
-        $respCerta = new TRadioGroup('respcerta');
+        $respCerta = new TRadioGroup('resp_certa');
         $respCertaId = $respCerta->getId();
         $respCerta->setLayout('horizontal');
         $respCerta->setUseButton('btn-sm');
@@ -182,7 +177,7 @@ class FormPergunta extends TPage
         $this->btnTocarAudio->setAction($actTocarAudio, ' Tocar Áudio');
         // FIM BOTÕES DE ÁUDIO (TTS)
 
-        $imagePath = new TFile('caminhoimagem');
+        $imagePath = new TFile('caminho_imagem');
         $imagePath->setSize('100%');
         $imagePath->setAllowedExtensions( ['gif', 'png', 'jpg', 'jpeg'] );
         // enable progress bar, preview
@@ -194,7 +189,7 @@ class FormPergunta extends TPage
         $img->width = '300px';
         //$caminhoImagem = new TEntry('caminhoimagem');   
         //$categoria     = new TDBCombo('categoria','jedieduca','Categoria','nome','nome');
-        $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'nome', 'nome');
+        $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'descricao', 'descricao');
         $categoria->addValidation('Categoria', new TRequiredValidator);
         $categoria->setSize('70%',60);
 
@@ -233,6 +228,7 @@ class FormPergunta extends TPage
 
         //$row = $this->form->addFields( [new TLabel('Tema')], [$idTema], [new TLabel('Categoria')], [$categoria] );        
         //$row->layout = ['col-sm-2 control-label', 'col-sm-4', 'col-sm-1 control-label', 'col-sm-4' ];
+        $this->form->addFields( [$idTema]);
         $this->form->addFields( [new TLabel('Categoria')], [$categoria] );
         $this->form->addFields( [new TLabel('Notícia')], [$pergunta] );
         $this->form->addFields( [new TLabel('Fato')], [$respCerta] );
@@ -307,7 +303,7 @@ class FormPergunta extends TPage
 
             // parâmetros fictícios, você pode puxar do banco/formulário
             $noticia        = $data->pergunta;
-            $resposta       = $data->respcerta; 
+            $resposta       = $data->resp_certa; 
             /*$caracteristicas = ' 1) Título Sensacionalista ou Alarmista
                     Uso de letras maiúsculas em excesso, muitos pontos de exclamação ou expressões de choque ("VOCÊ NÃO VAI ACREDITAR!!!").
                     Frases que apelam à emoção e não à informação, como "escândalo", "bomba", "verdade escondida".
@@ -379,7 +375,7 @@ class FormPergunta extends TPage
 
             // parâmetros fictícios, você pode puxar do banco/formulário
             $noticia        = $data->pergunta;
-            $resposta       = $data->respcerta; 
+            $resposta       = $data->resp_certa; 
             //$caracteristicas = $data->caract_gpt;
 
             $prompt = Prompt::getPrompt( $data->idtema );
@@ -536,9 +532,9 @@ class FormPergunta extends TPage
     {
         $conn = TTransaction::get();
         // run query
-        $sql='select categoria FROM perguntacategoria2 ';
-        $sql.='WHERE tema='.$tema;
-        $sql.=' AND codPerg='.$perg;
+        $sql='select categoria FROM pergunta_categoria ';
+        $sql.='WHERE id_tema='.$tema;
+        $sql.=' AND id_pergunta='.$perg;
         //echo '<pre>'; print_r($sql);
         $result = $conn->query($sql);
         return $result->rowCount();
@@ -548,9 +544,9 @@ class FormPergunta extends TPage
     {
         $conn = TTransaction::get();
         // run query
-        $sql="update pergunta2 ";
-        $sql.="SET caminhoimagem='sem_imagem.png' ";
-        $sql.='WHERE idtema='.$tema;
+        $sql="update pergunta ";
+        $sql.="SET caminho_imagem='sem_imagem.png' ";
+        $sql.='WHERE id_tema='.$tema;
         $sql.=' AND id='.$perg;
         //echo '<pre>'; print_r($sql);
         $result = $conn->query($sql);
@@ -560,10 +556,10 @@ class FormPergunta extends TPage
     {
         $conn = TTransaction::get();
         // run query
-        $sql="update perguntacategoria2 ";
+        $sql="update pergunta_categoria ";
         $sql.="SET categoria='{$categoria}' ";
-        $sql.='WHERE tema='.$tema;
-        $sql.=' AND codPerg='.$perg;
+        $sql.='WHERE id_tema='.$tema;
+        $sql.=' AND id_pergunta='.$perg;
         //echo '<pre>'; print_r($sql);
         $result = $conn->query($sql);
     }
@@ -572,7 +568,7 @@ class FormPergunta extends TPage
     {
         $conn = TTransaction::get();
         // run query
-        $sql="insert into perguntacategoria2 (tema, codPerg, categoria) ";
+        $sql="insert into pergunta_categoria (id_tema, id_pergunta, categoria) ";
         $sql.="values ( {$tema}, {$perg}, '{$categoria}')";
         //echo '<pre>'; print_r($sql);
         $result = $conn->query($sql);
@@ -584,12 +580,12 @@ class FormPergunta extends TPage
      */
     public function onSave($param)
     {
-        if (empty($param['caminhoimagem']))
+        if (empty($param['caminho_imagem']))
         {
             if (empty(TSession::getValue('caminhoImagem')))
-                $param['caminhoimagem']='sem_imagem.png';
+                $param['caminho_imagem']='sem_imagem.png';
             else
-                $param['caminhoimagem']=TSession::getValue('caminhoImagem');
+                $param['caminho_imagem']=TSession::getValue('caminhoImagem');
         }
         //echo '<pre>'; print_r('1 -> '.$param['caminhoimagem']);
         try
@@ -606,28 +602,28 @@ class FormPergunta extends TPage
             $object->fromArray( (array) $data );
             if (!empty(TSession::getValue('id'))) 
                 $object->id=TSession::getValue('id');
-            $object->idtema = 17; //tema default Fake News
-            $object->resp2 = $data->respcerta=='FAKE' ? 'NÃO FAKE' : 'FAKE';
+            $object->id_tema = 17; //tema default Fake News
+            $object->resp_2 = $data->resp_certa=='FAKE' ? 'NÃO FAKE' : 'FAKE';
             
             //echo '<pre>'; print_r($object);
 
             //echo '<pre>'; print_r('$object->caminhoimagem '.empty($object->caminhoimagem));
 
             
-            if ((strpos($param['caminhoimagem'],"sem_imagem.png")>0) || ($param['caminhoimagem']=='sem_imagem.png'))
-                $object->caminhoimagem='sem_imagem.png';//TSession::getValue('caminhoImagem');
+            if ((strpos($param['caminho_imagem'],"sem_imagem.png")>0) || ($param['caminho_imagem']=='sem_imagem.png'))
+                $object->caminho_imagem='sem_imagem.png';//TSession::getValue('caminhoImagem');
             //if (empty($object->caminhoimagem))
                 //$object->caminhoimagem='sem_imagem.png';
             else
             {
-                if (strpos($param['caminhoimagem'],"newFile")>0)
-                    $targetExt=substr(urldecode($param['caminhoimagem']),-5,3);
+                if (strpos($param['caminho_imagem'],"newFile")>0)
+                    $targetExt=substr(urldecode($param['caminho_imagem']),-5,3);
                 else
                     $targetExt=substr(urldecode($param['caminhoimagem']),-3);
                 //echo '<pre>'; print_r($targetExt);
                 //echo '<pre>'; print_r('$targetExt '.$targetExt); echo '</pre>';
-                $targetFile="T".$object->idtema."_perg_".$object->id.'.'.$targetExt;
-                $object->caminhoimagem=$targetFile;   //$param['caminhoimagem'];
+                $targetFile="T".$object->id_tema."_perg_".$object->id.'.'.$targetExt;
+                $object->caminho_imagem=$targetFile;   //$param['caminhoimagem'];
                 //echo '<pre>'; print_r($object->caminhoimagem);
             }
                 
@@ -660,16 +656,16 @@ class FormPergunta extends TPage
             $objPC = new PerguntaCategoria();
             $objPC->fromArray( (array) $data );
             //Remove pergunta categoria antiga
-            $objPC->removePerguntaCategoria($object->idtema, $object->id); 
+            $objPC->removePerguntaCategoria($object->id_tema, $object->id); 
             //gravar no repositorio PerguntaCategoria
             $conn = TTransaction::get();
             foreach ($data->idCategorias as $idCategoria)
             {
                 if (empty(trim($idCategoria))) continue;
                 // run query
-                $sql="INSERT INTO perguntacategoria2 ";
-                $sql.="(tema, codPerg, categoria) ";
-                $sql.="Values ({$object->idtema}, {$object->id}, {$idCategoria})";
+                $sql="INSERT INTO pergunta_categoria ";
+                $sql.="(id_tema, id_pergunta, id_categoria) ";
+                $sql.="Values ({$object->id_tema}, {$object->id}, {$idCategoria})";
                 $conn->query($sql);
                 //echo '<pre>'; print_r($sql); echo '</pre>';
             }
@@ -678,7 +674,7 @@ class FormPergunta extends TPage
             //$this->saveFile($object, $data, 'caminhoimagem', 'app/images/jogos');
 
             //echo '<pre>'; print_r($param['caminhoimagem']);
-            $posicao=strpos($param['caminhoimagem'],'tmp');
+            $posicao=strpos($param['caminho_imagem'],'tmp');
             if (!$posicao===false)
             {
                 //echo '<pre>'; print_r('$param["caminhoimagem"] '.$param['caminhoimagem']); echo '</pre>';
@@ -687,10 +683,10 @@ class FormPergunta extends TPage
 
             $data = new stdClass;
             $data->id = $object->id;
-            $data->caminhoimagem = $param['caminhoimagem'];
+            $data->caminho_imagem = $param['caminho_imagem'];
             TForm::sendData('form_pergunta', $data);
             
-            TScript::create("$('#id_imagem').attr('src','{$data->caminhoimagem}')");
+            TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
             
             // close the transaction
             TTransaction::close();
@@ -732,8 +728,8 @@ class FormPergunta extends TPage
                               
                 // fill the form with the active record data
                 //$object->caminhoimagem=$_SERVER['SERVER_NAME'].$this->location.'/'.$object->caminhoimagem;
-                $object->caminhoimagem=$this->location.'/'.$object->caminhoimagem;
-                TSession::setValue('caminhoImagem',$object->caminhoimagem);
+                $object->caminho_imagem=$this->location.'/'.$object->caminho_imagem;
+                TSession::setValue('caminhoImagem',$object->caminho_imagem);
                 //echo '<pre>'; print_r($object->caminhoimagem); echo '</pre>'; 
 
                 //Pega Categoria
@@ -747,23 +743,23 @@ class FormPergunta extends TPage
                 $resulte = $result->fetchAll(PDO::FETCH_ASSOC);*/
 
                 $vetCateg  = array();
-                if( $perg_db = PerguntaCategoria::getCategoria($object->idtema, $param['key']) )
+                if( $perg_db = PerguntaCategoria::getCategoria($object->id_tema, $param['key']) )
                 {
                     foreach( $perg_db as $perg_cat )
                     {
-                        $vetCateg[] = $perg_cat->categoria;
+                        $vetCateg[] = $perg_cat->id_categoria;
                     }
                 }
                 $data->idCategorias = $vetCateg;
 
                 $data->id=$key;
-                $data->idtema=$object->idtema;
+                $data->id_tema=$object->id_tema;
                 $data->pergunta=$object->pergunta;
                 /*if ($result->rowCount()==0)
                     $data->categoria='';
                 else
                     $data->categoria=$resulte[0]['categoria'];*/
-                $data->respcerta=$object->respcerta;
+                $data->respcerta=$object->resp_certa;
                 //$data->resp2=$object->resp2;
                 //$data->resp3=$object->resp3;
                 //$data->resp4=$object->resp4;
@@ -777,20 +773,20 @@ class FormPergunta extends TPage
                 $data->fala_gemini=$object->fala_gemini;
                 $data->origem_fala=$object->origem_fala;
                 $data->fala_proposta=$object->fala_proposta;
-                $data->caminhoimagem=$object->caminhoimagem;
+                $data->caminho_imagem=$object->caminho_imagem;
                 $data->publica=$object->publica;
 
                 $data->analise_gpt=$object->analise_gpt;
                 $data->analise_gemini=$object->analise_gemini;
 
-                $objPrompt = Prompt::getPrompt( $object->idtema );
+                $objPrompt = Prompt::getPrompt( $object->id_tema );
                 $data->caract_sugerida=$objPrompt->caracteristicas;
 
 
                 //echo '<pre>'; print_r($data);
                 TForm::sendData('form_pergunta', $data);
                 $this->form->setData($object);
-                TScript::create("$('#id_imagem').attr('src','{$data->caminhoimagem}')");
+                TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
                 $this->updateBotaoTocarAudioByPergunta($key);
             }
             else

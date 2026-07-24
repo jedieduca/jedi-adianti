@@ -29,8 +29,8 @@ class FormSerieEscolar extends TPage
         // create the form fields
         $id            = new THidden('id');
         $descricao     = new TEntry('descricao');
-        //$idNivelEnsino = new TEntry('idnivelensino');  //tem que ser igual ao nome na tabela
-        $idNivelEnsino = new TDBCombo('idnivelensino','jedieduca','NivelEnsino','id','descricao');
+        //$idNivelEnsino = new TEntry('id_nivel_ensino');  //tem que ser igual ao nome na tabela
+        $idNivelEnsino = new TDBCombo('id_nivel_ensino','jedieduca','NivelEnsino','id','descricao');
 
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'onSave')), 'far:save');
         $btn->class = 'btn btn-sm btn-primary';
@@ -82,7 +82,7 @@ class FormSerieEscolar extends TPage
 
             /*$message = 'Id: '           . $data->id . '<br>';
             $message.= 'Description : ' . $data->descricao . '<br>';
-            $message.= 'nivel : ' . $data->idnivelensino . '<br>';*/
+            $message.= 'nivel : ' . $data->id_nivel_ensino . '<br>';*/
 
             $object->store();
             

@@ -40,7 +40,7 @@ class FormSerieEscolarList extends TStandardList
         // create the form fields
         $id = new TEntry('id');
         $descricao = new TEntry('descricao');
-        $idNivelEnsino = new TDBCombo('idNivelEnsino','jedieduca','NivelEnsino','id','descricao');
+        $idNivelEnsino = new TDBCombo('id_nivel_ensino','jedieduca','NivelEnsino','id','descricao');
 
         //Layout::Formulario();
         
@@ -73,7 +73,7 @@ class FormSerieEscolarList extends TStandardList
         // creates the datagrid columns
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
         $column_descricao = new TDataGridColumn('descricao', 'Descrição', 'left');
-        $column_nivelEnsino = new TDataGridColumn('idnivelensino', 'Nível de Ensino', 'left');
+        $column_nivelEnsino = new TDataGridColumn('id_nivel_ensino', 'Nível de Ensino', 'left');
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_id);
@@ -94,7 +94,7 @@ class FormSerieEscolarList extends TStandardList
         $column_descricao->setAction($order_descricao);
  
         $order_nivelEnsino = new TAction(array($this, 'onReload'));
-        $order_nivelEnsino->setParameter('order', 'idnivelensino');
+        $order_nivelEnsino->setParameter('order', 'id_nivel_ensino');
         $column_nivelEnsino->setAction($order_nivelEnsino);
 
         // create EDIT action
@@ -161,7 +161,7 @@ class FormSerieEscolarList extends TStandardList
             $key=$param['key'];
             TTransaction::open('jedieduca');
             $conn = TTransaction::get();
-            $sql='select count(*) as total from turma where idserieescolar='.$param['key'];
+            $sql='select count(*) as total from turma where id_serie_escolar='.$param['key'];
             $result = $conn->query($sql);
             $row = $result->fetch();
             $count = $row['total'];
@@ -171,7 +171,7 @@ class FormSerieEscolarList extends TStandardList
             }
             $conn = TTransaction::get();
             // run query
-            $sql='delete FROM serieescolar ';
+            $sql='delete FROM serie_escolar ';
             $sql.='WHERE id='.$key;
             //echo '<pre>'; print_r($sql); echo '</pre>';
             $conn->query($sql);

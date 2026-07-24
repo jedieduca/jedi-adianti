@@ -40,7 +40,7 @@ class FormPerguntaList extends TStandardList
         $id         = new TEntry('id');
 		$pergunta   = new TEntry('pergunta');
         //$idTema     = new TDBCombo('idtema','jedieduca','Tema','id','nome');
-        $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'nome', 'nome');
+        $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'descricao', 'descricao');
        
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
@@ -214,18 +214,18 @@ class FormPerguntaList extends TStandardList
             $conn = TTransaction::get();
 
             // (re)cria view base (sem categorias, pois vamos filtrar por subquery/lista)
-            $conn->query('DROP VIEW IF EXISTS pergunta2view');
+            $conn->query('DROP VIEW IF EXISTS perguntaview');
 
-            $sql  = 'CREATE VIEW pergunta2view AS ';
-            $sql .= 'SELECT p.id, p.idtema, p.pergunta, p.analise_proposta, p.fala_proposta ';
-            $sql .= 'FROM pergunta2 p ';
-            $sql .= 'LEFT JOIN tema2 t ON p.idtema = t.id ';
-            $sql .= 'WHERE p.idtema = 17 '; // tema default Fake News
+            $sql  = 'CREATE VIEW perguntaview AS ';
+            $sql .= 'SELECT p.id, p.id_tema, p.pergunta, p.analise_proposta, p.fala_proposta ';
+            $sql .= 'FROM pergunta p ';
+            $sql .= 'LEFT JOIN tema t ON p.id_tema = t.id ';
+            $sql .= 'WHERE p.id_tema = 17 '; // tema default Fake News
 
             if ((strlen(array_search(1, TSession::getValue('usergroupids'))) == 0) &&
                 (strlen(array_search(3, TSession::getValue('usergroupids'))) == 0))
             {
-                $sql .= 'AND t.idautor = ' . (int) TSession::getValue('userid');
+                $sql .= 'AND t.id_autor = ' . (int) TSession::getValue('userid');
             }
 
             $conn->query($sql);
@@ -263,10 +263,10 @@ class FormPerguntaList extends TStandardList
                     // monta placeholders (?, ?, ?, ...)
                     $placeholders = implode(',', array_fill(0, count($cats), '?'));
 
-                    $sqlCats  = "SELECT DISTINCT codPerg
-                                FROM perguntacategoria2
-                                WHERE tema = 17
-                                AND categoria IN ($placeholders)";
+                    $sqlCats  = "SELECT DISTINCT id_perg
+                                FROM pergunta_categoria
+                                WHERE id_tema = 17
+                                AND id_categoria IN ($placeholders)";
 
                     $stmt = $conn->prepare($sqlCats);
                     $stmt->execute($cats);
@@ -338,8 +338,8 @@ class FormPerguntaList extends TStandardList
             $conn = TTransaction::get();
             // run query
 
-            $sql="select * FROM logPerguntas lp ";
-            $sql.="WHERE lp.pergunta=$key";
+            $sql="select * FROM log_perguntas lp ";
+            $sql.="WHERE lp.id_pergunta=$key";
             $result=$conn->query($sql);
 
             if ($result->rowCount()>0)
@@ -351,12 +351,12 @@ class FormPerguntaList extends TStandardList
             {
                 $conn = TTransaction::get();
                 // run query
-                $sql='delete FROM pergunta2 ';
+                $sql='delete FROM pergunta ';
                 $sql.='WHERE id='.$key;
                 $conn->query($sql);
 
-                $sql='delete FROM perguntacategoria2 ';
-                $sql.='WHERE codPerg='.$key;
+                $sql='delete FROM pergunta_categoria ';
+                $sql.='WHERE id_pergunta='.$key;
                 $conn->query($sql);
 
                 TTransaction::close();

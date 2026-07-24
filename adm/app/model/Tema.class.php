@@ -5,7 +5,7 @@
  */
 class Tema extends TRecord
 {
-    const TABLENAME = 'tema2';
+    const TABLENAME = 'tema';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -17,9 +17,9 @@ class Tema extends TRecord
         parent::__construct($id);
         parent::addAttribute('nome');
         parent::addAttribute('descricao');
-        parent::addAttribute('idarea');
+        parent::addAttribute('id_area');
         parent::addAttribute('visibilidade');
-        parent::addAttribute('idautor');
+        parent::addAttribute('id_autor');
     }
 
     public static function TemaUsuario($userId)
@@ -27,7 +27,7 @@ class Tema extends TRecord
         TTransaction::open('jedieduca');
         $repositorio = new TRepository('Tema');
         $criteria = new TCriteria();
-        $criteria->add(new TFilter("idautor", "=", $userId));
+        $criteria->add(new TFilter("id_autor", "=", $userId));
         $repositorio->load($criteria);
 		//$idTema     = new TDBCombo('idtema','jedieduca','Tema','id','nome', 'nome', $criteria);
 		TTransaction::close();

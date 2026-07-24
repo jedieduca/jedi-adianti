@@ -29,8 +29,8 @@ class FormTurmaList extends TStandardList
         parent::setActiveRecord('Turma');   // defines the active record
         parent::setDefaultOrder('id', 'asc');         // defines the default order
         parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
-        parent::addFilterField('idescola', '=', 'idescola'); // filterField, operator, formField
-        parent::addFilterField('idserieescolar', '=', 'idserieescolar'); // filterField, operator, formField
+        parent::addFilterField('id_escola', '=', 'id_escola'); // filterField, operator, formField
+        parent::addFilterField('id_serie_escolar', '=', 'id_serie_escolar'); // filterField, operator, formField
         parent::addFilterField('identificacao', 'like', 'identificacao'); // filterField, operator, formField
     
         // creates the form
@@ -40,8 +40,8 @@ class FormTurmaList extends TStandardList
 
         // create the form fields
         //$id         = new TEntry('id');
-        $escola     = new TDBCombo('idescola','jedieduca','Colegio','id','nome');
-        $serie      = new TDBCombo('idserieescolar','jedieduca','SerieEscolar','id','descricao');
+        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome');
+        $serie      = new TDBCombo('id_serie_escolar','jedieduca','SerieEscolar','id','descricao');
         $identificacao = new TEntry('identificacao');
  
         
@@ -75,12 +75,12 @@ class FormTurmaList extends TStandardList
         // creates the datagrid columns
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
         $column_id->setVisibility(false);
-        $column_escola = new TDataGridColumn('idescola', 'Escola', 'left');
+        $column_escola = new TDataGridColumn('id_escola', 'Escola', 'left');
         $column_escola->setTransformer( function($value, $object, $row) {
             $colegio= new Colegio($value);
             return $colegio->nome;
         });
-        $column_serie = new TDataGridColumn('idserieescolar', 'Série', 'left');
+        $column_serie = new TDataGridColumn('id_serie_escolar', 'Série', 'left');
         $column_identificacao = new TDataGridColumn('identificacao', 'Identificação', 'left');
 
         // add the columns to the DataGrid
@@ -100,11 +100,11 @@ class FormTurmaList extends TStandardList
         $column_id->setAction($order_id);
         
         $order_escola = new TAction(array($this, 'onReload'));
-        $order_escola->setParameter('order', 'idescola');
+        $order_escola->setParameter('order', 'id_escola');
         $column_escola->setAction($order_escola);
  
         $order_serie = new TAction(array($this, 'onReload'));
-        $order_serie->setParameter('order', 'idserieescolar');
+        $order_serie->setParameter('order', 'id_serie_escolar');
         $column_serie->setAction($order_serie);
 
         $order_identificacao = new TAction(array($this, 'onReload'));

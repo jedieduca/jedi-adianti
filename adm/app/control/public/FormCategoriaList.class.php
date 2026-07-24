@@ -29,7 +29,7 @@ class FormCategoriaList extends TStandardList
         parent::setActiveRecord('Categoria');   // defines the active record
         parent::setDefaultOrder('id', 'asc');         // defines the default order
         parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
-        parent::addFilterField('nome', 'like', 'nome'); // filterField, operator, formField
+        parent::addFilterField('descricao', 'like', 'descricao'); // filterField, operator, formField
  
     
         // creates the form
@@ -39,17 +39,17 @@ class FormCategoriaList extends TStandardList
 
         // create the form fields
         $id = new TEntry('id');
-        $nome = new TEntry('nome');
+        $descricao = new TEntry('descricao');
 
         //Layout::Formulario();
         
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
-        $this->form->addFields( [new TLabel('Nome')], [$nome] );
+        $this->form->addFields( [new TLabel('Descrição')], [$descricao] );
 
         
         $id->setSize('30%');
-        $nome->setSize('70%');
+        $descricao->setSize('70%');
 
         
         // keep the form filled during navigation with session data
@@ -69,11 +69,11 @@ class FormCategoriaList extends TStandardList
 
         // creates the datagrid columns
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
-        $column_nome = new TDataGridColumn('nome', 'Nome', 'left');
+        $column_descricao = new TDataGridColumn('descricao', 'Descrição', 'left');
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_id);
-        $this->datagrid->addColumn($column_nome);
+        $this->datagrid->addColumn($column_descricao);
 
 
         // creates the datagrid column actions
@@ -81,9 +81,9 @@ class FormCategoriaList extends TStandardList
         $order_id->setParameter('order', 'id');
         $column_id->setAction($order_id);
         
-        $order_nome = new TAction(array($this, 'onReload'));
-        $order_nome->setParameter('order', 'nome');
-        $column_nome->setAction($order_nome);
+        $order_descricao = new TAction(array($this, 'onReload'));
+        $order_descricao->setParameter('order', 'descricao');
+        $column_descricao->setAction($order_descricao);
  
 
         // create EDIT action

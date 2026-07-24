@@ -1,11 +1,11 @@
 <?php
 /**
- * Active Record for table nivelensino
+ * Active Record for table nivel_ensino
  * @author  Claudio A Passos
  */
 class NivelEnsino extends TRecord
 {
-    const TABLENAME = 'nivelensino';
+    const TABLENAME = 'nivel_ensino';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     

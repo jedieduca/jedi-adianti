@@ -28,13 +28,13 @@ class FormEscola extends TPage
         // create the form fields
         $id         = new THidden('id');
         $nome       = new TEntry('nome');
-        $numAlunos  = new TEntry('numalunos');
-        $numProfs   = new TEntry('numprofs');
+        $numAlunos  = new TEntry('num_alunos');
+        $numProfs   = new TEntry('num_profs');
         //$conceito   = new TEntry('conceitoprograma');
         //$instanciaGestora  = new TDBCombo('idinstanciagestora','jedieduca','InstanciaGestora','id','nome');
         //$marcoReferencial  = new TDBCombo('ismarcoreferencial','jedieduca','MarcoReferencial','id','titulo');
-        $municipio  = new TDBCombo('idmunicipio','jedieduca','Municipio','id','nome');
-        $zonaLocalizacao  = new TCombo('zonalocalizacao');
+        $municipio  = new TDBCombo('id_municipio','jedieduca','Municipio','id','nome');
+        $zonaLocalizacao  = new TCombo('zona_localizacao');
         $zonaLocalizacao->addItems(array('Rural'=>'Rural','Urbana'=>'Urbana'));
 
 

@@ -19,7 +19,9 @@ class AlunoView extends TRecord
         parent::addAttribute('name');
         parent::addAttribute('login');
         parent::addAttribute('email');
+        parent::addAttribute('id_turma');
         parent::addAttribute('turma');
+        parent::addAttribute('active');
     }
 }
 ?>

@@ -30,13 +30,13 @@ class FormEscolaList extends TStandardList
         parent::setDefaultOrder('id', 'asc');         // defines the default order
         parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
         parent::addFilterField('nome', 'like', 'nome'); // filterField, operator, formField
-        parent::addFilterField('numalunos', '=', 'numalunos'); // filterField, operator, formField
-        parent::addFilterField('numprofs', '=', 'numprofs'); // filterField, operator, formField
-        //parent::addFilterField('conceitoprograma', '=', 'conceitoprograma'); // filterField, operator, formField
-        parent::addFilterField('idinstanciagestora', '=', 'idinstanciagestora'); // filterField, operator, formField
-        parent::addFilterField('ismarcoreferencial', '=', 'ismarcoreferencial'); // filterField, operator, formField
-        parent::addFilterField('idmunicipio', '=', 'idmunicipio'); // filterField, operator, formField
-        parent::addFilterField('zonalocalizacao', '=', 'zonalocalizacao'); // filterField, operator, formField
+        parent::addFilterField('num_alunos', '=', 'numalunos'); // filterField, operator, formField
+        parent::addFilterField('num_profs', '=', 'numprofs'); // filterField, operator, formField
+        //parent::addFilterField('conceito_programa', '=', 'conceitoprograma'); // filterField, operator, formField
+        //parent::addFilterField('id_instancia_gestora', '=', 'idinstanciagestora'); // filterField, operator, formField
+        //parent::addFilterField('is_marco_referencial', '=', 'ismarcoreferencial'); // filterField, operator, formField
+        parent::addFilterField('id_municipio', '=', 'idmunicipio'); // filterField, operator, formField
+        parent::addFilterField('zona_localizacao', '=', 'zonalocalizacao'); // filterField, operator, formField
    
         // creates the form
         $this->form = new BootstrapFormBuilder('form_escola_list');
@@ -46,14 +46,14 @@ class FormEscolaList extends TStandardList
         // create the form fields
         $id         = new TEntry('id');
         $nome       = new TEntry('nome');
-        $numAlunos  = new TEntry('numalunos');
-        $numProfs   = new TEntry('numprofs');
-        //$conceito   = new TEntry('conceitoprograma');
-        //$instanciaGestora  = new TDBCombo('idinstanciagestora','jedieduca','InstanciaGestora','id','nome');
-        //$marcoReferencial  = new TDBCombo('ismarcoreferencial','jedieduca','MarcoReferencial','id','titulo');
-        $municipio  = new TDBCombo('idmunicipio','jedieduca','Municipio','id','nome');
-        //$zonaLocalizacao  = new TDBCombo('zonalocalizacao','jedieduca','Local','id','descricao');
-        $zonaLocalizacao  = new TCombo('zonalocalizacao');
+        $numAlunos  = new TEntry('num_alunos');
+        $numProfs   = new TEntry('num_profs');
+        //$conceito   = new TEntry('conceito_programa');
+        //$instanciaGestora  = new TDBCombo('id_instancia_gestora','jedieduca','InstanciaGestora','id','nome');
+        //$marcoReferencial  = new TDBCombo('is_marco_referencial','jedieduca','MarcoReferencial','id','titulo');
+        $municipio  = new TDBCombo('id_municipio','jedieduca','Municipio','id','nome');
+        //$zonaLocalizacao  = new TDBCombo('zona_localizacao','jedieduca','Local','id','descricao');
+        $zonaLocalizacao  = new TCombo('zona_localizacao');
         $zonaLocalizacao->addItems(array('Rural'=>'Rural','Urbana'=>'Urbana'));
  
         // add the fields
@@ -95,9 +95,9 @@ class FormEscolaList extends TStandardList
         // creates the datagrid columns
         //$column_id = new TDataGridColumn('id', 'Id', 'center', 50);
         $column_nome = new TDataGridColumn('nome', 'Escola', 'left');
-        $column_numAlunos = new TDataGridColumn('numalunos', 'Nº de Alunos', 'left');
-        $column_numProfs = new TDataGridColumn('numprofs', 'Nº de Professores', 'left');
-        $column_zona = new TDataGridColumn('zonalocalizacao', 'Zona de Localização', 'left');
+        $column_numAlunos = new TDataGridColumn('num_alunos', 'Nº de Alunos', 'left');
+        $column_numProfs = new TDataGridColumn('num_profs', 'Nº de Professores', 'left');
+        $column_zona = new TDataGridColumn('zona_localizacao', 'Zona de Localização', 'left');
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_nome);
@@ -112,15 +112,15 @@ class FormEscolaList extends TStandardList
         $column_nome->setAction($order_nome);
         
         $order_numAlunos = new TAction(array($this, 'onReload'));
-        $order_numAlunos->setParameter('order', 'numalunos');
+        $order_numAlunos->setParameter('order', 'num_alunos');
         $column_numAlunos->setAction($order_numAlunos);
  
         $order_numProfs = new TAction(array($this, 'onReload'));
-        $order_numProfs->setParameter('order', 'numprofs');
+        $order_numProfs->setParameter('order', 'num_profs');
         $column_numProfs->setAction($order_numProfs);
 
         $order_zona = new TAction(array($this, 'onReload'));
-        $order_zona->setParameter('order', 'zonalocalizacao');
+        $order_zona->setParameter('order', 'zona_localizacao');
         $column_zona->setAction($order_zona);
 
         // create EDIT action

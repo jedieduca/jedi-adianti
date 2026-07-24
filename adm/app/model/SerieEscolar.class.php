@@ -5,7 +5,7 @@
  */
 class SerieEscolar extends TRecord
 {
-    const TABLENAME = 'serieescolar';
+    const TABLENAME = 'serie_escolar';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -16,7 +16,7 @@ class SerieEscolar extends TRecord
     {
         parent::__construct($id);
         parent::addAttribute('descricao');
-        parent::addAttribute('idnivelensino');
+        parent::addAttribute('id_nivel_ensino');
     }
 }
 ?>

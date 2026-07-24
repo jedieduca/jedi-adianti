@@ -27,8 +27,8 @@ class FormCategoria extends TPage
         $this->form->setFormTitle( 'Categoria' );
         
         // create the form fields
-        $id            = new THidden('id');
-        $nome     = new TEntry('nome');
+        $id        = new THidden('id');
+        $descricao = new TEntry('descricao');
 
 
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'onSave')), 'far:save');
@@ -38,18 +38,18 @@ class FormCategoria extends TPage
         
         // define the sizes
         $id->setSize('50%');
-        $nome->setSize('70%');
+        $descricao->setSize('70%');
         
         // outros
         $id->setEditable(false);
         
         // validations
-        $nome->addValidation('Nome', new TRequiredValidator);
+        $descricao->addValidation('Descrição', new TRequiredValidator);
 
         //Layout::Formulario();
         
         $this->form->addFields( [$id] );
-        $this->form->addFields( [new TLabel('Nome')], [$nome] );
+        $this->form->addFields( [new TLabel('Descrição')], [$descricao] );
               
         $container = new TVBox;
         $container->style = 'width: 100%';

@@ -75,8 +75,8 @@ class FormPromptList extends TStandardList
         $column_id = new TDataGridColumn('id', 'Id', 'center', 50);
         $column_tema = new TDataGridColumn('id_tema', 'Área', 'left');
         $column_system = new TDataGridColumn('system_prompt', 'System Prompt', 'left');
-        $column_user1 = new TDataGridColumn('user_prompt1', 'User Prompt (Passo 1)', 'left');
-        $column_user2 = new TDataGridColumn('user_prompt2', 'User Prompt (Passo 2)', 'left');
+        $column_user1 = new TDataGridColumn('user_prompt_1', 'User Prompt (Passo 1)', 'left');
+        $column_user2 = new TDataGridColumn('user_prompt_2', 'User Prompt (Passo 2)', 'left');
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($column_id);
@@ -172,11 +172,11 @@ class FormPromptList extends TStandardList
         $sql='DROP VIEW IF EXISTS promptview ';
         $conn->query($sql);
 
-        $sql='CREATE VIEW promptview AS select p.id, p.id_tema, p.user_prompt1, p.user_prompt2, p.system_prompt ';
+        $sql='CREATE VIEW promptview AS select p.id, p.id_tema, p.user_prompt_1, p.user_prompt_2, p.system_prompt ';
         $sql.='FROM prompt p ';
-        $sql.='LEFT JOIN tema2 t ON p.id_tema=t.id  ';
+        $sql.='LEFT JOIN tema t ON p.id_tema=t.id  ';
         if (strlen(array_search(1,TSession::getValue('usergroupids')))==0)
-            $sql.='where t.idautor='.TSession::getValue('userid');
+            $sql.='where t.id_autor='.TSession::getValue('userid');
 
         $result = $conn->query($sql);
         $repository = new TRepository('PromptView');                

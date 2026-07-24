@@ -16,13 +16,13 @@ class Colegio extends TRecord
     {
         parent::__construct($id);
         parent::addAttribute('nome');
-        parent::addAttribute('numalunos');
-        parent::addAttribute('numprofs');
-        parent::addAttribute('conceitoprograma');
-        parent::addAttribute('idinstanciagestora');
-        //parent::addAttribute('ismarcoreferencial');
-        parent::addAttribute('idmunicipio');
-        parent::addAttribute('zonalocalizacao');
+        parent::addAttribute('num_alunos');
+        parent::addAttribute('num_profs');
+        parent::addAttribute('conceito_programa');
+        parent::addAttribute('id_instancia_gestora');
+        //parent::addAttribute('is_marco_referencial');
+        parent::addAttribute('id_municipio');
+        parent::addAttribute('zona_localizacao');
     }
 }
 ?>

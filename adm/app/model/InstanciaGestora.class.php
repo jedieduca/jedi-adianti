@@ -1,11 +1,11 @@
 <?php
 /**
- * Active Record for table Category
+ * Active Record for table instancia_gestora
  * @author  Claudio A. Passos
  */
 class InstanciaGestora extends TRecord
 {
-    const TABLENAME = 'instanciagestora';
+    const TABLENAME = 'instancia_gestora';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
 
@@ -18,13 +18,13 @@ class InstanciaGestora extends TRecord
     {
         parent::__construct($id);
         parent::addAttribute('nome');
-        parent::addAttribute('instancia_gestora_pai');
+        parent::addAttribute('id_instancia_gestora_pai');
     }
 
     public function get_pai()
 	{
 		if (empty($this->pai))
-			$this->pai = new InstanciaGestora($this->instancia_gestora_pai);
+			$this->pai = new InstanciaGestora($this->id_instancia_gestora_pai);
 		return $this->pai->nome;
 	}
 

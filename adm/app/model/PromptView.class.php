@@ -1,7 +1,7 @@
 <?php
 /**
  * Active Record for table prompt
- * @author  Claudio A Passos - Isabel Fernandes - Ronaldo Goldschmidt
+ * @author  Claudio A Passos - Isabel Fernandes - Ronaldo Goldschmidt - Paulo Coelho
  */
 class PromptView extends TRecord
 {
@@ -17,8 +17,8 @@ class PromptView extends TRecord
         parent::__construct($id);
         parent::addAttribute('id_tema');
         parent::addAttribute('system_prompt');
-        parent::addAttribute('user_prompt1');
-        parent::addAttribute('user_prompt2');
+        parent::addAttribute('user_prompt_1');
+        parent::addAttribute('user_prompt_2');
     }
 
 }

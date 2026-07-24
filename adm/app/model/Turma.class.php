@@ -15,8 +15,8 @@ class Turma extends TRecord
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        parent::addAttribute('idescola');
-        parent::addAttribute('idserieescolar');
+        parent::addAttribute('id_escola');
+        parent::addAttribute('id_serie_escolar');
         parent::addAttribute('identificacao');
         parent::addAttribute('ano');
     }
@@ -34,11 +34,11 @@ class Turma extends TRecord
 
     public function addSystemUser($param)
     {
-        if (TurmaAluno::where('idAluno','=',$param)->where('idTurma','=',$this->id)->count() == 0)
+        if (TurmaAluno::where('id_aluno','=',$param)->where('id_turma','=',$this->id)->count() == 0)
         {
             $object = new TurmaAluno;
-            $object->idAluno  = $param;
-            $object->idTurma = $this->id;
+            $object->id_aluno  = $param;
+            $object->id_turma = $this->id;
             $object->store();
         }
     }
@@ -50,14 +50,14 @@ class Turma extends TRecord
         // load the related System_user objects
         $repository = new TRepository('TurmaAluno');
         $criteria = new TCriteria;
-        $criteria->add(new TFilter('idTurma', '=', $this->id));
+        $criteria->add(new TFilter('id_turma', '=', $this->id));
         $turma_system_users = $repository->load($criteria);
         if ($turma_system_users)
         {
             TTransaction::open('jedieduca');
             foreach ($turma_system_users as $turma_system_user)
             {
-                $system_users[] = new SystemUser( $turma_system_user->idAluno );
+                $system_users[] = new SystemUser( $turma_system_user->id_aluno );
             }
             TTransaction::close();
         }

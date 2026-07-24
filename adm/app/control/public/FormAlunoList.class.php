@@ -42,7 +42,8 @@ class FormAlunoList extends TStandardList
         parent::setActiveRecord('SystemUser');   // defines the active record
         parent::setDefaultOrder('id', 'asc');         // defines the default order
         parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
-        parent::addFilterField('name', 'like', 'name'); // filterField, operator, formField
+        parent::addFilterField('name', 'like', 'nome'); // filterField, operator, formField
+        parent::addFilterField('id_turma', '=', 'id_turma'); // filterField, operator, formField
 
         // creates the form
         $this->form = new BootstrapFormBuilder('form_aluno_list');
@@ -56,19 +57,24 @@ class FormAlunoList extends TStandardList
         // create the form fields
         $id = new THidden('id');
         $nome = new TEntry('nome');
+        $criteriaTurma = new TCriteria;
+        $criteriaTurma->add(new TFilter('id_escola', '=', TSession::getValue('userEscolaId')));
+        $turma = new TDBCombo('id_turma', 'jedieduca', 'Turma', 'id', 'identificacao', 'identificacao', $criteriaTurma);
  
         
         // add the fields
         $this->form->addFields( [$id] );
         $this->form->addFields( [new TLabel('Nome')], [$nome] );
+        $this->form->addFields( [new TLabel('Turma')], [$turma] );
 
         
         $id->setSize('30%');
         $nome->setSize('70%');
+        $turma->setSize('70%');
 
         
         // keep the form filled during navigation with session data
-        $this->form->setData( TSession::getValue('Aluno_filter_data') );
+        $this->form->setData( TSession::getValue('FormAlunoList_filter_data') );
         
         // add the search form actions
         $btn = $this->form->addAction(_t('Find'), new TAction(array($this, 'onSearch')), 'fa:search');
@@ -90,8 +96,8 @@ class FormAlunoList extends TStandardList
         $column_email = new TDataGridColumn('email', 'Email', 'left');
         $column_turma = new TDataGridColumn('turma', 'Turma', 'left');
         
-        //if (TSession::getValue("situacaoAluno")=='Cadastro')
-            $column_active = new TDataGridColumn('situacao', _t('Active'), 'center');
+        if (TSession::getValue("situacaoAluno")=='Cadastro')
+            $column_active = new TDataGridColumn('active', _t('Active'), 'center');
 
         // add the columns to the DataGrid
         //$this->datagrid->addColumn($column_cpf);
@@ -99,10 +105,12 @@ class FormAlunoList extends TStandardList
         $this->datagrid->addColumn($column_login);
         $this->datagrid->addColumn($column_email);
         $this->datagrid->addColumn($column_turma);
-        //if (TSession::getValue("situacaoAluno")=='Cadastro')
+
+        if (TSession::getValue("situacaoAluno")=='Cadastro')
         {
             $this->datagrid->addColumn($column_active);
             $column_active->setTransformer( function($value, $object, $row) {
+                //echo '<pre>'; print_r($value); echo '</pre>';
                 $class = ($value=='N') ? 'danger' : 'success';
                 $label = ($value=='N') ? _t('No') : _t('Yes');
                 $div = new TElement('span');
@@ -112,11 +120,11 @@ class FormAlunoList extends TStandardList
                 return $div;
             });
         }
-        /*else if (TSession::getValue("situacaoAluno")=='Ativo')
+        else if (TSession::getValue("situacaoAluno")=='Ativo')
         {
-            $criteria=Aluno::StatusAluno("Y");
+            $criteria=self::StatusAluno("Y");
             parent::onReload();
-        }*/
+        }
 
        
         // creates the datagrid column actions
@@ -129,7 +137,7 @@ class FormAlunoList extends TStandardList
         $column_nome->setAction($order_nome);
         
 
-        //if (TSession::getValue("situacaoAluno")=='Cadastro')
+        if (TSession::getValue("situacaoAluno")=='Cadastro')
         {
             // create EDIT action
             $action_edit = new TDataGridAction(array('FormAluno', 'onEdit'));
@@ -192,143 +200,40 @@ class FormAlunoList extends TStandardList
         parent::add($container);
     }
 
-    function onReload_($param = NULL)
+    public static function StatusAluno($situacao)
     {
-        //parent::onReload();
-
-        $ini  = AdiantiApplicationConfig::get(); 
-        $anoLetivo = $ini['general']['anoLetivo'];
-
-        $data = $this->form->getData();
-
-        $limit = 10;
         TTransaction::open('jedieduca');
-
-        $conn = TTransaction::get();
-        // run query
-
-        $repositorio = new TRepository('Aluno');
+        $repositorio = new TRepository('SystemUser');
         $criteria = new TCriteria();
-        /*if (TSession::getValue("situacaoAluno")=='Ativo')
-            $criteria->add(new TFilter("situacao", "=", "Y"));
-        else if (TSession::getValue("situacaoAluno")=='Desligado')
-            $criteria->add(new TFilter("situacao", "=", "N"));*/
-
-        /*if (!empty($data->id))
-            $criteria->add(new TFilter("id", "=", $data->id));*/
-        if (!empty($data->nome))    
-            $criteria->add(new TFilter("nome", "like", "%{$data->nome}%"));
-
-        $criteria->add(new TFilter("dtRegistro", "like", "%{$anoLetivo}%"));
-        $limit = 10; 
-        $criteria->setProperties($param); // order, offset
-        $criteria->setProperty('limit', $limit);
-        //$criteria->setProperty('order', 'titulo');  
-        
-
-        $objects = $repositorio->load($criteria);
-
-        $this->datagrid->clear();
-        if ($objects)
-        {
-            foreach ($objects as $object)
-            {
-                //echo '<pre>'; print_r($object->id); echo '</pre>';
-                $this->datagrid->addItem($object);
-            }
-        }
-        $criteria->resetProperties();
-        $count= $repositorio->count($criteria);
-       
-        $this->pageNavigation->setCount($count); // count of records
-        $this->pageNavigation->setProperties($param); // order, page
-        $this->pageNavigation->setLimit($limit); // limit
-        //TTransaction::close();
-
-    }
-
-    function onReload_old($param = NULL)   //feito para adicionar a turma do aluno
-    {
-        //echo '<pre>'; print_r($param); echo '</pre>';
-        parent::onReload();
-        
-        $ini  = AdiantiApplicationConfig::get(); 
-
-        $limit = 10;
-        TTransaction::open('jedieduca');
-
-        $conn = TTransaction::get();
-        // run query
-        $sql='DROP VIEW IF EXISTS alunoview ';
-        $conn->query($sql);
-
-        //$sql='CREATE VIEW tema2view AS select *';
-        $sql='CREATE VIEW alunoview AS select a.id, a.cpf, a.nome, t.identificacao as turma ';
-        $sql.='FROM aluno a ';
-        $sql.='LEFT JOIN alunoturma alunot ON a.cpf=alunot.cpf ';
-        $sql.='LEFT JOIN turma t ON alunot.idTurma=t.id ';
-        //echo '<pre>'; print_r($sql); echo '</pre>';
-
-        $result = $conn->query($sql);
-        $repository = new TRepository('AlunoView');                
-        $criteria = new TCriteria;
-        $limit = 10; 
-        $criteria->setProperties($param); // order, offset
-        $criteria->setProperty('limit', $limit);
-        //$criteria->setProperty('order', 'titulo');  
-
-        if (TSession::getValue('formAlunoList_filter_nome')) {
-            $criteria->add(TSession::getValue('formAlunoList_filter_nome')); // add the session filter
-        }
-
-        if (TSession::getValue('formAlunoList_filter_turma')) {
-            $criteria->add(TSession::getValue('formAlunoList_filter_turma')); // add the session filter
-        }
-
-        $objects = $repository->load($criteria);
-
-        $this->datagrid->clear();
-        if ($objects)
-        {
-            foreach ($objects as $object)
-            {
-                //echo '<pre>'; print_r($object->id); echo '</pre>';
-                $this->datagrid->addItem($object);
-            }
-        }
-        $criteria->resetProperties();
-        $count= $repository->count($criteria);
-       
-        $this->pageNavigation->setCount($count); // count of records
-        $this->pageNavigation->setProperties($param); // order, page
-        $this->pageNavigation->setLimit($limit); // limit
-        //TTransaction::close();
-
+        $criteria->add(new TFilter("active", "=", $situacao));
+        $repositorio->load($criteria);
+		TTransaction::close();
+        return $criteria;
     }
 
     function onReload($param = NULL)   //feito para adicionar a turma do aluno
     {
         //echo '<pre>'; print_r($param); echo '</pre>';
-        parent::onReload();
-        
         $ini  = AdiantiApplicationConfig::get(); 
 
         $limit = 10;
         TTransaction::open('jedieduca');
 
         $conn = TTransaction::get();
+        $userEscolaId = (int) TSession::getValue('userEscolaId');
         // run query
         $sql='DROP VIEW IF EXISTS alunoview ';
         $conn->query($sql);
 
         //$sql='CREATE VIEW tema2view AS select *';
-        $sql='CREATE VIEW alunoview AS select su.id,  su.name, su.login, su.email, tof.denominacao as turma ';
+        $sql='CREATE VIEW alunoview AS select su.id,  su.name, su.login, su.email, su.active, t.id as id_turma, t.identificacao as turma ';
         $sql.='FROM system_user su ';
+        $sql.='INNER JOIN aluno_escola ae ON su.id=ae.id_aluno ';
         $sql.='LEFT JOIN system_user_group sug ON su.id=sug.system_user_id ';
-        $sql.='LEFT JOIN ofertaturmaaluno ota ON su.id=ota.idaluno ';
-        $sql.='LEFT JOIN turmaoferta tof ON ota.idofertaturma=tof.id ';
-        $sql.='LEFT JOIN turma t ON tof.idturma=t.id ';
-        $sql.='WHERE sug.system_group_id=4 '; // grupo aluno
+        $sql.='LEFT JOIN turma_aluno ta ON su.id=ta.id_aluno ';
+        $sql.='LEFT JOIN turma t ON ta.id_turma=t.id ';
+        $sql.='WHERE sug.system_group_id=4 ';
+        $sql.='AND ae.id_escola='.$userEscolaId.' '; // escola do usuário logado
         //echo '<pre>'; print_r($sql); echo '</pre>';
 
         $result = $conn->query($sql);
@@ -339,12 +244,12 @@ class FormAlunoList extends TStandardList
         $criteria->setProperty('limit', $limit);
         //$criteria->setProperty('order', 'titulo');  
 
-        if (TSession::getValue('formAlunoList_filter_nome')) {
-            $criteria->add(TSession::getValue('formAlunoList_filter_nome')); // add the session filter
+        if (TSession::getValue('SystemUser_filter_nome')) {
+            $criteria->add(TSession::getValue('SystemUser_filter_nome')); // add the session filter
         }
 
-        if (TSession::getValue('formAlunoList_filter_turma')) {
-            $criteria->add(TSession::getValue('formAlunoList_filter_turma')); // add the session filter
+        if (TSession::getValue('SystemUser_filter_idturma')) {
+            $criteria->add(TSession::getValue('SystemUser_filter_idturma')); // add the session filter
         }
 
         $objects = $repository->load($criteria);
@@ -376,10 +281,10 @@ class FormAlunoList extends TStandardList
         try
         {
             TTransaction::open('jedieduca');
-            $aluno = Aluno::find($param['id']);
-            if ($aluno instanceof Aluno)
+            $aluno = SystemUser::find($param['id']);
+            if ($aluno instanceof SystemUser)
             {
-                $aluno->situacao = $aluno->situacao == 'Y' ? 'N' : 'Y';
+                $aluno->active = $aluno->active == 'Y' ? 'N' : 'Y';
                 $aluno->store();
             }
             

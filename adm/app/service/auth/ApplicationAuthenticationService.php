@@ -44,10 +44,14 @@ class ApplicationAuthenticationService
     {
         $ini  = AdiantiApplicationConfig::get();
         
-
             TSession::setValue('userunitid',   $instancia_id );
             TSession::setValue('userunitname', InstanciaGestora::findInTransaction('jedieduca', $instancia_id)->nome);
+    }
 
+    public static function setEscola($escola_id)
+    {
+        TSession::setValue('userunitid',   $escola_id );
+        TSession::setValue('userunitname', Colegio::findInTransaction('jedieduca', $escola_id)->nome);
     }
 
     /**

@@ -38,8 +38,8 @@ class FormTurma2 extends TPage
         $this->form->appendPage('Oferta Turma');
         
         $id         = new THidden('id');
-        $escola     = new TDBCombo('idescola','jedieduca','Colegio','id','nome');
-        $serie      = new TDBCombo('idserieescolar','jedieduca','SerieEscolar','id','descricao');
+        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome');
+        $serie      = new TDBCombo('id_serie_escolar','jedieduca','SerieEscolar','id','descricao');
         $identificacao = new TEntry('identificacao');
         $anoLetivo  = new TSpinner('ano');
         $anoLetivo->setRange(date('Y')-2, date('Y')+2, 1);
@@ -86,6 +86,7 @@ class FormTurma2 extends TPage
         TTransaction::open('jedieduca');
         $key = $this->getTurmaKey($param);
         $idEscola = $this->getEscolaTurmaSelecionada($param, $key);  //64 id da turmaoferta
+        //echo '<pre>'; print_r($idEscola); echo '</pre>';
         $items = $this->getAlunosEscola($idEscola);
         //echo '<pre>'; print_r($_GET['key']); echo '</pre>';
         $this->userList->addItems($items);
@@ -204,6 +205,7 @@ class FormTurma2 extends TPage
                 // instantiates object System_user
                 $object = new Turma($key); 
                 $object->id=$key; 
+                //echo '<pre>'; print_r($object->id_escola); echo '</pre>';
 
                 //TCombo::reload('form_oferta_turma', 'idturma', $this->itens);                               
                 $user_ids = array();
@@ -222,6 +224,10 @@ class FormTurma2 extends TPage
             else
             {
                 $this->form->clear();
+
+                $data = new stdClass;
+                $data->ano = date('Y');
+                $this->form->setData($data);
             }
         }
         catch (Exception $e) // in case of exception
@@ -265,9 +271,9 @@ class FormTurma2 extends TPage
         if (!empty($param['id']))
         {
             $turma = new Turma($param['id']);
-            if (!empty($turma->idescola))
+            if (!empty($turma->id_escola))
             {
-                $colegio = new Colegio($turma->idescola);
+                $colegio = new Colegio($turma->id_escola);
                 return (int) $colegio->id;
             }
         }
@@ -290,8 +296,8 @@ class FormTurma2 extends TPage
         $sql  = 'select distinct psu.id, psu.name ';
         $sql .= 'from system_user psu ';
         $sql .= 'inner join system_user_group psug on psu.id = psug.system_user_id ';
-        $sql .= 'inner join alunoescola ae on ae.idAluno = psu.id ';
-        $sql .= 'inner join escola e on e.id = ae.idEscola ';
+        $sql .= 'inner join aluno_escola ae on ae.id_aluno = psu.id ';
+        $sql .= 'inner join escola e on e.id = ae.id_escola ';
         $sql .= 'where e.id = '.(int) $idEscola.' ';
         $sql .= 'and psug.system_group_id = '.(int) $ini['permission']['default_groups'].' ';
         $sql .= 'order by psu.name ';

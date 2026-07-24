@@ -5,7 +5,7 @@
  */
 class Pergunta extends TRecord
 {
-    const TABLENAME = 'pergunta2';
+    const TABLENAME = 'pergunta';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -15,13 +15,13 @@ class Pergunta extends TRecord
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        parent::addAttribute('idtema');
+        parent::addAttribute('id_tema');
         parent::addAttribute('pergunta');
-        parent::addAttribute('respcerta');
-        parent::addAttribute('resp2');
-        parent::addAttribute('resp3');
-        parent::addAttribute('resp4');
-        parent::addAttribute('caminhoimagem');
+        parent::addAttribute('resp_certa');
+        parent::addAttribute('resp_2');
+        parent::addAttribute('resp_3');
+        parent::addAttribute('resp_4');
+        parent::addAttribute('caminho_imagem');
         parent::addAttribute('caract_proposta');
         parent::addAttribute('analise_proposta');
         parent::addAttribute('analise_gpt');
@@ -31,6 +31,10 @@ class Pergunta extends TRecord
         parent::addAttribute('fala_gemini');
         parent::addAttribute('fala_proposta');
         parent::addAttribute('origem_fala');
+        parent::addAttribute('tempo_leitura_adulto');
+        parent::addAttribute('tempo_leitura_infantil');
+        parent::addAttribute('numero_palavras');
+        parent::addAttribute('numero_caracteres');
         parent::addAttribute('publica');
     }
 }

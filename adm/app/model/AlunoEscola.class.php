@@ -5,7 +5,7 @@
  */
 class AlunoEscola extends TRecord
 {
-    const TABLENAME = 'alunoescola';
+    const TABLENAME = 'aluno_escola';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -15,24 +15,24 @@ class AlunoEscola extends TRecord
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        parent::addAttribute('idAluno');
-        parent::addAttribute('idEscola');
+        parent::addAttribute('id_aluno');
+        parent::addAttribute('id_escola');
         //parent::addAttribute('ano');
     }
 
     static public function getAluno($id)
     {
-        return parent::where('idAluno', '=', $id)->first(); 
+        return parent::where('id_aluno', '=', $id)->first(); 
     }
 
     static public function RemoveEscola($idAluno)
     {
-        return parent::where('idAluno', '=', $idAluno)->delete(); 
+        return parent::where('id_aluno', '=', $idAluno)->delete(); 
     }
 
     static public function getEscola($idAluno)
     {
-        return parent::where('idAluno', '=', $idAluno)->first(); 
+        return parent::where('id_aluno', '=', $idAluno)->first(); 
     }
 }
 ?>

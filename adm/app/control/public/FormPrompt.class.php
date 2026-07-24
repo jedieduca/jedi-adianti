@@ -41,11 +41,11 @@ class FormPrompt extends TPage
         //$systemPrompt->setTip('Tip for description');
         $systemPrompt->setSize('100%', 160);
 
-        $userPrompt1   = new TText('user_prompt1');
+        $userPrompt1   = new TText('user_prompt_1');
         $userPrompt1->placeholder = 'Digite aqui o User Prompt';
         $userPrompt1->setSize('100%', 200);
 
-        $userPrompt2   = new TText('user_prompt2');
+        $userPrompt2   = new TText('user_prompt_2');
         $userPrompt2->placeholder = 'Digite aqui o User Prompt';
         $userPrompt2->setSize('100%', 200);
 
@@ -93,7 +93,7 @@ class FormPrompt extends TPage
     {
         $data = $this->form->getData();
         //echo '<pre>'; print_r($data); echo '</pre>';
-        if ((empty($data->id_tema)) || (empty($data->system_prompt)) || (empty($data->user_prompt1)))
+        if ((empty($data->id_tema)) || (empty($data->system_prompt)) || (empty($data->user_prompt_1)))
         {
             new TMessage('error', 'Campo obrigatório não preenchido!'); 
             $this->form->setData($data);
@@ -113,8 +113,8 @@ class FormPrompt extends TPage
             $objPrompt->id_tema = $data->id_tema; 
             $objPrompt->caracteristicas = $data->caracteristicas; 
             $objPrompt->system_prompt = $data->system_prompt; 
-            $objPrompt->user_prompt1 = $data->user_prompt1; 
-            $objPrompt->user_prompt2 = $data->user_prompt2; 
+            $objPrompt->user_prompt_1 = $data->user_prompt_1; 
+            $objPrompt->user_prompt_2 = $data->user_prompt_2; 
             $objPrompt->store(); // store the object
             
             

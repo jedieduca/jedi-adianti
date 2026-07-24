@@ -5,7 +5,7 @@
  */
 class PerguntaView extends TRecord
 {
-    const TABLENAME = 'pergunta2view';
+    const TABLENAME = 'perguntaview';
     const PRIMARYKEY= 'id';
     const IDPOLICY =  'max'; // {max, serial}
     
@@ -15,7 +15,7 @@ class PerguntaView extends TRecord
     public function __construct($id = NULL)
     {
         parent::__construct($id);
-        parent::addAttribute('idtema');
+        parent::addAttribute('id_tema');
         parent::addAttribute('pergunta');
         parent::addAttribute('analise_proposta');
         parent::addAttribute('fala_proposta');

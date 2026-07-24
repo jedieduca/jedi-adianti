@@ -63,7 +63,8 @@ class LoginForm extends TPage
         $user   = '<span class="login-avatar"><span class="fa fa-user"></span></span>';
         $locker = '<span class="login-avatar"><span class="fa fa-lock"></span></span>';
         //$unit   = '<span class="login-avatar"><span class="fa fa-university"></span></span>';
-        $instancia   = '<span class="login-avatar"><span class="fa fa-university"></span></span>';
+        //$instancia   = '<span class="login-avatar"><span class="fa fa-university"></span></span>';
+        $escola   = '<span class="login-avatar"><span class="fa fa-university"></span></span>';
         //$lang   = '<span class="login-avatar"><span class="fa fa-globe"></span></span>';
         
         $row = $this->form->addFields( [$user, $login] );
@@ -72,12 +73,18 @@ class LoginForm extends TPage
         $row->layout = ['col-sm-12 display-flex'];
         $this->form->addFields( [$previous_class, $previous_method, $previous_parameters] );
         
-        $instancia_id  = new TDBCombo('instancia_id','jedieduca','InstanciaGestora','id','nome');
-        //$instancia_id  = new TCombo('instancia_id');
+        /*$instancia_id  = new TDBCombo('instancia_id','jedieduca','InstanciaGestora','id','nome');
         $instancia_id->setSize('70%');
         $instancia_id->style = 'height:35px;font-size:14px;float:left;border-bottom-left-radius: 0;border-top-left-radius: 0;';
         $row = $this->form->addFields( [$instancia, $instancia_id] );
+        $row->layout = ['col-sm-12 display-flex'];*/
+
+        $escola_id  = new TDBCombo('escola_id','jedieduca','Colegio','id','nome');
+        $escola_id->setSize('70%');
+        $escola_id->style = 'height:35px;font-size:14px;float:left;border-bottom-left-radius: 0;border-top-left-radius: 0;';
+        $row = $this->form->addFields( [$escola, $escola_id] );
         $row->layout = ['col-sm-12 display-flex'];
+
         $login->setExitAction(new TAction( [$this, 'onExitUser'] ) );
 
 
@@ -147,7 +154,7 @@ class LoginForm extends TPage
             if ($user instanceof SystemUser)
             {
                 //TTransaction::open('memore');
-                $instancias = $user->getSystemUserInstancias();
+                /*$instancias = $user->getSystemUserInstancias();
                 $options = [];
                 
                 if ($instancias)
@@ -157,7 +164,21 @@ class LoginForm extends TPage
                         $options[$instancia->id] = $instancia->nome;
                     }
                 }
-                TCombo::reload('form_login', 'instancia_id', $options);
+                TCombo::reload('form_login', 'instancia_id', $options);*/
+
+                $escola = $user->getSystemUserEscolas();
+                TSession::setValue('userEscolaId',   $escola[0]->id );
+                $options = [];
+                
+                if ($escola)
+                {
+                    foreach ($escola as $escola_obj)
+                    {
+                        $options[$escola_obj->id] = $escola_obj->nome;
+                    }
+                }
+                TCombo::reload('form_login', 'escola_id', $options);
+
                 TTransaction::close();
             }
             
@@ -229,6 +250,7 @@ class LoginForm extends TPage
             {
                 //ApplicationAuthenticationService::setUnit( $data->unit_id ?? null );
                 ApplicationAuthenticationService::setInstancia( $data->instancia_id ?? null );
+                ApplicationAuthenticationService::setEscola( $data->escola_id ?? null );
                 ApplicationAuthenticationService::setLang( $data->lang_id ?? null );
                 SystemAccessLogService::registerLogin();
                 

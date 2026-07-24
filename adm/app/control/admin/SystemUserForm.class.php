@@ -16,6 +16,51 @@ class SystemUserForm extends TPage
 {
     protected $form; // form
     protected $program_list;
+
+    /**
+     * Check if the current user belongs to a group
+     */
+    private function currentUserIsInGroup($group_name)
+    {
+        $userid = TSession::getValue('userid');
+
+        if (empty($userid))
+        {
+            return false;
+        }
+
+        $opened_transaction = false;
+
+        try
+        {
+            if (!TTransaction::get())
+            {
+                TTransaction::open('jedieduca');
+                $opened_transaction = true;
+            }
+
+            $group = SystemGroup::where('name', '=', $group_name)->first();
+            $is_in_group = $group && SystemUserGroup::where('system_user_id', '=', $userid)
+                                                    ->where('system_group_id', '=', $group->id)
+                                                    ->count() > 0;
+
+            if ($opened_transaction)
+            {
+                TTransaction::close();
+            }
+
+            return $is_in_group;
+        }
+        catch (Exception $e)
+        {
+            if ($opened_transaction)
+            {
+                TTransaction::rollback();
+            }
+
+            throw $e;
+        }
+    }
     
     /**
      * Class constructor
@@ -36,8 +81,27 @@ class SystemUserForm extends TPage
         $password      = new TPassword('password');
         $repassword    = new TPassword('repassword');
         $email         = new TEntry('email');
+
+        // Evita que o navegador reutilize as credenciais do usuário autenticado
+        // ao abrir o formulário para cadastrar um novo usuário.
+        $email->setProperty('autocomplete', 'off');
+        $password->setProperty('autocomplete', 'new-password');
+        $repassword->setProperty('autocomplete', 'new-password');
         // $unit_id       = new TDBCombo('system_unit_id','permission','SystemUnit','id','name');
-        $groups        = new TDBCheckGroup('groups','jedieduca','SystemGroup','id','name');
+        $groups_criteria = new TCriteria;
+        if ($this->currentUserIsInGroup('Gestor'))
+        {
+            $groups_criteria->add(new TFilter('name', 'IN', ['Docente', 'Gestor']));
+        }
+        else if ($this->currentUserIsInGroup('Docente'))
+        {
+            $groups_criteria->add(new TFilter('name', 'IN', ['Discente']));
+        }
+        else if (TSession::getValue('userid') != 1)
+        {
+            $groups_criteria->add(new TFilter('name', '<>', 'Admin'));
+        }
+        $groups        = new TDBCheckGroup('groups','jedieduca','SystemGroup','id','name', null, $groups_criteria);
         //$frontpage_id  = new TDBUniqueSearch('frontpage_id', 'permission', 'SystemProgram', 'id', 'name', 'name');
         // $units         = new TDBCheckGroup('units','permission','SystemUnit','id','name');
         
@@ -50,16 +114,7 @@ class SystemUserForm extends TPage
             }
         }*/
 
-        /*$instancias  = new TDBCheckGroup('instancias','memore','instanciagestora','id','nome');
-        $instancias->setLayout('horizontal');
-        if ($instancias->getLabels())
-        {
-            foreach ($instancias->getLabels() as $label)
-            {
-                $label->setSize(200);
-            }
-        }*/
-        $instancias = new TDBMultiSearch('instancias', 'jedieduca', 'InstanciaGestora', 'id', 'nome');
+        //$instancias = new TDBMultiSearch('instancias', 'jedieduca', 'InstanciaGestora', 'id', 'nome');
 
         $groups->setLayout('horizontal');
         if ($groups->getLabels())
@@ -69,6 +124,8 @@ class SystemUserForm extends TPage
                 $label->setSize(200);
             }
         }
+
+        $escola = new TDBCombo('escola', 'jedieduca', 'Colegio', 'id', 'nome');
         
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'onSave')), 'far:save');
         $btn->class = 'btn btn-sm btn-primary';
@@ -85,8 +142,9 @@ class SystemUserForm extends TPage
         //$unit_id->setSize('100%');
         //$frontpage_id->setSize('100%');
         //$frontpage_id->setMinLength(1);
-        $instancias->setMinLength(1);
-        $instancias->setSize('70%', 70);
+        //$instancias->setMinLength(1);
+        //$instancias->setSize('70%', 70);
+        $escola->setSize('50%');
         
         // outros
         $id->setEditable(false);
@@ -100,10 +158,11 @@ class SystemUserForm extends TPage
         $this->form->addFields( [new TLabel(_t('Login'))], [$login],  [new TLabel(_t('Email'))], [$email] );
         //$this->form->addFields( [new TLabel(_t('Front page'))], [$frontpage_id] );
         $this->form->addFields( [new TLabel(_t('Password'))], [$password],  [new TLabel(_t('Password confirmation'))], [$repassword] );
-        $this->form->addFields( [new TLabel('Instâncias Gestoras')],[$instancias] );
+        //$this->form->addFields( [new TLabel('Instâncias Gestoras')],[$instancias] );
+        $this->form->addFields( [new TLabel('Escola')], [$escola] );
         $this->form->addFields( [new TFormSeparator(_t('Groups'))] );
         $this->form->addFields( [$groups] );
-        
+  
         /*$this->program_list = new TCheckList('program_list');
         $this->program_list->setIdColumn('id');
         $this->program_list->addColumn('id',    'ID',    'center',  '10%');
@@ -242,17 +301,35 @@ class SystemUserForm extends TPage
 
         try
         {
+            //echo '<pre>'; print_r($data); echo '</pre>';
             TTransaction::open('jedieduca');
-            if( !empty($data->instancias) )   
+            if (isset($data->instancias))
             {
-                foreach( $param['instancias'] as $instancia_id )
+                if( !empty($data->instancias) )   
+                {
+                    foreach( $param['instancias'] as $instancia_id )
+                    {
+                        try {
+                            $object->addSystemUserInstancia( new InstanciaGestora($instancia_id) );
+                        }
+                        catch (Exception $e) // in case of exception
+                        {
+                        }
+                    }
+                }
+            }
+
+            if (isset($data->escola))
+            {
+                if( !empty($data->escola) )   
                 {
                     try {
-                      $object->addSystemUserInstancia( new InstanciaGestora($instancia_id) );
-                    }
+                            $object->addSystemUserEscola( new Colegio($data->escola) );
+                        }
                     catch (Exception $e) // in case of exception
                     {
                     }
+
                 }
             }
             TTransaction::close();
@@ -331,6 +408,15 @@ class SystemUserForm extends TPage
                         $instancias[] = $instancia->id;
                     }
                 }
+
+                $vetEscola  = array();
+                if( $escola_db = $object->getSystemUserEscolas() )
+                {
+                    foreach( $escola_db as $escola )
+                    {
+                        $vetEscola[] = $escola->id;
+                    }
+                }
                 TTransaction::close();
                 
                 /*if (TSession::getValue('login')=='admin')
@@ -344,8 +430,11 @@ class SystemUserForm extends TPage
                 }*/
 
                 $object->groups = $groups;
-                //$object->units  = $units;
-                $object->instancias  = $instancias;
+                //$object->instancias  = $instancias;
+                if (count($vetEscola) > 0)
+                {
+                    $object->escola  = $vetEscola[0];
+                }
                 
                 // fill the form with the active record data
                 $this->form->setData($object);
@@ -383,6 +472,12 @@ class SystemUserForm extends TPage
             else
             {
                 $this->form->clear();
+
+                $new_user = new stdClass;
+                $new_user->email = '';
+                $new_user->password = '';
+                $new_user->repassword = '';
+                $this->form->setData($new_user);
             }
         }
         catch (Exception $e) // in case of exception
