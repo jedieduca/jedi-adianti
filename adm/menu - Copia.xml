@@ -40,7 +40,7 @@
         <action>FormTurmaList</action>
       </menuitem>
       <menuitem label="Aluno">
-        <action>FormAlunoList#tipo=Cadastro</action>
+        <action>FormAlunoList</action>
       </menuitem>
     </menu>
   </menuitem>
@@ -57,6 +57,10 @@
       <menuitem label="Prompt">
         <action>FormPromptList</action>
         <icon>fas:brain fa-fw</icon>
+      </menuitem>
+      <menuitem label="Usuários do JEDI">
+        <action>FormUserList</action>
+        <icon>fas:user-ninja fa-fw</icon>
       </menuitem>
       <menuitem label="Exportar JSON das Notícias">
         <action>ExportPergunta2Json</action>
