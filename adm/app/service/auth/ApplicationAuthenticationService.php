@@ -44,14 +44,16 @@ class ApplicationAuthenticationService
     {
         $ini  = AdiantiApplicationConfig::get();
         
-            TSession::setValue('userunitid',   $instancia_id );
-            TSession::setValue('userunitname', InstanciaGestora::findInTransaction('jedieduca', $instancia_id)->nome);
+        TSession::setValue('userunitid',   $instancia_id );
+        $instancia = InstanciaGestora::findInTransaction('jedieduca', $instancia_id);
+        TSession::setValue('userunitname', ($instancia && isset($instancia->nome)) ? $instancia->nome : '');
     }
 
     public static function setEscola($escola_id)
     {
         TSession::setValue('userunitid',   $escola_id );
-        TSession::setValue('userunitname', Colegio::findInTransaction('jedieduca', $escola_id)->nome);
+        $escola = Colegio::findInTransaction('jedieduca', $escola_id);
+        TSession::setValue('userunitname', ($escola && isset($escola->nome)) ? $escola->nome : '');
     }
 
     /**
@@ -65,11 +67,13 @@ class ApplicationAuthenticationService
         if (!empty($ini['general']['multiunit']) and $ini['general']['multiunit'] == '1' and !empty($unit_id))
         {
             TSession::setValue('userunitid',   $unit_id );
-            TSession::setValue('userunitname', SystemUnit::findInTransaction('jedieduca', $unit_id)->name);
+            $unit = SystemUnit::findInTransaction('jedieduca', $unit_id);
+            TSession::setValue('userunitname', ($unit && isset($unit->name)) ? $unit->name : '');
             
             if (!empty($ini['general']['multi_database']) and $ini['general']['multi_database'] == '1')
             {
-                TSession::setValue('unit_database', SystemUnit::findInTransaction('jedieduca', $unit_id)->connection_name );
+                $unit_database = ($unit && isset($unit->connection_name)) ? $unit->connection_name : '';
+                TSession::setValue('unit_database', $unit_database);
             }
         }
     }

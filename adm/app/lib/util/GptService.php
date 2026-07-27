@@ -9,18 +9,22 @@ class GptService
     public function __construct()
     {
         $config = AdiantiApplicationConfig::get();
-        $this->apiKey = $config['openai']['apikey'];
-        $this->model  = $config['openai']['model'];
+        $this->apiKey = getenv('OPENAI_API_KEY') ?: ($config['openai']['apikey'] ?? '');
+        $this->model  = getenv('OPENAI_MODEL') ?: ($config['openai']['model'] ?? 'gpt-4.1-mini');
 
         $this->apiUrl = "https://api.openai.com/v1/chat/completions";
     }
 
     function substituirColchetes($texto, $variaveis) 
     {
+        if ($texto === null) {
+            return '';
+        }
+
         return preg_replace_callback('/\[(.*?)\]/', function($matches) use ($variaveis) {
             $chave = $matches[1];
             return isset($variaveis[$chave]) ? $variaveis[$chave] : $matches[0];
-        }, $texto);
+        }, (string) $texto);
     }
 
     /**

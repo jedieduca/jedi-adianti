@@ -3,10 +3,8 @@ class OpenAITTSService
 {
     public static function synthesizeToBinary(string $text, string $voice = 'alloy', string $format = 'mp3'): string
     {
-        //$apiKey = getenv('OPENAI_API_KEY');
         $config = AdiantiApplicationConfig::get();
-        $apiKey = $config['openai']['apikey'];
-        //echo '<pre>'; print_r($apiKey); echo '</pre>';
+        $apiKey = getenv('OPENAI_API_KEY') ?: ($config['openai']['apikey'] ?? '');
 
         if (!$apiKey) {
             throw new Exception('OPENAI_API_KEY não configurada no ambiente.');

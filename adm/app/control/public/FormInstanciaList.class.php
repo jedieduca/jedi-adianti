@@ -239,9 +239,9 @@ class FormInstanciaList extends TStandardList
             $conn = TTransaction::get();
             // run query
 
-            $sql='select * FROM instanciagestora ig ';
-            $sql.='WHERE ig.id in (select idinstanciagestora from escola e where e.idinstanciagestora='.$key.') ';
-            $sql.='or ig.id in (select idinstanciagestora from usuarioinstanciagestora uig where uig.idinstanciagestora='.$key.') ';
+            $sql='select * FROM instancia_gestora ig ';
+            $sql.='WHERE ig.id in (select id_instancia_gestora from escola e where e.id_instancia_gestora='.$key.') ';
+            $sql.='or ig.id in (select id_instancia_gestora from usuario_instancia_gestora uig where uig.id_instancia_gestora='.$key.') ';
             $result=$conn->query($sql);
 
             if ($result->rowCount()>0)
@@ -253,7 +253,7 @@ class FormInstanciaList extends TStandardList
             {
                 $conn = TTransaction::get();
                 // run query
-                $sql='delete FROM instanciagestora ';
+                $sql='delete FROM instancia_gestora ';
                 $sql.='WHERE id='.$key;
                 $conn->query($sql);
 

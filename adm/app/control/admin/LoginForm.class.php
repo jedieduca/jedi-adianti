@@ -252,7 +252,7 @@ class LoginForm extends TPage
                 ApplicationAuthenticationService::setInstancia( $data->instancia_id ?? null );
                 ApplicationAuthenticationService::setEscola( $data->escola_id ?? null );
                 ApplicationAuthenticationService::setLang( $data->lang_id ?? null );
-                SystemAccessLogService::registerLogin();
+                //SystemAccessLogService::registerLogin();
                 
                 $frontpage = $user->frontpage;
                 if (!empty($param['previous_class']) && $param['previous_class'] !== 'LoginForm')
