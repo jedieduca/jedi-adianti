@@ -346,7 +346,7 @@ class FormPergunta extends TPage
             }
 
             //$response = $gpt->generateResponse($noticia, $resposta, $caracteristicas, 1); // 1 para selecionar características, 2 para elaborar a fala
-            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt1, $noticia, $resposta, $prompt->caracteristicas); // 1 para selecionar características, 2 para elaborar a fala
+            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt_1, $noticia, $resposta, $prompt->caracteristicas); // 1 para selecionar características, 2 para elaborar a fala
 
             $data->analise_gpt = $response;
             $this->form->setData($data);
@@ -385,7 +385,7 @@ class FormPergunta extends TPage
             }
 
             //$response = $gpt->generateResponse($noticia, $resposta, $caracteristicas, 2); // Passo 2 -> 1 para selecionar características, 2 para elaborar a fala
-            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt2, $noticia, $resposta, $prompt->caracteristicas); 
+            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt_2, $noticia, $resposta, $prompt->caracteristicas); 
 
             $data->fala_gpt = $response;
             $this->form->setData($data);
