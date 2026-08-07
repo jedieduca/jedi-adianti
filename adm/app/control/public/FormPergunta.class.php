@@ -759,7 +759,7 @@ class FormPergunta extends TPage
                     $data->categoria='';
                 else
                     $data->categoria=$resulte[0]['categoria'];*/
-                $data->respcerta=$object->resp_certa;
+                $data->resp_certa=$object->resp_certa;
                 //$data->resp2=$object->resp2;
                 //$data->resp3=$object->resp3;
                 //$data->resp4=$object->resp4;
