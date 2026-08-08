@@ -4,7 +4,7 @@ use Adianti\Database\TRecord;
 
 class QuestionCategory extends TRecord
 {
-    const TABLENAME  = 'pergunta_categoria2';
+    const TABLENAME  = 'pergunta_categoria';
     const PRIMARYKEY = 'id';
     const IDPOLICY   = 'serial';
 

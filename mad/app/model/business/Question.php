@@ -4,7 +4,7 @@ use Adianti\Database\TRecord;
 
 class Question extends TRecord
 {
-    const TABLENAME  = 'pergunta2';
+    const TABLENAME  = 'pergunta';
     const PRIMARYKEY = 'id';
     const IDPOLICY   = 'serial';
 
@@ -13,11 +13,11 @@ class Question extends TRecord
         parent::__construct($id);
         parent::addAttribute('id_tema');
         parent::addAttribute('pergunta');
-        parent::addAttribute('respcerta');
-        parent::addAttribute('resp2');
-        parent::addAttribute('resp3');
-        parent::addAttribute('resp4');
-        parent::addAttribute('caminhoimagem');
+        parent::addAttribute('resp_certa');
+        parent::addAttribute('resp_2');
+        parent::addAttribute('resp_3');
+        parent::addAttribute('resp_4');
+        parent::addAttribute('caminho_imagem');
         parent::addAttribute('tempo_leitura_adulto');
         parent::addAttribute('tempo_leitura_infantil');
         parent::addAttribute('numero_palavras');

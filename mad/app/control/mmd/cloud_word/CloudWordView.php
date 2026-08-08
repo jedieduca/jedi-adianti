@@ -47,7 +47,7 @@ class CloudWordView extends TStandardList
         $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data'));
 
         $filter_category = new TDBCombo('filter_category', 'jedi', 'Category', 'descricao', 'descricao', 'descricao asc');
-        $filter_answer   = new TDBCombo('filter_answer', 'jedi', 'Question', 'respcerta', 'respcerta', 'respcerta asc');
+        $filter_answer   = new TDBCombo('filter_answer', 'jedi', 'Question', 'resp_certa', 'resp_certa', 'resp_certa asc');
 
         $filter_category->setChangeAction(new TAction([$this, 'onChangeCategory']));
 
@@ -182,19 +182,19 @@ class CloudWordView extends TStandardList
 
             $repo = new TRepository('Question');
             $criteria = new TCriteria;
-            $criteria->setProperty('order', 'respcerta asc');
+            $criteria->setProperty('order', 'resp_certa asc');
 
             if (!empty($category_name)) {
 
                 $criteria->add(new TFilter('id', 'IN', "(SELECT pc.id_pergunta 
-                                                         FROM pergunta_categoria2 pc inner join categoria c on pc.id_categoria = c.id 
+                                                         FROM pergunta_categoria pc inner join categoria c on pc.id_categoria = c.id 
                                                          WHERE c.descricao = '{$category_name}')"));
 
                 // Obtém um array indexado para o combo [valor => exibição]
-                $options = $repo->getIndexedArray('respcerta', 'respcerta', $criteria);
+                $options = $repo->getIndexedArray('resp_certa', 'resp_certa', $criteria);
             } else {
                 // Se a categoria for limpa, podemos carregar todas ou deixar vazio           
-                $options = $repo->getIndexedArray('respcerta', 'respcerta', $criteria);
+                $options = $repo->getIndexedArray('resp_certa', 'resp_certa', $criteria);
             }
 
             TTransaction::close();
@@ -277,7 +277,7 @@ class CloudWordView extends TStandardList
                     $item->id       = $row->id;
                     $item->category = $row->categoria;
                     $item->news     = $row->pergunta;
-                    $item->answer   = $row->respcerta;
+                    $item->answer   = $row->resp_certa;
 
                     $this->datagrid->addItem($item);
                 }

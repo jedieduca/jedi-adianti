@@ -4,7 +4,7 @@ use Adianti\Database\TRecord;
 
 class Theme extends TRecord
 {
-    const TABLENAME  = 'tema2';
+    const TABLENAME  = 'tema';
     const PRIMARYKEY = 'id';
     const IDPOLICY   = 'serial';
 
@@ -15,7 +15,7 @@ class Theme extends TRecord
         parent::addAttribute('descricao');
         parent::addAttribute('id_area');
         parent::addAttribute('visibilidade');
-        parent::addAttribute('idautor');
+        parent::addAttribute('id_autor');
     }
 
     // Relacionamento N:1 (Muitos temas pertencem a uma área)
