@@ -64,7 +64,7 @@ return [
     ],
     'login' => [
         'logo' => '../images/Logo_JEDi_1.png',
-        'background' => ''
+        'background' => '../images/Logo_JEDi_1.png'
     ],
     'template' => [
         'navbar' => [
@@ -86,7 +86,8 @@ return [
             'use_swal' => '1'
         ],
         'theme' => [
-            'menu_dark_color' => 'rgb(29 45 83)',
+//            'menu_dark_color' => 'rgb(29 45 83)',
+            'menu_dark_color' => '#222d32',
             'menu_mode'  => 'dark',
             'main_mode'  => 'light'
         ]

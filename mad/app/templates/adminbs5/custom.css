@@ -1,3 +1,9 @@
 :root {
     --ad-menu-size: 360px;
 }
+
+/* Altera a cor do menu de módulos (barra vertical) */
+[data-menu-theme="dark"] #module-menu,
+[data-menu-theme="dark"] #module-menu * {
+    background-color: rgb(60, 130, 166) !important;
+}
