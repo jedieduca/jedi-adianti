@@ -4,7 +4,7 @@ return [
         'timezone' => 'America/Sao_Paulo',
         'language' => 'auto,pt',
         'application' => 'jedi-mad',
-        'title' => 'JEDi - MAD 1.0.0',
+        'title' => 'MAD do JEDi - 1.0.0',
         'theme' => 'adminbs5',
         'seed' => 'odfu6asnodf8as',
         'rest_key' => '',
