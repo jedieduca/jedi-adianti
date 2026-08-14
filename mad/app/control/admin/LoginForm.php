@@ -25,14 +25,22 @@ class LoginForm extends TPage
         
         // creates the form
         $this->form = new TModalForm('form_login');
-        $this->form->setFormTitle('Login');
+
+        $form_title = new TElement('h1');
+        $form_title->{'class'} = 'fw-bold mb-0 fs-4 text-center w-100 mt-n3';
+        $form_title->add('Entre com as suas credenciais');
+
+        $this->form->setFormTitle($form_title);
+        $this->form->setModalClass('modal modal-sheet position-static d-block p-1 py-md-1');
         
+/*
         if (!empty($ini['login']['logo']))
         {
             $logo = new TImage($ini['login']['logo']);
             $logo->style = 'margin:auto;max-width:100%';
             $this->form->setFormTitle($logo);
         }
+*/            
         
         // create the form fields
         $login               = new TEntry('login');
@@ -106,7 +114,20 @@ class LoginForm extends TPage
         {
             $this->form->addFooterAction(_t('Reset password'), new TAction(['SystemRequestPasswordResetForm', 'onLoad']), '');
         }
-        
+
+        if (!empty($ini['login']['logo']))
+        {
+            $logo = new TImage($ini['login']['logo']);
+//            $logo->style = 'display:block;margin:0 auto 20px auto;max-width:160px';
+            $logo->style = 'display: block; margin: 20px auto 0 auto; max-width: 160px;';
+
+            $logo_wrapper = new TElement('div');
+            $logo_wrapper->style = 'text-align:center';
+            $logo_wrapper->add($logo);
+
+            parent::add($logo_wrapper);
+        }
+
         // add the form to the page
         parent::add($this->form);
     }

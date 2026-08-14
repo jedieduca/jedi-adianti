@@ -63,7 +63,7 @@ return [
         'string' => '#FFC472',
     ],
     'login' => [
-        'logo' => '',
+        'logo' => '../images/Logo_JEDi_1.png',
         'background' => ''
     ],
     'template' => [
