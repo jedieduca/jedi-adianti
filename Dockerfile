@@ -16,35 +16,28 @@ FROM php:8.3-fpm
 # - docker-php-ext-install: Compila as extensões PHP
 
 # Dependências básicas
-RUN apt-get update && apt-get install -y \
-    libxml2-dev \
-    libicu-dev \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libpq-dev \
-    imagemagick \
-    libmagickwand-dev \
-    ghostscript \
-    zip unzip \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick \
-    \
-    && docker-php-ext-install -j$(nproc) \
-        pdo_mysql \
-        pdo_pgsql \
-        soap \
-        sockets \
-        exif \
-        intl \
-        opcache \
-    \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    \
-    && apt-get clean
-#    && rm -rf /var/lib/apt/lists/*
 
+# 1. Copiar o script de instalação oficial
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
+# 2. Instalar dependências básicas do sistema
+RUN apt-get update && apt-get install -y \
+    zip unzip ghostscript \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. Instalar as extensões nativas do PHP
+RUN install-php-extensions \
+    gd \
+    pdo_mysql \
+    pdo_pgsql \
+    soap \
+    sockets \
+    exif \
+    intl \
+    opcache
+
+# 4. Instalar a versão do Imagick compatível com PHP 8.x
+RUN install-php-extensions https://github.com/Imagick/imagick/archive/refs/heads/master.tar.gz
 
 # Define o diretório de trabalho onde seu código PHP estará
 # Se o seu código PHP estiver em uma subpasta, ajuste o WORKDIR
