@@ -17,6 +17,37 @@ class FormPerguntaList extends TStandardList
     protected $formgrid;
     protected $deleteButton;
     protected $transformCallback;
+
+    private function normalizeMultiValue($value)
+    {
+        if ($value === null || $value === '') {
+            return [];
+        }
+
+        if (is_array($value)) {
+            $items = $value;
+        }
+        elseif ($value instanceof Traversable) {
+            $items = iterator_to_array($value);
+        }
+        else {
+            $items = preg_split('/[\s,;]+/', trim((string) $value));
+        }
+
+        $normalized = [];
+        foreach ($items as $item) {
+            if (is_array($item)) {
+                $item = $item['value'] ?? $item['id'] ?? current($item);
+            }
+
+            $item = trim((string) $item);
+            if ($item !== '' && $item !== 'null' && $item !== '[]') {
+                $normalized[] = $item;
+            }
+        }
+
+        return array_values(array_unique($normalized));
+    }
     
     /**
      * Page constructor
@@ -170,10 +201,15 @@ class FormPerguntaList extends TStandardList
         // get the search form data
         $data = $this->form->getData();
         //echo '<pre>'; print_r($param); echo '</pre>'; return
+
+        if (isset($data->idCategorias)) {
+            $data->idCategorias = $this->normalizeMultiValue($data->idCategorias);
+        }
         
         // clear session filters
         TSession::setValue('formPerguntaList_filter_id',   NULL);
         TSession::setValue('formPerguntaList_filter_noticia',   NULL);
+        TSession::setValue('formPerguntaList_filter_idCategorias',   NULL);
 
         if (isset($data->id) AND ($data->id)) {
             $filter = new TFilter('id', '=', $data->id); // create the filter
@@ -185,7 +221,7 @@ class FormPerguntaList extends TStandardList
             TSession::setValue('formPerguntaList_filter_noticia',   $filter); // stores the filter in the session
         }
 
-        if (!empty($data->idCategorias) && is_array($data->idCategorias)) {
+        if (!empty($data->idCategorias)) {
             $filter = new TFilter('idCategorias', 'IN', $data->idCategorias);
             TSession::setValue('formPerguntaList_filter_idCategorias', $filter);
         }
@@ -246,24 +282,19 @@ class FormPerguntaList extends TStandardList
             }
 
             // ==========================================================
-            // ✅ FILTRO idCategorias (via tabela perguntacategoria2)
+            // ✅ FILTRO idCategorias (via tabela pergunta_categoria)
             // ==========================================================
-            $data = TSession::getValue('formPerguntaList_filter_data'); // foi salvo no onSearch
+            $data = TSession::getValue('formPerguntaList_filter_data');
 
-            if (!empty($data->idCategorias) && is_array($data->idCategorias))
+            if (!empty($data->idCategorias))
             {
-                // Aqui vou assumir que $data->idCategorias contém os valores que estão em perguntacategoria2.categoria
-                // (mesmo sendo varchar). Se, no seu caso, os IDs estão em outra coluna, ajuste abaixo.
-                $cats = array_values(array_filter($data->idCategorias, function($v) {
-                    return $v !== null && $v !== '';
-                }));
+                $cats = $this->normalizeMultiValue($data->idCategorias);
 
                 if ($cats)
                 {
-                    // monta placeholders (?, ?, ?, ...)
                     $placeholders = implode(',', array_fill(0, count($cats), '?'));
 
-                    $sqlCats  = "SELECT DISTINCT id_perg
+                    $sqlCats  = "SELECT DISTINCT id_pergunta
                                 FROM pergunta_categoria
                                 WHERE id_tema = 17
                                 AND id_categoria IN ($placeholders)";
@@ -275,12 +306,10 @@ class FormPerguntaList extends TStandardList
 
                     if (!empty($idsPerg))
                     {
-                        // aplica filtro no id da pergunta
                         $criteria->add(new TFilter('id', 'IN', $idsPerg));
                     }
                     else
                     {
-                        // nenhuma pergunta atende às categorias -> força lista vazia
                         $criteria->add(new TFilter('id', '=', 0));
                     }
                 }
