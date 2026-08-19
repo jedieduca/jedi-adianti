@@ -152,7 +152,7 @@ class FormCategoriaList extends TStandardList
             $conn = TTransaction::get();
             // run query
 
-            $sql="select * FROM perguntacategoria2 pc ";
+            $sql="select * FROM pergunta_categoria pc ";
             $sql.="WHERE pc.categoria='$key'";
             $result=$conn->query($sql);
 
