@@ -1,0 +1,7 @@
+Crie um método onSaveV82 do SystemUserForm.class.php para fazer o mesmo procedimento que faz no método onSave, com as seguintes diferenças:
+ - usar a classe SystemUserV82 no lugar da SystemUser e a transação será TTransaction::open('jedi-permissions'). 
+ - Caso o $group_id seja 6, transforme para 5 e caso o $group_id seja 7 transforme para 4 antes de gravar, isto é, antes de chamar o $object->addSystemUserGroup( new SystemGroup($group_id) ). 
+
+O resto não muda. Você vai ter que criar um método Save($param) que chamará os métodos onSave($param) e onSaveV82($param). No código atual, onde tem a chamada para o método onSave, você substitui para chamar o método Save.
+
+

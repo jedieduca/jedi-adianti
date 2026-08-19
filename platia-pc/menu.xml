@@ -46,6 +46,10 @@
   </menuitem>
   <menuitem label="Gestão de Conteúdo">
     <menu>
+      <menuitem label="Atividades de Aula">
+        <action>FormAtividadeAulaList</action>
+        <icon>fas:pen-square fa-fw</icon>
+      </menuitem>
       <menuitem label="Plano de Aula">
         <action>FormPlanoAulaList</action>
         <icon>fas:bezier-curve fa-fw</icon>

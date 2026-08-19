@@ -23,7 +23,12 @@ class GptService
 
         return preg_replace_callback('/\[(.*?)\]/', function($matches) use ($variaveis) {
             $chave = $matches[1];
-            return isset($variaveis[$chave]) ? $variaveis[$chave] : $matches[0];
+
+            if (array_key_exists($chave, $variaveis)) {
+                return $variaveis[$chave] ?? '';
+            }
+
+            return $matches[0];
         }, (string) $texto);
     }
 
@@ -35,12 +40,13 @@ class GptService
      * @param string $caracteristicas Lista completa de características
      * @return string
      */
-    public function generateResponse($systemPrompt, $userPrompt, $noticia, $resposta, $caracteristicas)
+    public function generateResponse($systemPrompt, $userPrompt, $noticia = null, $resposta = null, $caracteristicas = null, $respostaChat = null)
     {
         $variaveis = [
             'noticia' => $noticia,
             'resposta' => $resposta,
-            'caracteristicas' => $caracteristicas
+            'caracteristicas' => $caracteristicas,
+            'respostaChat' => $respostaChat
         ];
 
         // Prompt do usuário, já no formato esperado
@@ -93,12 +99,13 @@ class GptService
      * @param string $caracteristicas Lista completa de características
      * @return string
      */
-    public function generateResponse_ok($noticia, $resposta, $caracteristicas, $passo)
+    public function generateResponse_ok($noticia = null, $resposta = null, $caracteristicas = null, $passo, $respostaChat = null)
     {
         $variaveis = [
             'noticia' => $noticia,
             'resposta' => $resposta,
-            'caracteristicas' => $caracteristicas
+            'caracteristicas' => $caracteristicas,
+            'respostaChat' => $respostaChat
         ];
 
         // Prompt de sistema (persona + tom de voz)

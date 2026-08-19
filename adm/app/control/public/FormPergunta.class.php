@@ -19,7 +19,7 @@ class FormPergunta extends TPage
     protected $form; // form
     protected $program_list;
     public $location = "app/images/noticias"; //localhost "/trilha/uploadImage"
-    public $caminhoImagem;
+    //public $caminhoImagem;
 
     private $labelId;
     private $btnTocarAudio;
@@ -177,7 +177,7 @@ class FormPergunta extends TPage
         $this->btnTocarAudio->setAction($actTocarAudio, ' Tocar Áudio');
         // FIM BOTÕES DE ÁUDIO (TTS)
 
-        $imagePath = new TFile('caminho_imagem');
+        /*$imagePath = new TFile('caminho_imagem');
         $imagePath->setSize('100%');
         $imagePath->setAllowedExtensions( ['gif', 'png', 'jpg', 'jpeg'] );
         // enable progress bar, preview
@@ -186,9 +186,8 @@ class FormPergunta extends TPage
 
         $img = new TImage('');
         $img->id = 'id_imagem';
-        $img->width = '300px';
-        //$caminhoImagem = new TEntry('caminhoimagem');   
-        //$categoria     = new TDBCombo('categoria','jedieduca','Categoria','nome','nome');
+        $img->width = '300px';*/
+
         $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'descricao', 'descricao');
         $categoria->addValidation('Categoria', new TRequiredValidator);
         $categoria->setSize('70%',60);
@@ -216,10 +215,10 @@ class FormPergunta extends TPage
         
         parent::register_css('nomecss','.tfile_del_icon{ display:none; }');  //desabilita botão de remover do tfile
 
-        $btnCancelar = new TButton('removeFile');
+        /*$btnCancelar = new TButton('removeFile');
 		$action1 = new TAction(array($this,'removeFile'));
 		$btnCancelar->setAction($action1, 'Remover arquivo');
-        $btnCancelar->setImage('far:trash-alt red');
+        $btnCancelar->setImage('far:trash-alt red');*/
 
                
         $this->form->addFields( [$id] );
@@ -232,8 +231,8 @@ class FormPergunta extends TPage
         $this->form->addFields( [new TLabel('Categoria')], [$categoria] );
         $this->form->addFields( [new TLabel('Notícia')], [$pergunta] );
         $this->form->addFields( [new TLabel('Fato')], [$respCerta] );
-        $this->form->addFields( [new TLabel('Imagem')], [$imagePath], [$btnCancelar]);
-        $this->form->addFields( [new TLabel('')], [$img] );
+        //$this->form->addFields( [new TLabel('Imagem')], [$imagePath], [$btnCancelar]);
+        //$this->form->addFields( [new TLabel('')], [$img] );
         $tit1=new TLabel('Características da Notícia');
         $tit1->style='color: #285e8e; font-size: 16px; font-weight: bold';
         $this->form->addFields( [new TFormSeparator('')] );
@@ -580,13 +579,13 @@ class FormPergunta extends TPage
      */
     public function onSave($param)
     {
-        if (empty($param['caminho_imagem']))
+        /*if (empty($param['caminho_imagem']))
         {
             if (empty(TSession::getValue('caminhoImagem')))
                 $param['caminho_imagem']='sem_imagem.png';
             else
                 $param['caminho_imagem']=TSession::getValue('caminhoImagem');
-        }
+        }*/
         //echo '<pre>'; print_r('1 -> '.$param['caminhoimagem']);
         try
         {
@@ -604,16 +603,9 @@ class FormPergunta extends TPage
                 $object->id=TSession::getValue('id');
             $object->id_tema = 17; //tema default Fake News
             $object->resp_2 = $data->resp_certa=='FAKE' ? 'NÃO FAKE' : 'FAKE';
-            
-            //echo '<pre>'; print_r($object);
-
-            //echo '<pre>'; print_r('$object->caminhoimagem '.empty($object->caminhoimagem));
-
-            
-            if ((strpos($param['caminho_imagem'],"sem_imagem.png")>0) || ($param['caminho_imagem']=='sem_imagem.png'))
+                      
+            /*if ((strpos($param['caminho_imagem'],"sem_imagem.png")>0) || ($param['caminho_imagem']=='sem_imagem.png'))
                 $object->caminho_imagem='sem_imagem.png';//TSession::getValue('caminhoImagem');
-            //if (empty($object->caminhoimagem))
-                //$object->caminhoimagem='sem_imagem.png';
             else
             {
                 if (strpos($param['caminho_imagem'],"newFile")>0)
@@ -625,7 +617,7 @@ class FormPergunta extends TPage
                 $targetFile="T".$object->id_tema."_perg_".$object->id.'.'.$targetExt;
                 $object->caminho_imagem=$targetFile;   //$param['caminhoimagem'];
                 //echo '<pre>'; print_r($object->caminhoimagem);
-            }
+            }*/
                 
             $object->caract_proposta = $data->caract_proposta;
             $object->analise_proposta = $data->analise_proposta;
@@ -669,24 +661,21 @@ class FormPergunta extends TPage
                 $conn->query($sql);
                 //echo '<pre>'; print_r($sql); echo '</pre>';
             }
-            //echo '<pre>'; print_r($object->caminhoimagem);
-            // copy file to target folder
-            //$this->saveFile($object, $data, 'caminhoimagem', 'app/images/jogos');
 
             //echo '<pre>'; print_r($param['caminhoimagem']);
-            $posicao=strpos($param['caminho_imagem'],'tmp');
+            /*$posicao=strpos($param['caminho_imagem'],'tmp');
             if (!$posicao===false)
             {
                 //echo '<pre>'; print_r('$param["caminhoimagem"] '.$param['caminhoimagem']); echo '</pre>';
                $this->saveFile($object, $data, 'caminhoimagem', $this->location, $targetFile );
-            }
+            }*/
 
             $data = new stdClass;
             $data->id = $object->id;
-            $data->caminho_imagem = $param['caminho_imagem'];
+            //$data->caminho_imagem = $param['caminho_imagem'];  
             TForm::sendData('form_pergunta', $data);
             
-            TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
+            //TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
             
             // close the transaction
             TTransaction::close();
@@ -727,20 +716,9 @@ class FormPergunta extends TPage
                 $data = $this->form->getData();
                               
                 // fill the form with the active record data
-                //$object->caminhoimagem=$_SERVER['SERVER_NAME'].$this->location.'/'.$object->caminhoimagem;
-                $object->caminho_imagem=$this->location.'/'.$object->caminho_imagem;
-                TSession::setValue('caminhoImagem',$object->caminho_imagem);
+                //$object->caminho_imagem=$this->location.'/'.$object->caminho_imagem;
+                //TSession::setValue('caminhoImagem',$object->caminho_imagem);
                 //echo '<pre>'; print_r($object->caminhoimagem); echo '</pre>'; 
-
-                //Pega Categoria
-                /*$conn = TTransaction::get();
-                // run query
-                $sql='select categoria FROM perguntacategoria2 ';
-                $sql.='WHERE tema='.$object->idtema;
-                $sql.=' AND codPerg='.$object->id;
-                //echo '<pre>'; print_r($sql);
-                $result = $conn->query($sql);
-                $resulte = $result->fetchAll(PDO::FETCH_ASSOC);*/
 
                 $vetCateg  = array();
                 if( $perg_db = PerguntaCategoria::getCategoria($object->id_tema, $param['key']) )
@@ -773,7 +751,7 @@ class FormPergunta extends TPage
                 $data->fala_gemini=$object->fala_gemini;
                 $data->origem_fala=$object->origem_fala;
                 $data->fala_proposta=$object->fala_proposta;
-                $data->caminho_imagem=$object->caminho_imagem;
+                //$data->caminho_imagem=$object->caminho_imagem;
                 $data->publica=$object->publica;
 
                 $data->analise_gpt=$object->analise_gpt;
@@ -786,12 +764,12 @@ class FormPergunta extends TPage
                 //echo '<pre>'; print_r($data);
                 TForm::sendData('form_pergunta', $data);
                 $this->form->setData($object);
-                TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
+                //TScript::create("$('#id_imagem').attr('src','{$data->caminho_imagem}')");
                 $this->updateBotaoTocarAudioByPergunta($key);
             }
             else
             {
-                TSession::setValue('caminhoImagem','');
+                //TSession::setValue('caminhoImagem','');
                 $this->form->clear();
                 $this->labelId->setValue('');
                 $obj = new stdClass;

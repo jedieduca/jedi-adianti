@@ -127,7 +127,7 @@ class SystemUserForm extends TPage
 
         $escola = new TDBCombo('escola', 'jedieduca', 'Colegio', 'id', 'nome');
         
-        $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'onSave')), 'far:save');
+        $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'Save')), 'far:save');
         $btn->class = 'btn btn-sm btn-primary';
         $this->form->addActionLink( _t('Clear'), new TAction(array($this, 'onEdit')), 'fa:eraser red');
         $this->form->addActionLink( _t('Back'), new TAction(array('SystemUserList','onReload')), 'far:arrow-alt-circle-left blue');
@@ -205,6 +205,20 @@ class SystemUserForm extends TPage
 
         // add the container to the page
         parent::add($container);
+    }
+
+    public function Save($param)
+    {
+        $userId = $this->onSave($param);
+
+        $data = $this->form->getData();
+        $groups = (array) ($data->groups ?? []);
+
+        if (!empty($groups) && array_filter($groups, function ($group_id) {
+            return in_array((int) $group_id, [6, 7], true);
+        })) {
+            $this->onSaveV82($param, $userId);
+        }
     }
 
     /**
@@ -334,17 +348,6 @@ class SystemUserForm extends TPage
             }
             TTransaction::close();
             
-            /*if (TSession::getValue('login')=='admin')
-            {
-                if (!empty($data->program_list))
-                {
-                    foreach ($data->program_list as $program_id)
-                    {
-                        $object->addSystemUserProgram( new SystemProgram( $program_id ) );
-                    }
-                }
-            }*/
-
             //
             TTransaction::close();
 
@@ -354,12 +357,134 @@ class SystemUserForm extends TPage
 
             new TMessage('info', TAdiantiCoreTranslator::translate('Record saved'));
  
+            return $userId;
 
         }
         catch (Exception $e) // in case of exception
         {
             new TMessage('error', $e->getMessage());
             TTransaction::rollback();
+        }
+    }
+
+    public function onSaveV82($param, $userId)
+    {
+        try
+        {
+            TTransaction::open('jedi-permissions');
+
+            $data = $this->form->getData();
+            $this->form->setData($data);
+
+            $object = new SystemUserV82;
+            $object->fromArray((array) $data);
+            $object->id = $userId;
+
+            if (empty($object->login))
+            {
+                throw new Exception(TAdiantiCoreTranslator::translate('The field ^1 is required', _t('Login')));
+            }
+
+            if (empty($object->id))
+            {
+                if (SystemUserV82::newFromLogin($object->login) instanceof SystemUserV82)
+                {
+                    throw new Exception(_t('An user with this login is already registered'));
+                }
+
+                if (SystemUserV82::newFromEmail($object->email) instanceof SystemUserV82)
+                {
+                    throw new Exception(_t('An user with this e-mail is already registered'));
+                }
+
+                if (empty($object->password))
+                {
+                    throw new Exception(TAdiantiCoreTranslator::translate('The field ^1 is required', _t('Password')));
+                }
+
+                $object->active = 'Y';
+            }
+
+            if ($object->password)
+            {
+                if ($object->password !== $param['repassword'])
+                {
+                    throw new Exception(_t('The passwords do not match'));
+                }
+
+                $object->password = md5($object->password);
+            }
+            else
+            {
+                unset($object->password);
+            }
+
+            $object->frontpage_id = 41;
+            $object->store();
+            $object->clearParts();
+
+            if (!empty($data->groups))
+            {
+                foreach ($data->groups as $group_id)
+                {
+                    $mapped_group_id = $group_id;
+
+                    if ($mapped_group_id == 6)
+                    {
+                        $mapped_group_id = 5;
+                    }
+                    elseif ($mapped_group_id == 7)
+                    {
+                        $mapped_group_id = 4;
+                    }
+
+                    $object->addSystemUserGroup(new SystemGroup($mapped_group_id));
+                }
+            }
+
+            if (isset($data->instancias))
+            {
+                if( !empty($data->instancias) )   
+                {
+                    foreach( $param['instancias'] as $instancia_id )
+                    {
+                        try {
+                            $object->addSystemUserInstancia( new InstanciaGestora($instancia_id) );
+                        }
+                        catch (Exception $e) // in case of exception
+                        {
+                        }
+                    }
+                }
+            }
+
+            if (isset($data->escola))
+            {
+                if( !empty($data->escola) )   
+                {
+                    try {
+                            $object->addSystemUserEscola( new Colegio($data->escola) );
+                        }
+                    catch (Exception $e) // in case of exception
+                    {
+                    }
+
+                }
+            }
+
+            TTransaction::close();
+
+            $data = new stdClass;
+            $data->id = $object->id;
+            TForm::sendData('form_System_user', $data);
+
+            new TMessage('info', TAdiantiCoreTranslator::translate('Record saved'));
+        }
+        catch (Exception $e)
+        {
+            new TMessage('error', $e->getMessage());
+            TTransaction::rollback();
+            return;
         }
     }
     

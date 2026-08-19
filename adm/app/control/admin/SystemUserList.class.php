@@ -275,7 +275,7 @@ class SystemUserList extends TStandardList
 
     public function Delete($param = NULL)
     {
-
+        //echo '<pre>'; print_r($param); echo '</pre>'; return;
         // delete the related System_userSystem_user_group objects
         $id = $param['id']; //isset($id) ? $id : $this->id;
         TTransaction::open('jedieduca');
@@ -284,9 +284,20 @@ class SystemUserList extends TStandardList
         SystemUserProgram::where('system_user_id', '=', $id)->delete();
         SystemUser::where('id', '=', $id)->delete();
 
-        UsuarioInstanciaGestora::where('id_usuario', '=', $id)->delete();
+        //UsuarioInstanciaGestora::where('id_usuario', '=', $id)->delete();
+        UsuarioEscola::where('id_usuario', '=', $id)->delete();
         //Utilizador::where('idusuario', '=', $id)->delete();
         //DocenteDisciplina::where('iddocente', '=', $id)->delete();
+        TTransaction::close();
+
+        TTransaction::open('jedi-permissions');
+        SystemUserGroup::where('system_user_id', '=', $id)->delete();
+        SystemUserUnit::where('system_user_id', '=', $id)->delete();
+        SystemUserProgram::where('system_user_id', '=', $id)->delete();
+        SystemUserV82::where('id', '=', $id)->delete();
+
+        //UsuarioInstanciaGestora::where('id_usuario', '=', $id)->delete();
+        //UsuarioEscola::where('id_usuario', '=', $id)->delete();
         TTransaction::close();
 
            
