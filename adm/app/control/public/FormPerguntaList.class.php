@@ -17,6 +17,10 @@ class FormPerguntaList extends TStandardList
     protected $formgrid;
     protected $deleteButton;
     protected $transformCallback;
+    protected $totalCuradoria;
+    protected $totalCuradoriaNaoPublicada;
+    protected $totalSemCuradoria;
+    protected $totalSemCuradoriaPublicada;
 
     private function normalizeMultiValue($value)
     {
@@ -61,6 +65,7 @@ class FormPerguntaList extends TStandardList
         parent::setDefaultOrder('id', 'asc');         // defines the default order
         parent::addFilterField('id', '=', 'id'); // filterField, operator, formField
         parent::addFilterField('pergunta', 'like', 'pergunta'); // filterField, operator, formField
+        parent::addFilterField('publica', '=', 'publica'); // filterField, operator, formField
     
         // creates the form
         $this->form = new BootstrapFormBuilder('form_pergunta_list');
@@ -70,6 +75,17 @@ class FormPerguntaList extends TStandardList
         // create the form fields
         $id         = new TEntry('id');
 		$pergunta   = new TEntry('pergunta');
+        $publica    = new TRadioGroup('publica');
+        $publica->addItems(['1' => 'Sim', '0' => 'Não']);
+        $publica->setLayout('horizontal');
+        $curadoria  = new TRadioGroup('curadoria');
+        $curadoria->addItems(['1' => 'Sim', '0' => 'Não']);
+        $curadoria->setLayout('horizontal');
+        $this->totalCuradoria = new TLabel('0');
+        $this->totalCuradoriaNaoPublicada = new TLabel('0');
+        $this->totalSemCuradoria = new TLabel('0');
+        $this->totalSemCuradoriaPublicada = new TLabel('0');
+
         //$idTema     = new TDBCombo('idtema','jedieduca','Tema','id','nome');
         $categoria  = new TDBMultiSearch('idCategorias', 'jedieduca', 'Categoria', 'id', 'descricao', 'descricao');
        
@@ -77,14 +93,42 @@ class FormPerguntaList extends TStandardList
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel('Notícia')], [$pergunta] );
         $this->form->addFields( [new TLabel('Categoria')], [$categoria] );
+        $this->form->addFields( [new TLabel('Disponibilizada para o Jogo')], [$publica] );
+        $this->form->addFields( [new TLabel('Curadoria')], [$curadoria] );
+        $totalLabels = [
+            new TLabel('Total com curadoria : '),
+            new TLabel('Com curadoria e não publicada : '),
+            new TLabel('Total sem curadoria : '),
+            new TLabel('Sem curadoria e publicada : ')
+        ];
+        foreach ($totalLabels as $totalLabel) {
+            $totalLabel->style = 'color: black';
+        }
+        $this->totalCuradoria->style = 'color: black; font-weight: bold';
+        $this->totalCuradoriaNaoPublicada->style = 'color: black; font-weight: bold';
+        $this->totalSemCuradoria->style = 'color: black; font-weight: bold';
+        $this->totalSemCuradoriaPublicada->style = 'color: black; font-weight: bold';
+        $totalsTable = new TTable;
+        $totalsTable->style = 'width: 100%; margin-left: 0';
+        $row = $totalsTable->addRow();
+        $row->addCell($totalLabels[0])->add($this->totalCuradoria);
+        $row->addCell($totalLabels[1])->add($this->totalCuradoriaNaoPublicada);
+        $row->addCell($totalLabels[2])->add($this->totalSemCuradoria);
+        $row->addCell($totalLabels[3])->add($this->totalSemCuradoriaPublicada);
+        $this->form->addFields([$totalsTable]);
+
         
         $id->setSize('5%');
         $pergunta->setSize('70%');
+        //$publica->setValue('1');
+        //$curadoria->setValue('1');
         $categoria->setSize('100%',60);
 
         
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue('formPerguntaList_filter_data') );
+        $publica->setValue(null);
+        $curadoria->setValue(null);
         
         // add the search form actions
         $btn = $this->form->addAction(_t('Find'), new TAction(array($this, 'onSearch')), 'fa:search');
@@ -205,11 +249,17 @@ class FormPerguntaList extends TStandardList
         if (isset($data->idCategorias)) {
             $data->idCategorias = $this->normalizeMultiValue($data->idCategorias);
         }
+
+        $publica = isset($data->publica) && $data->publica !== ''
+            ? (int) $data->publica
+            : null;
+        $data->publica = $publica;
         
         // clear session filters
         TSession::setValue('formPerguntaList_filter_id',   NULL);
         TSession::setValue('formPerguntaList_filter_noticia',   NULL);
         TSession::setValue('formPerguntaList_filter_idCategorias',   NULL);
+        TSession::setValue('formPerguntaList_filter_curadoria',   NULL);
 
         if (isset($data->id) AND ($data->id)) {
             $filter = new TFilter('id', '=', $data->id); // create the filter
@@ -219,6 +269,11 @@ class FormPerguntaList extends TStandardList
         if (isset($data->pergunta) AND ($data->pergunta)) {
             $filter = new TFilter('pergunta', 'like', "%{$data->pergunta}%"); // create the filter
             TSession::setValue('formPerguntaList_filter_noticia',   $filter); // stores the filter in the session
+        }
+
+        TSession::setValue('formPerguntaList_filter_publica', NULL);
+        if ($publica !== null) {
+            TSession::setValue('formPerguntaList_filter_publica', new TFilter('publica', '=', $publica));
         }
 
         if (!empty($data->idCategorias)) {
@@ -244,6 +299,8 @@ class FormPerguntaList extends TStandardList
 
         $limit = 10;
 
+        $data = $this->form->getData();
+
         try
         {
             TTransaction::open('jedieduca');
@@ -253,7 +310,7 @@ class FormPerguntaList extends TStandardList
             $conn->query('DROP VIEW IF EXISTS perguntaview');
 
             $sql  = 'CREATE VIEW perguntaview AS ';
-            $sql .= 'SELECT p.id, p.id_tema, p.pergunta, p.analise_proposta, p.fala_proposta ';
+            $sql .= 'SELECT p.id, p.id_tema, p.pergunta, p.publica, p.analise_proposta, p.fala_proposta ';
             $sql .= 'FROM pergunta p ';
             $sql .= 'LEFT JOIN tema t ON p.id_tema = t.id ';
             $sql .= 'WHERE p.id_tema = 17 '; // tema default Fake News
@@ -264,7 +321,38 @@ class FormPerguntaList extends TStandardList
                 $sql .= 'AND t.id_autor = ' . (int) TSession::getValue('userid');
             }
 
+            $statsSql = 'SELECT '
+                      . 'SUM(CASE WHEN p.analise_proposta IS NOT NULL AND p.fala_proposta IS NOT NULL THEN 1 ELSE 0 END) AS total_curadoria, '
+                      . 'SUM(CASE WHEN p.analise_proposta IS NOT NULL AND p.fala_proposta IS NOT NULL AND p.publica = 0 THEN 1 ELSE 0 END) AS total_curadoria_nao_publicada, '
+                      . 'SUM(CASE WHEN p.analise_proposta IS NULL OR p.fala_proposta IS NULL THEN 1 ELSE 0 END) AS total_sem_curadoria, '
+                      . 'SUM(CASE WHEN (p.analise_proposta IS NULL OR p.fala_proposta IS NULL) AND p.publica = 1 THEN 1 ELSE 0 END) AS total_sem_curadoria_publicada '
+                      . 'FROM pergunta p '
+                      . 'LEFT JOIN tema t ON p.id_tema = t.id '
+                      . 'WHERE p.id_tema = 17';
+
+            if ((strlen(array_search(1, TSession::getValue('usergroupids'))) == 0) &&
+                (strlen(array_search(3, TSession::getValue('usergroupids'))) == 0))
+            {
+                $statsSql .= ' AND t.id_autor = ' . (int) TSession::getValue('userid');
+            }
+
+            $stats = $conn->query($statsSql)->fetch(PDO::FETCH_OBJ);
+            $this->totalCuradoria->setValue((int) $stats->total_curadoria);
+            $this->totalCuradoriaNaoPublicada->setValue((int) $stats->total_curadoria_nao_publicada);
+            $this->totalSemCuradoria->setValue((int) $stats->total_sem_curadoria);
+            $this->totalSemCuradoriaPublicada->setValue((int) $stats->total_sem_curadoria_publicada);
+
+            if ($data->curadoria==1)
+            {
+                $sql .= ' AND p.analise_proposta is not null AND p.fala_proposta is not null ';
+            }
+            else if ($data->curadoria==0)
+            {
+                $sql .= ' AND (p.analise_proposta is null OR p.fala_proposta is null) ';
+            }
+
             $conn->query($sql);
+            // echo '<pre>'; print_r($sql); echo '</pre>';
 
             $repository = new TRepository('PerguntaView');
             $criteria   = new TCriteria;
@@ -281,11 +369,26 @@ class FormPerguntaList extends TStandardList
                 $criteria->add(TSession::getValue('formPerguntaList_filter_noticia'));
             }
 
+            if (TSession::getValue('formPerguntaList_filter_publica')) {
+                $criteria->add(TSession::getValue('formPerguntaList_filter_publica'));
+            }
+
+            /*$data = TSession::getValue('formPerguntaList_filter_data');
+            if (isset($data->curadoria) && $data->curadoria !== '') {
+                if ((string) $data->curadoria === '1') {
+                    $criteria->add(new TFilter('analise_proposta', '!=', ''));
+                    $criteria->add(new TFilter('fala_proposta', '!=', ''));
+                } else {
+                    $curadoriaCriteria = new TCriteria;
+                    $curadoriaCriteria->add(new TFilter('analise_proposta', '=', ''), TExpression::OR_OPERATOR);
+                    $curadoriaCriteria->add(new TFilter('fala_proposta', '=', ''), TExpression::OR_OPERATOR);
+                    $criteria->add($curadoriaCriteria);
+                }
+            }*/
+
             // ==========================================================
             // ✅ FILTRO idCategorias (via tabela pergunta_categoria)
             // ==========================================================
-            $data = TSession::getValue('formPerguntaList_filter_data');
-
             if (!empty($data->idCategorias))
             {
                 $cats = $this->normalizeMultiValue($data->idCategorias);

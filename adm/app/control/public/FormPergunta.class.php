@@ -274,7 +274,7 @@ class FormPergunta extends TPage
         //$this->form->addFields( [new TLabel('Resposta 3')], [$resp3] );
         //$this->form->addFields( [new TLabel('Resposta 4')], [$resp4] );
         $this->form->addFields( [new TFormSeparator('')] ); 
-        $this->form->addFields( [new TLabel('Publica')], [$publica] );
+        $this->form->addFields( [new TLabel('Disponibiliza para o Jogo')], [$publica] );
 
         $container = new TVBox;
         $container->style = 'width: 100%';
@@ -374,7 +374,8 @@ class FormPergunta extends TPage
 
             // parâmetros fictícios, você pode puxar do banco/formulário
             $noticia        = $data->pergunta;
-            $resposta       = $data->resp_certa; 
+            $resposta       = $data->resp_certa;
+            $respostaChat   = $data->analise_proposta;  
             //$caracteristicas = $data->caract_gpt;
 
             $prompt = Prompt::getPrompt( $data->id_tema );
@@ -384,7 +385,7 @@ class FormPergunta extends TPage
             }
 
             //$response = $gpt->generateResponse($noticia, $resposta, $caracteristicas, 2); // Passo 2 -> 1 para selecionar características, 2 para elaborar a fala
-            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt_2, $noticia, $resposta, $prompt->caracteristicas); 
+            $response = $gpt->generateResponse($prompt->system_prompt, $prompt->user_prompt_2, $noticia, $resposta, $prompt->caracteristicas, $respostaChat); // Passo 2 -> 1 para selecionar características, 2 para elaborar a fala
 
             $data->fala_gpt = $response;
             $this->form->setData($data);

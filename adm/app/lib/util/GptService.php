@@ -48,8 +48,8 @@ class GptService
             'caracteristicas' => $caracteristicas,
             'respostaChat' => $respostaChat
         ];
-
         // Prompt do usuário, já no formato esperado
+        //echo "<pre>"; print_r($variaveis); echo "</pre>";
         $resUserPrompt = $this->substituirColchetes($userPrompt, $variaveis);
         //echo "<pre>"; print_r($resUserPrompt); echo "</pre>"; exit;
 
@@ -99,7 +99,7 @@ class GptService
      * @param string $caracteristicas Lista completa de características
      * @return string
      */
-    public function generateResponse_ok($noticia = null, $resposta = null, $caracteristicas = null, $passo, $respostaChat = null)
+    public function generateResponse_ok($noticia = null, $resposta = null, $caracteristicas = null, $passo = null, $respostaChat = null)
     {
         $variaveis = [
             'noticia' => $noticia,
