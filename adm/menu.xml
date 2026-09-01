@@ -39,9 +39,9 @@
       <menuitem label="Turma">
         <action>FormTurmaList</action>
       </menuitem>
-      <menuitem label="Aluno">
+      <!--<menuitem label="Aluno">
         <action>FormAlunoList#tipo=Cadastro</action>
-      </menuitem>
+      </menuitem>-->
     </menu>
   </menuitem>
   <menuitem label="Gestão de Conteúdo">

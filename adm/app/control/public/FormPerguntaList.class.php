@@ -97,9 +97,9 @@ class FormPerguntaList extends TStandardList
         $this->form->addFields( [new TLabel('Curadoria')], [$curadoria] );
         $totalLabels = [
             new TLabel('Total com curadoria : '),
-            new TLabel('Com curadoria e não publicada : '),
+            new TLabel('Com curadoria e não disponibilizada para jogo : '),
             new TLabel('Total sem curadoria : '),
-            new TLabel('Sem curadoria e publicada : ')
+            new TLabel('Sem curadoria e disponibilizada para jogo : ')
         ];
         foreach ($totalLabels as $totalLabel) {
             $totalLabel->style = 'color: black';

@@ -122,7 +122,7 @@ class SystemUserList extends TStandardList
 
         
         // create EDIT action
-        $action_edit = new TDataGridAction(array('SystemUserForm', 'onEdit'));
+        $action_edit = new TDataGridAction(array($this, 'onEdit'));
         $action_edit->setButtonClass('btn btn-default');
         $action_edit->setLabel(_t('Edit'));
         $action_edit->setImage('far:edit blue');
@@ -224,6 +224,12 @@ class SystemUserList extends TStandardList
      */
     public function onClone($param)
     {
+        if (!$this->canManageUser($param['id']))
+        {
+            new TMessage('error', _t('Permission denied'));
+            return;
+        }
+
         try
         {
             TTransaction::open('jedieduca');
@@ -245,6 +251,12 @@ class SystemUserList extends TStandardList
      */
     public function onImpersonation($param)
     {
+        if (!$this->canManageUser($param['id']))
+        {
+            new TMessage('error', _t('Permission denied'));
+            return;
+        }
+
         try
         {
             TTransaction::open('jedieduca');
@@ -262,11 +274,94 @@ class SystemUserList extends TStandardList
         }
     }
 
+    /**
+     * Check whether the current user can manage the target user
+     */
+    private function canManageUser($id)
+    {
+        $currentUserId = (int) TSession::getValue('userid');
+        $targetUserId  = (int) $id;
+        $usergroupids  = TSession::getValue('usergroupids');
+        $usergroupids  = is_array($usergroupids) ? $usergroupids : explode(',', (string) $usergroupids);
+        $usergroupids  = array_map('intval', $usergroupids);
+
+        if ($targetUserId === $currentUserId)
+        {
+            return true;
+        }
+
+        if (in_array(1, $usergroupids, true))
+        {
+            return true;
+        }
+
+        if (!in_array(7, $usergroupids, true))
+        {
+            return false;
+        }
+
+        $userEscolaId = (int) TSession::getValue('userEscolaId');
+        if (empty($userEscolaId))
+        {
+            return false;
+        }
+
+        try
+        {
+            TTransaction::open('jedieduca');
+            $conn = TTransaction::get();
+            $sql = 'SELECT COUNT(*)
+                    FROM system_user su
+                    INNER JOIN system_user_group sug ON sug.system_user_id = su.id
+                    INNER JOIN usuario_escola ue ON ue.id_usuario = su.id
+                    WHERE su.id = :target_id
+                      AND ue.id_escola = :escola_id
+                      AND sug.system_group_id IN (6, 8)';
+
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':target_id', $targetUserId, PDO::PARAM_INT);
+            $stmt->bindValue(':escola_id', $userEscolaId, PDO::PARAM_INT);
+            $stmt->execute();
+            $count = (int) $stmt->fetchColumn();
+            TTransaction::close();
+
+            return $count > 0;
+        }
+        catch (Exception $e)
+        {
+            if (TTransaction::isOpen())
+            {
+                TTransaction::close();
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Edit user
+     */
+    public function onEdit($param)
+    {
+        if (!$this->canManageUser($param['id']))
+        {
+            new TMessage('error', _t('Permission denied'));
+            return;
+        }
+
+        AdiantiCoreApplication::gotoPage('SystemUserForm', 'onEdit', $param);
+    }
+
         /**
      * Clone group
      */
     function onDelete($param)
     {
+        if (!$this->canManageUser($param['id']))
+        {
+            new TMessage('error', _t('Permission denied'));
+            return;
+        }
+
         $action = new TAction(array($this, 'Delete'));
         $action->setParameters($param); // pass the key parameter ahead
         
@@ -278,6 +373,13 @@ class SystemUserList extends TStandardList
         //echo '<pre>'; print_r($param); echo '</pre>'; return;
         // delete the related System_userSystem_user_group objects
         $id = $param['id']; //isset($id) ? $id : $this->id;
+
+        if (!$this->canManageUser($id))
+        {
+            new TMessage('error', _t('Permission denied'));
+            return;
+        }
+
         TTransaction::open('jedieduca');
         SystemUserGroup::where('system_user_id', '=', $id)->delete();
         SystemUserUnit::where('system_user_id', '=', $id)->delete();

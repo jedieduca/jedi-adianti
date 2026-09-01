@@ -9,8 +9,22 @@ error_reporting(0);
  * @copyright  Copyright (c) 2021 Memore
  */
 
+use Adianti\Database\TCriteria;
+use Adianti\Database\TFilter;
 use Adianti\Registry\TSession;
 use Adianti\Widget\Form\THidden;
+use Adianti\Widget\Wrapper\TDBMultiSearch;
+
+if (!class_exists('TDBMultiCombo'))
+{
+    class TDBMultiCombo extends TDBMultiSearch
+    {
+        public function __construct($name, $database, $model, $key, $value, $orderColumn = NULL, TCriteria $criteria = NULL)
+        {
+            parent::__construct($name, $database, $model, $key, $value, $orderColumn, $criteria);
+        }
+    }
+}
 
 $GLOBALS['key']=0;
 
@@ -38,13 +52,21 @@ class FormTurma2 extends TPage
         $this->form->appendPage('Oferta Turma');
         
         $id         = new THidden('id');
-        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome');
+        $escola_criteria = new TCriteria;
+        $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome', null, $escola_criteria);
         $serie      = new TDBCombo('id_serie_escolar','jedieduca','SerieEscolar','id','descricao');
         $identificacao = new TEntry('identificacao');
         $anoLetivo  = new TSpinner('ano');
         $anoLetivo->setRange(date('Y')-2, date('Y')+2, 1);
         $anoLetivo->setValue( date('Y') );
         $anoLetivo->setSize('10%');
+
+        $docenteCriteria = $this->getDocenteCriteria();
+        $id_professores = new TDBMultiCombo('id_professores', 'jedieduca', 'SystemUser', 'id', 'name', 'name', $docenteCriteria);
+        $id_professores->setMinLength(0);
+        $id_professores->setMaxSize(10);
+        $id_professores->setSize('100%');
 
         // validations
         $escola->addValidation('Escola', new TRequiredValidator);
@@ -61,6 +83,8 @@ class FormTurma2 extends TPage
         $row->layout = ['col-sm-2 control-label', 'col-sm-3'];
         $row = $this->form->addFields( [new TLabel('Ano Letivo')], [$anoLetivo] );
         $row->layout = ['col-sm-2 control-label', 'col-sm-1'];
+        $row = $this->form->addFields( [new TLabel('Professores')], [$id_professores] );
+        $row->layout = ['col-sm-2 control-label', 'col-sm-10'];
       
         $this->form->appendPage('Associar Alunos');
         $this->userList = new TCheckList('user_list');
@@ -130,6 +154,7 @@ class FormTurma2 extends TPage
                 
                 $data = $this->form->getData();
                 $data->user_list = $this->userList->getPostData();
+                $data->id_professores = $this->form->getField('id_professores')->getPostData();
                 $this->form->setData($data); //A função setData preenche o formulário com os valores informados.
                 /*O setData() é mais recomendado, pois o sendData() gera Javascript, logo mais código.
                 O sendData() só precisa ser usado quando o formulário já está na tela.*/
@@ -141,6 +166,21 @@ class FormTurma2 extends TPage
                 if (empty($data->id))
                   $data->id=$object->id;
                 //$message = 'Id: '. $data->id . '<br>';
+
+                $professores = is_array($data->id_professores) ? $data->id_professores : array_filter((array) $data->id_professores);
+                TurmaProfessor::where('id_turma', '=', $object->id)->delete();
+                foreach ($professores as $professor_id)
+                {
+                    if (empty($professor_id))
+                    {
+                        continue;
+                    }
+
+                    $professor = new TurmaProfessor;
+                    $professor->id_turma = $object->id;
+                    $professor->id_professor = $professor_id;
+                    $professor->store();
+                }
             }
             catch (Exception $e) // in case of exception
             {
@@ -213,8 +253,14 @@ class FormTurma2 extends TPage
                 {
                     $user_ids[] = $user->id;
                 }
+                $professor_ids = array();
+                foreach (TurmaProfessor::where('id_turma', '=', $key)->load() as $professor)
+                {
+                    $professor_ids[] = $professor->id_professor;
+                }
                 //echo '<pre>'; print_r($user_ids); echo '</pre>';
                 $object->user_list = $user_ids;
+                $object->id_professores = $professor_ids;
                 TTransaction::close();
 
                 // fill the form with the active record data
@@ -250,6 +296,26 @@ class FormTurma2 extends TPage
         $conn->query($sql);
         //echo '<pre>'; print_r($sql); echo '</pre>';
     }*/
+
+    private function getDocenteCriteria()
+    {
+        $criteria = new TCriteria;
+        $escolaId = TSession::getValue('userEscolaId');
+
+        if (empty($escolaId))
+        {
+            $criteria->add(new TFilter('id', 'IN', '(SELECT system_user_id FROM system_user_group WHERE system_group_id = 6)'));
+            return $criteria;
+        }
+
+        $criteria->add(new TFilter('id', 'IN', '(SELECT DISTINCT su.id
+            FROM system_user su
+            INNER JOIN system_user_group sug ON sug.system_user_id = su.id
+            INNER JOIN usuario_escola ue ON ue.id_usuario = su.id
+            WHERE sug.system_group_id = 6
+            AND ue.id_escola = ' . (int) $escolaId . ')'));
+        return $criteria;
+    }
 
     private function getTurmaKey($param)
     {
@@ -296,11 +362,16 @@ class FormTurma2 extends TPage
         $sql  = 'select distinct psu.id, psu.name ';
         $sql .= 'from system_user psu ';
         $sql .= 'inner join system_user_group psug on psu.id = psug.system_user_id ';
-        $sql .= 'inner join aluno_escola ae on ae.id_aluno = psu.id ';
-        $sql .= 'inner join escola e on e.id = ae.id_escola ';
-        $sql .= 'where e.id = '.(int) $idEscola.' ';
+        $sql .= 'inner join usuario_escola ue on ue.id_usuario = psu.id ';
+        $sql .= 'inner join escola e on e.id = ue.id_escola ';
+        $sql .= 'left join turma_aluno ta on ta.id_aluno = psu.id ';
+        $sql .= 'left join turma t on ta.id_turma = t.id ';
+        $sql .= 'where (e.id = '.(int) $idEscola.' '; 
+        $sql .= 'or (t.id_escola = '.(int) $idEscola.' and ta.id_turma = t.id)) ';
         $sql .= 'and psug.system_group_id = '.(int) $ini['permission']['default_groups'].' ';
         $sql .= 'order by psu.name ';
+
+        //echo '<pre>'; print_r($sql); echo '</pre>';
 
         $result = $conn->query($sql);
         foreach ($result as $row) 

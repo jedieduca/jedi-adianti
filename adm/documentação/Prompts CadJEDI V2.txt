@@ -4,4 +4,26 @@ Crie um método onSaveV82 do SystemUserForm.class.php para fazer o mesmo procedi
 
 O resto não muda. Você vai ter que criar um método Save($param) que chamará os métodos onSave($param) e onSaveV82($param). No código atual, onde tem a chamada para o método onSave, você substitui para chamar o método Save.
 
+______________________________________________________________________________
 
+Altere o SystemUserList.class.php para não permitir que usuários que tenham TSession::getValue('usergroupids')!=1 não consigam remover e nem editar usuários que sejam do TSession::getValue('usergroupids')=1
+
+____________________________________________________________________________________________
+
+Altere o SystemUserList.class.php para  que usuários que tenham TSession::getValue('usergroupids')=1,  não consigam remover ou editar o usuário que tenha o system_user.id=1
+
+_______________________________________________________________________
+
+Altere no FormPerguntaList.class.php para adicionar um campo do tipo TCheckBox que servirá como filtro para buscar todos os registros que tenha o campo publica = 1 caso o check esteja marcado e publica = 0 caso contrário. Mantenha a lógica do onSearch que chama o onReload, apenas acrescente o filtro.
+_________________________________________________________________________
+
+No FormPerguntaList.class.php, acrescente o filtro Curadoria, use o objeto do tipo TRadioGroup com os itens ['1' => 'Sim', '0' => 'Não']. No onSearch use a seguinte lógica: Opção 1 significa: pergunta.analise_proposta != "" e pergunta.fala_proposta !=""
+_____________________________________________________________________
+Adicione um objeto do tipo TDBMultiCombo chamado id_professores ($id_professores = new TDBMultiCombo('id_professor', 'jedieduca', 'SystemUser', 'id', 'name', 'name'); Adicione uma função nessa combo para buscar somente id que forem docentes, isto é, system_user.id=system_user_group.system_user_id e system_user_group.system_group_id=6). Altere os métodos onEdit e onSave para considerarem esse novo objeto (campo) no formulário. Use o modelo TurmaProfessor.class.php
+________________________________________________
+
+Altere o SystemUserList.class.php, para que o usuário logado (TSession::getValue('userid')) somente consiga editar o próprio usuário (system_user=TSession::getValue('userid'). Caso o usuário seja gestor (TSession::getValue('usergroupids'==7), ele conseguirá editar somente coordenadores (TSession::getValue('usergroupids')==8) e docentes (TSession::getValue('usergroupids')==6) da sua própria escola (TSession::getValue('userEscolaId'), isto é, system_user.id=(TSession::getValue('userid') e system_user.id=system_user_group.system_group_id e usuario_escola.id_usuario=system_user.id e usuario_escola.id_escola=TSession::getValue('userEscolaId').
+_______________________________________________________________________________
+
+Adicione no getDocenteCriteria(), o filtro para somente buscar docente que sejam da mesma escola, isto é, usuario_escola.id_usuario=system_user.id e usuario_escola.id_escola=TSession::getValue('userEscolaId')
+_________________________________________________________________________________________

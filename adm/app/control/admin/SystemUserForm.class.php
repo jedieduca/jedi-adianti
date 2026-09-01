@@ -125,7 +125,9 @@ class SystemUserForm extends TPage
             }
         }
 
-        $escola = new TDBCombo('escola', 'jedieduca', 'Colegio', 'id', 'nome');
+        $escola_criteria = new TCriteria;
+        $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        $escola = new TDBCombo('escola', 'jedieduca', 'Colegio', 'id', 'nome', null, $escola_criteria);
         
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'Save')), 'far:save');
         $btn->class = 'btn btn-sm btn-primary';
@@ -250,17 +252,22 @@ class SystemUserForm extends TPage
                     throw new Exception(_t('An user with this login is already registered'));
                 }
                 
-                if (SystemUser::newFromEmail($object->email) instanceof SystemUser)
-                {
-                    throw new Exception(_t('An user with this e-mail is already registered'));
-                }
-                
                 if ( empty($object->password) )
                 {
                     throw new Exception(TAdiantiCoreTranslator::translate('The field ^1 is required', _t('Password')));
                 }
                 
                 $object->active = 'Y';
+            }
+
+            if (!empty($object->email))
+            {
+                $existing_user = SystemUser::where('email', '=', $object->email)->first();
+
+                if ($existing_user instanceof SystemUser && $existing_user->id != $object->id)
+                {
+                    throw new Exception(_t('An user with this e-mail is already registered'));
+                }
             }
             
             if( $object->password )
@@ -338,6 +345,7 @@ class SystemUserForm extends TPage
                 if( !empty($data->escola) )   
                 {
                     try {
+                            UsuarioEscola::where('id_usuario', '=', $object->id)->delete();
                             $object->addSystemUserEscola( new Colegio($data->escola) );
                         }
                     catch (Exception $e) // in case of exception
@@ -392,11 +400,6 @@ class SystemUserForm extends TPage
                     throw new Exception(_t('An user with this login is already registered'));
                 }
 
-                if (SystemUserV82::newFromEmail($object->email) instanceof SystemUserV82)
-                {
-                    throw new Exception(_t('An user with this e-mail is already registered'));
-                }
-
                 if (empty($object->password))
                 {
                     throw new Exception(TAdiantiCoreTranslator::translate('The field ^1 is required', _t('Password')));
@@ -405,6 +408,17 @@ class SystemUserForm extends TPage
                 $object->active = 'Y';
             }
 
+            if (!empty($object->email))
+            {
+                $existing_user_v82 = SystemUserV82::where('email', '=', $object->email)->first();
+
+                if ($existing_user_v82 instanceof SystemUserV82 && $existing_user_v82->id != $object->id)
+                {
+                    throw new Exception(_t('An user with this e-mail is already registered'));
+                }
+            }
+
+            //echo '<pre>'; print_r($object->password); echo '</pre>';
             if ($object->password)
             {
                 if ($object->password !== $param['repassword'])
@@ -413,6 +427,7 @@ class SystemUserForm extends TPage
                 }
 
                 $object->password = md5($object->password);
+                //echo '<pre>'; print_r($object->password); echo '</pre>';
             }
             else
             {

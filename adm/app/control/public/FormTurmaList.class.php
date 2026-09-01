@@ -40,7 +40,9 @@ class FormTurmaList extends TStandardList
 
         // create the form fields
         //$id         = new TEntry('id');
-        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome');
+        $escola_criteria = new TCriteria;
+        $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome', null, $escola_criteria);
         $serie      = new TDBCombo('id_serie_escolar','jedieduca','SerieEscolar','id','descricao');
         $identificacao = new TEntry('identificacao');
  
@@ -159,7 +161,37 @@ class FormTurmaList extends TStandardList
         parent::add($container);
     }
 
-        public function onDelete($param)
+    public function onReload($param = NULL)
+    {
+        // Add default filter to show only turmas from user's escola
+        $criteria = new TCriteria;
+        $escolaId = TSession::getValue('userEscolaId');
+        echo "Escola ID: " . $escolaId . "<br>"; // Debugging line
+        
+        if (!empty($escolaId))
+        {
+            $criteria->add(new TFilter('id_escola', '=', (int) $escolaId));
+        }
+        
+        // Apply additional user filters
+        if (!empty($param['id_escola']))
+        {
+            $criteria->add(new TFilter('id_escola', '=', (int) $param['id_escola']));
+        }
+        if (!empty($param['id_serie_escolar']))
+        {
+            $criteria->add(new TFilter('id_serie_escolar', '=', (int) $param['id_serie_escolar']));
+        }
+        if (!empty($param['identificacao']))
+        {
+            $criteria->add(new TFilter('identificacao', 'like', '%' . $param['identificacao'] . '%'));
+        }
+        
+        parent::setCriteria($criteria);
+        parent::onReload($param);
+    }
+
+    public function onDelete($param)
     {
         $action = new TAction(array($this, 'Delete'));
         $action->setParameters($param); // pass the key parameter ahead

@@ -51,9 +51,9 @@ class ApplicationAuthenticationService
 
     public static function setEscola($escola_id)
     {
-        TSession::setValue('userunitid',   $escola_id );
+        TSession::setValue('userEscolaId',   $escola_id );
         $escola = Colegio::findInTransaction('jedieduca', $escola_id);
-        TSession::setValue('userunitname', ($escola && isset($escola->nome)) ? $escola->nome : '');
+        TSession::setValue('userEscola', ($escola && isset($escola->nome)) ? $escola->nome : '');
     }
 
     /**
