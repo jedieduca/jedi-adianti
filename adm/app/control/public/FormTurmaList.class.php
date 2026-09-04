@@ -166,12 +166,15 @@ class FormTurmaList extends TStandardList
         // Add default filter to show only turmas from user's escola
         $criteria = new TCriteria;
         $escolaId = TSession::getValue('userEscolaId');
-        echo "Escola ID: " . $escolaId . "<br>"; // Debugging line
+        //echo "Escola ID: " . $escolaId . "<br>"; // Debugging line
         
-        if (!empty($escolaId))
-        {
+        if (TSession::getValue('userid') != 1) {
             $criteria->add(new TFilter('id_escola', '=', (int) $escolaId));
         }
+        /*if (!empty($escolaId))
+        {
+            $criteria->add(new TFilter('id_escola', '=', (int) $escolaId));
+        }*/
         
         // Apply additional user filters
         if (!empty($param['id_escola']))

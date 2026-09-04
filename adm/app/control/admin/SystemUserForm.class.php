@@ -126,7 +126,15 @@ class SystemUserForm extends TPage
         }
 
         $escola_criteria = new TCriteria;
-        $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        if (TSession::getValue('userid') != 1)
+        {
+            $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        }
+        else
+        {
+            $escola_criteria->add(new TFilter('id', '>', 0));
+        }
+        //$escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
         $escola = new TDBCombo('escola', 'jedieduca', 'Colegio', 'id', 'nome', null, $escola_criteria);
         
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'Save')), 'far:save');

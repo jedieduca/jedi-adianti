@@ -53,7 +53,14 @@ class FormTurma2 extends TPage
         
         $id         = new THidden('id');
         $escola_criteria = new TCriteria;
-        $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        if (TSession::getValue('userid') != 1)
+        {
+            $escola_criteria->add(new TFilter('id', '=', TSession::getValue('userEscolaId')));
+        }
+        else
+        {
+            $escola_criteria->add(new TFilter('id', '>', 0));
+        }
         $escola     = new TDBCombo('id_escola','jedieduca','Colegio','id','nome', null, $escola_criteria);
         $serie      = new TDBCombo('id_serie_escolar','jedieduca','SerieEscolar','id','descricao');
         $identificacao = new TEntry('identificacao');
