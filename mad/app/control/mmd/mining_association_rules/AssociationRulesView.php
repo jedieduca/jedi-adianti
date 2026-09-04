@@ -44,7 +44,7 @@ class AssociationRulesView extends TStandardList
         parent::addFilterField('id', '=', 'id');                         // filterField, operator, formField
         parent::addFilterField('escola', 'like', 'name');                // filterField, operator, formField
         parent::addFilterField('turma', 'like', 'turma');                // filterField, operator, formField
-        parent::addFilterField('jogador', 'like', 'jogador');            // filterField, operator, formField
+        parent::addFilterField('nome', 'like', 'nome');            // filterField, operator, formField
         parent::addFilterField('capacidade_critica', '=', 'capacidade'); // filterField, operator, formField
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
@@ -57,7 +57,7 @@ class AssociationRulesView extends TStandardList
         // create the form fields
         $id         = new TEntry('id');
         $turma      = new TEntry('turma');
-        $jogador    = new TEntry('jogador');
+        $nome       = new TEntry('nome');
         $capacidade = new TCombo('capacidade');
         $capacidade->addItems( [
             'AUMENTOU' => 'AUMENTOU',
@@ -69,13 +69,13 @@ class AssociationRulesView extends TStandardList
         $id->setSize('30%');
         $turma->setSize('100%');
         $turma->style = 'margin-right:4px;';
-        $jogador->setSize('100%');
+        $nome->setSize('100%');
         $capacidade->setSize('100%');
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
-        $this->form->addFields( [new TLabel(_t('Player'))], [$jogador] );
+        $this->form->addFields( [new TLabel(_t('Player'))], [$nome] );
         $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade] );
 
         // keep the form filled during navigation with session data
@@ -96,7 +96,7 @@ class AssociationRulesView extends TStandardList
         $col_id       = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_school   = new TDataGridColumn('escola', _t('School'), 'left');
         $col_class    = new TDataGridColumn('turma', _t('Class'), 'left');
-        $col_player   = new TDataGridColumn('jogador', _t('Player'), 'left');
+        $col_player   = new TDataGridColumn('nome', _t('Player'), 'left');
         $col_gameDate = new TDataGridColumn('dt_jogo', _t('Game Date'), 'left');
         $col_age      = new TDataGridColumn('idade', _t('Age'), 'right');
         $col_capacity = new TDataGridColumn('capacidade_critica', _t('Critical Capacity'), 'left');
@@ -143,7 +143,7 @@ class AssociationRulesView extends TStandardList
         $col_class->setAction($order_class);
 
         $order_player = new TAction(array($this, 'onReload'));
-        $order_player->setParameter('order', 'jogador');
+        $order_player->setParameter('order', 'nome');
         $col_player->setAction($order_player);
 
         $order_gameDate = new TAction(array($this, 'onReload'));

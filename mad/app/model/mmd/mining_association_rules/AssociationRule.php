@@ -17,7 +17,8 @@ class AssociationRule extends TRecord
         parent::addAttribute('escola');
         parent::addAttribute('turma');
         parent::addAttribute('login');
-        parent::addAttribute('jogador');
+        parent::addAttribute('nome');
+//        parent::addAttribute('jogador');
         parent::addAttribute('dt_jogo');
         parent::addAttribute('idade');
         parent::addAttribute('auto_avaliacao');
