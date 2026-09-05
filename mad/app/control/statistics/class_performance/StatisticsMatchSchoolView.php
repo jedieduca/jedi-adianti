@@ -180,7 +180,7 @@ class StatisticsMatchSchoolView extends TStandardList
 
         // Panel que armazena o gráfico
         $this->panelImagem = new TPanelGroup();
-        $this->panelImagem->style = 'text-align: center; width: 100%;'; 
+        $this->panelImagem->style = 'text-align: center; width: 100%; max-height: 800px; overflow-y: auto; overflow-x: auto;';
         $this->imageContainer = new THBox;
         $this->imageContainer->style = 'width: 100%; margin-bottom: 20px; text-align: center;';
 
@@ -225,7 +225,8 @@ class StatisticsMatchSchoolView extends TStandardList
             if (isset($apiData['link_imagem']->grafico_escola_turma)){
                 // Componente de Imagem
                 $this->imageContainer = new TImage($apiData['link_imagem']->grafico_escola_turma);
-                $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
+                // $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
+                $this->imageContainer->style = 'width: 100%; height: auto; max-width: 1100px; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($this->imageContainer);
             }
     
