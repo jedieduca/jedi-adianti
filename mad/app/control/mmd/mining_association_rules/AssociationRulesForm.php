@@ -21,7 +21,7 @@ class AssociationRulesForm extends TPage
         parent::setTargetContainer('adianti_right_panel');
         // creates the form
         $this->form = new BootstrapFormBuilder('formAssociationRules');
-        $this->form->setFormTitle(_t('Association Rules'));
+        $this->form->setFormTitle(_t('Mining Association Rules'));
 
         $this->form->addHeaderActionLink(_t('Close'), new TAction([$this, 'onClose']), 'fa:times red');
         

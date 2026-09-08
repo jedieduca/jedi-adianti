@@ -595,4 +595,72 @@ class SystemUser extends TRecord
         }
         return $collection;
     }
+
+    /**
+     * Adiciona uma Escola ao Usuário
+     * @param Escola $escola Instância da classe Escola
+     */
+    public function addUsuarioEscola(Schools $escola)
+    {
+        $object = new SchoolsUser;
+        $object->id_escola = $escola->id;
+        $object->id_usuario = $this->id;
+        $object->store();
+    }
+
+    /**
+     * Retorna a coleção de objetos Escola vinculados ao usuário cruzando transações
+     * @return array Array de objetos Escola
+     */
+    public function getUsuarioEscolas()
+    {
+        $escolas = [];
+        
+        // Abre a transação específica da conexão do banco de escolas
+        TTransaction::open(SchoolsUser::DATABASE);
+        
+        // Busca os vínculos na tabela usuario_escola para este usuário
+        $vinculos = SchoolsUser::where('id_usuario', '=', $this->id)->load();
+        
+        if ($vinculos)
+        {
+            foreach ($vinculos as $vinculo)
+            {
+                $escolas[] = new Schools($vinculo->id_escola);
+            }
+        }
+        
+        TTransaction::close();
+        
+        return $escolas;
+    }
+
+    /**
+     * Retorna um array com os IDs das escolas do usuário
+     * @param bool $as_string Se verdadeiro, retorna como string separada por vírgula
+     */
+    public function getUsuarioEscolaIds($as_string = false)
+    {
+        $escolaids = [];
+        
+        TTransaction::open(SchoolsUser::DATABASE);
+        $vinculos = SchoolsUser::where('id_usuario', '=', $this->id)->load();
+        
+        if ($vinculos)
+        {
+            foreach ($vinculos as $vinculo)
+            {
+                $escolaids[] = (int) $vinculo->id_escola;
+            }
+        }
+        TTransaction::close();
+        
+        if ($as_string)
+        {
+            return implode(',', $escolaids);
+        }
+        
+        return $escolaids;
+    }    
+
 }

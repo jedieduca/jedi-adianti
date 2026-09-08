@@ -42,21 +42,47 @@ class AssociationRulesView extends TStandardList
         parent::setActiveRecord('AssociationRule');                      // defines the active record
         parent::setDefaultOrder('id', 'asc');                            // defines the default order
         parent::addFilterField('id', '=', 'id');                         // filterField, operator, formField
-        parent::addFilterField('escola', 'like', 'name');                // filterField, operator, formField
-        parent::addFilterField('turma', 'like', 'turma');                // filterField, operator, formField
-        parent::addFilterField('nome', 'like', 'nome');            // filterField, operator, formField
+        parent::addFilterField('escola', '=', 'escola');                 // filterField, operator, formField
+        parent::addFilterField('turma', '=', 'turma');                   // filterField, operator, formField
+        parent::addFilterField('nome', 'like', 'nome');                  // filterField, operator, formField
         parent::addFilterField('capacidade_critica', '=', 'capacidade'); // filterField, operator, formField
+
+        // ==========================================
+        // FILTRO DE SEGURANÇA NO GRID POR PERFIL
+        // ==========================================
+        $user_group_ids = TSession::getValue('usergroupids') ?? [];
+        $is_admin = in_array(1, $user_group_ids);
+
+        if (!$is_admin)
+        {
+            $user_escolas = TSession::getValue('userescolanames') ?? [];
+            if (!empty($user_escolas))
+            {
+                $criteria = new TCriteria;
+                $criteria->add(new TFilter('escola', 'in', array_values($user_escolas)));
+                parent::setCriteria($criteria);
+            }
+            else
+            {
+                $criteria = new TCriteria;
+                $criteria->add(new TFilter('id', '=', -1));
+                parent::setCriteria($criteria);
+            }
+        }
+        // ==========================================
+
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
 
         // creates the form
         $this->form = new BootstrapFormBuilder('form_search_AssociationRules');
-        $this->form->setFormTitle(_t('Association Rules'));
+        $this->form->setFormTitle(_t('Mining Association Rules'));
 
         // create the form fields
         $id         = new TEntry('id');
-        $turma      = new TEntry('turma');
+        $escola     = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma      = new TCombo('turma');   // Alterado de TEntry para TCombo        
         $nome       = new TEntry('nome');
         $capacidade = new TCombo('capacidade');
         $capacidade->addItems( [
@@ -65,8 +91,109 @@ class AssociationRulesView extends TStandardList
             'DIMINUIU' => 'DIMINUIU',
         ] );
 
+        // Define a ação de alteração da escola para atualizar as turmas via AJAX
+        $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
+
+        // 1. LER OS DADOS ANTERIORMENTE PESQUISADOS DA SESSÃO
+        $filter_data = TSession::getValue(__CLASS__ . '_filter_data');
+
+        // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
+        TTransaction::open('jedi');
+        
+        // Verifica se o usuário é Administrador (Grupo 1 por padrão no Adianti)
+        $user_group_ids = TSession::getValue('usergroupids') ?? [];
+        $is_admin = in_array(1, $user_group_ids); // 1 = Admin Group ID
+
+        $options_escolas = [];
+        
+        if ($is_admin)
+        {
+            // ADMINISTRADOR: Carrega TODAS as escolas cadastradas
+            $escolas = Schools::orderBy('nome', 'asc')->load();
+            if ($escolas)
+            {
+                foreach ($escolas as $objEscola)
+                {
+                    $nome_escola = $objEscola->nome ?? '';
+                    if (!empty($nome_escola))
+                    {
+                        $options_escolas[$nome_escola] = $nome_escola;
+                    }
+                }
+            }
+        }
+        else
+        {
+           
+            // USUÁRIO PADRÃO: LER DA SESSÃO E ORDENAR ALFABETICAMENTE
+            $user_escolas = TSession::getValue('userescolanames') ?? [];
+            
+            foreach ($user_escolas as $key => $nome_escola)
+            {
+                if (!empty($nome_escola))
+                {
+                    $options_escolas[$nome_escola] = $nome_escola;
+                }
+            }
+            
+            asort($options_escolas);
+            
+            if (count($options_escolas) === 1)
+            {
+                $escola->setValue(array_key_first($options_escolas));
+            }
+
+            $escola->setEditable(false);
+        }
+        
+        $escola->addItems($options_escolas);
+
+        // --- LÓGICA DE CARREGAMENTO INICIAL DAS TURMAS ---
+        $options_turmas = [];
+        $selected_escola = $filter_data->escola ?? $escola->getValue();
+
+        if (!empty($selected_escola))
+        {
+            // Busca o ID da escola pelo nome selecionado
+            $objEscola = Schools::where('nome', '=', $selected_escola)->first();
+            
+            if ($objEscola)
+            {
+                $turmas = Classes::where('id_escola', '=', $objEscola->id)
+                                 ->orderBy('identificacao', 'asc')
+                                 ->load();
+            }
+            else
+            {
+                $turmas = [];
+            }
+        }
+        else
+        {
+            // Se a escola estiver vazia, carrega TODAS as turmas
+            $turmas = Classes::orderBy('identificacao', 'asc')->load();
+        }
+
+        if ($turmas)
+        {
+            foreach ($turmas as $objTurma)
+            {
+                // CORREÇÃO: Usar o campo correto 'identificacao' mapeado na Model Classes
+                $identificacao = $objTurma->identificacao ?? '';
+            
+                if (!empty($identificacao))
+                {
+                    $options_turmas[$identificacao] = $identificacao;
+                }
+            }
+        }
+        
+        $turma->addItems($options_turmas);
+        TTransaction::close();
+
         // $id->setEditable(false);
         $id->setSize('30%');
+        $escola->setSize('100%');
         $turma->setSize('100%');
         $turma->style = 'margin-right:4px;';
         $nome->setSize('100%');
@@ -74,6 +201,7 @@ class AssociationRulesView extends TStandardList
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
+        $this->form->addFields( [new TLabel(_t('School'))], [$escola] ); // Campo Escola
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
         $this->form->addFields( [new TLabel(_t('Player'))], [$nome] );
         $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade] );
@@ -320,6 +448,66 @@ class AssociationRulesView extends TStandardList
         catch (Exception $e) 
         {
             new TMessage('error', $e->getMessage());    
+        }
+    }
+
+    /**
+     * Ação executada ao alterar a escola no formulário de busca
+     * Recarrega a combo de turmas dinamicamente
+     */
+    public static function onChangeEscola($param)
+    {
+        try
+        {
+            TTransaction::open('jedi'); 
+            
+            $options = [];
+            $escola_nome = $param['escola'] ?? null;
+
+            if (!empty($escola_nome))
+            {
+                // Busca a escola pelo nome para recuperar o seu ID
+                $objEscola = Schools::where('nome', '=', $escola_nome)->first();
+
+                if ($objEscola)
+                {
+                    // Filtra as turmas vinculadas ao id_escola encontrado
+                    $turmas = Classes::where('id_escola', '=', $objEscola->id)
+                                     ->orderBy('identificacao', 'asc')
+                                     ->load();
+                }
+                else
+                {
+                    $turmas = [];
+                }
+            }
+            else
+            {
+                // Se a escola estiver vazia, carrega TODAS as turmas
+                $turmas = Classes::orderBy('identificacao', 'asc')->load();
+            }
+
+            if ($turmas)
+            {
+                foreach ($turmas as $objTurma)
+                {
+                    $identificacao = $objTurma->identificacao ?? '';
+                    if (!empty($identificacao))
+                    {
+                        $options[$identificacao] = $identificacao;
+                    }
+                }
+            }
+
+            TTransaction::close();
+
+            // Recarrega o campo 'turma' do formulário
+            TCombo::reload('form_search_AssociationRules', 'turma', $options, true);
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            new TMessage('error', $e->getMessage());
         }
     }
 }

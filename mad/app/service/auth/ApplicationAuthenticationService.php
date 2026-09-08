@@ -111,6 +111,36 @@ class ApplicationAuthenticationService
         TSession::setValue('username', $user->name);
         TSession::setValue('usermail', $user->email);
         TSession::setValue('usercustomcode', $user->custom_code);
+
+        // ===================================================
+        // GUARDA AS ESCOLAS DO USUÁRIO NA SESSÃO
+        // ===================================================
+        
+        // 1. Array com os IDs das escolas associadas (ex: [1, 3, 5])
+        TSession::setValue('userescolaids', $user->getUsuarioEscolaIds());
+        
+        // 2. Opcional: Lista indexada com ID e Nome da escola
+        $escolas = $user->getUsuarioEscolas();
+        $escola_names = [];
+        
+        if ($escolas)
+        {
+            foreach ($escolas as $escola)
+            {
+                $escola_names[$escola->id] = $escola->nome;
+            }
+        }
+        TSession::setValue('userescolanames', $escola_names);
+        
+        // 3. Opcional: Se cada usuário estiver vinculado a apenas UMA escola por vez
+        if (!empty($escolas))
+        {
+            $primeiraEscola = reset($escolas);
+            TSession::setValue('userescolaid', $primeiraEscola->id);
+            TSession::setValue('userescolaname', $primeiraEscola->nome);
+        }
+        // ===================================================
+
         TSession::setValue('frontpage', '');
         TSession::setValue('programs',$programs);
         TSession::setValue('methods', $user->getMethods());
