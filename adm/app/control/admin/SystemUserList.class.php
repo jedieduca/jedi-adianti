@@ -35,6 +35,27 @@ class SystemUserList extends TStandardList
         parent::addFilterField('name', 'like', 'name'); // filterField, operator, formField
         parent::addFilterField('email', 'like', 'email'); // filterField, operator, formField
         parent::addFilterField('active', '=', 'active'); // filterField, operator, formField
+
+        if ((int) TSession::getValue('userid') !== 1)
+        {
+            $criteria = new TCriteria;
+            $userEscolaId = (int) TSession::getValue('userEscolaId');
+
+            if ($userEscolaId > 0)
+            {
+                $criteria->add(new TFilter(
+                    'id',
+                    'IN',
+                    "(SELECT id_usuario FROM usuario_escola WHERE id_escola = {$userEscolaId})"
+                ));
+            }
+            else
+            {
+                $criteria->add(new TFilter('id', '=', 0));
+            }
+
+            parent::setCriteria($criteria);
+        }
         
         // creates the form
         $this->form = new BootstrapFormBuilder('form_search_SystemUser');
@@ -66,7 +87,15 @@ class SystemUserList extends TStandardList
         // add the search form actions
         $btn = $this->form->addAction(_t('Find'), new TAction(array($this, 'onSearch')), 'fa:search');
         $btn->class = 'btn btn-sm btn-primary';
-        $this->form->addAction(_t('New'),  new TAction(array('SystemUserForm', 'onEdit')), 'fa:plus green');
+
+        $usergroupids = TSession::getValue('usergroupids');
+        $usergroupids = is_array($usergroupids) ? $usergroupids : explode(',', (string) $usergroupids);
+        $usergroupids = array_map('intval', $usergroupids);
+
+        if (array_intersect([1, 7, 8], $usergroupids))
+        {
+            $this->form->addAction(_t('New'), new TAction(array('SystemUserForm', 'onEdit')), 'fa:plus green');
+        }
         
         // creates a DataGrid
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
@@ -295,6 +324,34 @@ class SystemUserList extends TStandardList
             return true;
         }
 
+        if (in_array(6, $usergroupids, true))
+        {
+            try
+            {
+                TTransaction::open('jedieduca');
+                $conn = TTransaction::get();
+                $sql = 'SELECT COUNT(*)
+                        FROM system_user_group
+                        WHERE system_user_id = :target_id
+                          AND system_group_id = 4';
+
+                $stmt = $conn->prepare($sql);
+                $stmt->bindValue(':target_id', $targetUserId, PDO::PARAM_INT);
+                $stmt->execute();
+                $count = (int) $stmt->fetchColumn();
+                TTransaction::close();
+                return $count > 0;
+            }
+            catch (Exception $e)
+            {
+                if (TTransaction::isOpen())
+                {
+                    TTransaction::close();
+                }
+                return false;
+            }
+        }
+
         if (!in_array(7, $usergroupids, true))
         {
             return false;
@@ -316,7 +373,8 @@ class SystemUserList extends TStandardList
                     INNER JOIN usuario_escola ue ON ue.id_usuario = su.id
                     WHERE su.id = :target_id
                       AND ue.id_escola = :escola_id
-                      AND sug.system_group_id IN (6, 8)';
+                      AND sug.system_group_id IN (4, 6, 8)';
+
 
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':target_id', $targetUserId, PDO::PARAM_INT);
@@ -324,7 +382,9 @@ class SystemUserList extends TStandardList
             $stmt->execute();
             $count = (int) $stmt->fetchColumn();
             TTransaction::close();
-
+            //echo '<pre>'; print_r($sql); echo '</pre>';
+            //echo '<pre>'; print_r($targetUserId); echo '</pre>';
+            //echo '<pre>'; print_r($userEscolaId); echo '</pre>';
             return $count > 0;
         }
         catch (Exception $e)

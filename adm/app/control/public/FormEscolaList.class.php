@@ -170,5 +170,57 @@ class FormEscolaList extends TStandardList
         
         parent::add($container);
     }
+
+    public function onDelete($param)
+    {
+        $action = new TAction([$this, 'Delete']);
+        $action->setParameters($param);
+
+        new TQuestion(_t('Do you really want to delete ?'), $action);
+    }
+
+    public function Delete($param)
+    {
+        $id = $param['id'] ?? $param['key'] ?? null;
+
+        if (!$id)
+        {
+            new TMessage('error', _t('Record not found'));
+            return;
+        }
+
+        try
+        {
+            TTransaction::open('jedieduca');
+            $conn = TTransaction::get();
+            $stmt = $conn->prepare(
+                'SELECT COUNT(*) FROM usuario_escola WHERE id_escola = :id_escola'
+            );
+            $stmt->bindValue(':id_escola', (int) $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ((int) $stmt->fetchColumn() > 0)
+            {
+                TTransaction::close();
+                new TMessage('warning', 'A escola não pode ser removida porque possui usuários vinculados.');
+                return;
+            }
+
+            Colegio::where('id', '=', $id)->delete();
+            TTransaction::close();
+
+            $this->onReload();
+            new TMessage('info', _t('Record deleted'));
+        }
+        catch (Exception $e)
+        {
+            if (TTransaction::isOpen())
+            {
+                TTransaction::rollback();
+            }
+
+            new TMessage('error', '<b>Error</b> ' . $e->getMessage());
+        }
+    }
     
 }

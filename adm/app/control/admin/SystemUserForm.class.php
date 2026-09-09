@@ -95,7 +95,7 @@ class SystemUserForm extends TPage
         }
         else if ($this->currentUserIsInGroup('Docente'))
         {
-            $groups_criteria->add(new TFilter('name', 'IN', ['Discente']));
+            $groups_criteria->add(new TFilter('name', 'IN', ['Docente', 'Discente']));
         }
         else if (TSession::getValue('userid') != 1)
         {
@@ -163,6 +163,7 @@ class SystemUserForm extends TPage
         $name->addValidation(_t('Name'), new TRequiredValidator);
         $login->addValidation('Login', new TRequiredValidator);
         $email->addValidation('Email', new TEmailValidator);
+        $escola->addValidation('Escola', new TRequiredValidator);
         
         $this->form->addFields( [new TLabel('ID')], [$id],  [new TLabel(_t('Name'))], [$name] );
         $this->form->addFields( [new TLabel(_t('Login'))], [$login],  [new TLabel(_t('Email'))], [$email] );
@@ -241,6 +242,7 @@ class SystemUserForm extends TPage
             TTransaction::open('jedieduca');
             
             $data = $this->form->getData();
+            $this->form->validate();
             $this->form->setData($data);
             
             $object = new SystemUser;
