@@ -27,3 +27,16 @@ _______________________________________________________________________________
 
 Adicione no getDocenteCriteria(), o filtro para somente buscar docente que sejam da mesma escola, isto é, usuario_escola.id_usuario=system_user.id e usuario_escola.id_escola=TSession::getValue('userEscolaId')
 _________________________________________________________________________________________
+
+Adicione o filtro no objeto $escola do SystemUserForm.class.php para somente mostrar a escola que tiver o mesmo id do TSession::getValue('userEscolaId'), isto é, escola.id=TSession::getValue('userEscolaId')
+_________________________________________________________________
+
+Adicione o filtro no objeto $escola do FormTurma2.class.php para somente mostrar a escola que tiver o mesmo id do TSession::getValue('userEscolaId'), isto é, escola.id=TSession::getValue('userEscolaId')
+
+______________________________________________________________
+
+Com exceção de quando o userid for igual 1, o datagrid somente deve mostrar usuários (system_user.id) que sejam da mesma escola, isto é, system_user.id=usuario_escola.id_usuario e usuario_escola.id_escola=TSession::getValue('userEscolaId')
+_____________________________________________________________________
+
+Altere o método CanManageUser, para que o usuário que seja do grupo 6, isto é, TSession::getValue('usergroupids')==6, possa executar o método onEdit do SystemUserForm para usuários que sejam do grupo 4, isto é, system_user_group.system_user_id={id} e system_user_group.system_group_id=4
+__________________________________________________________________________

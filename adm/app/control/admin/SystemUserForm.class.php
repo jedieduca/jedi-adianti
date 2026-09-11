@@ -16,6 +16,7 @@ class SystemUserForm extends TPage
 {
     protected $form; // form
     protected $program_list;
+    protected $groups;
 
     /**
      * Check if the current user belongs to a group
@@ -97,11 +98,22 @@ class SystemUserForm extends TPage
         {
             $groups_criteria->add(new TFilter('name', 'IN', ['Docente', 'Discente']));
         }
+        else if ($this->currentUserIsInGroup('Secretaria'))
+        {
+            $groups_criteria->add(new TFilter('name', 'IN', ['Docente', 'Discente', 'Secretaria']));
+        }
         else if (TSession::getValue('userid') != 1)
         {
             $groups_criteria->add(new TFilter('name', '<>', 'Admin'));
         }
         $groups        = new TDBCheckGroup('groups','jedieduca','SystemGroup','id','name', null, $groups_criteria);
+        $this->groups  = $groups;
+
+        if ((int) TSession::getValue('usergroupids')[0] === 6)
+        {
+            TCheckGroup::disableField('form_System_user', 'groups');
+        }
+
         //$frontpage_id  = new TDBUniqueSearch('frontpage_id', 'permission', 'SystemProgram', 'id', 'name', 'name');
         // $units         = new TDBCheckGroup('units','permission','SystemUnit','id','name');
         
@@ -226,7 +238,7 @@ class SystemUserForm extends TPage
         $groups = (array) ($data->groups ?? []);
 
         if (!empty($groups) && array_filter($groups, function ($group_id) {
-            return in_array((int) $group_id, [6, 7], true);
+            return in_array((int) $group_id, [6, 7, 8], true);
         })) {
             $this->onSaveV82($param, $userId);
         }
@@ -444,7 +456,7 @@ class SystemUserForm extends TPage
                 unset($object->password);
             }
 
-            $object->frontpage_id = 41;
+            $object->frontpage_id = 30;
             $object->store();
             $object->clearParts();
 
@@ -461,6 +473,10 @@ class SystemUserForm extends TPage
                     elseif ($mapped_group_id == 7)
                     {
                         $mapped_group_id = 4;
+                    }
+                    elseif ($mapped_group_id == 8)
+                    {
+                        $mapped_group_id = 8;
                     }
 
                     $object->addSystemUserGroup(new SystemGroup($mapped_group_id));
@@ -580,6 +596,18 @@ class SystemUserForm extends TPage
                 }*/
 
                 $object->groups = $groups;
+
+                if ((int) TSession::getValue('usergroupids')[0] === 6)
+                {
+                    $items = $this->groups->getItems();
+                    $selected_items = array_intersect_key($items, array_flip($groups));
+                    TCheckGroup::reload('form_System_user', 'groups', $selected_items, [
+                        'layout' => 'horizontal',
+                        'value' => $groups
+                    ]);
+                    TCheckGroup::disableField('form_System_user', 'groups');
+                }
+
                 //$object->instancias  = $instancias;
                 if (count($vetEscola) > 0)
                 {

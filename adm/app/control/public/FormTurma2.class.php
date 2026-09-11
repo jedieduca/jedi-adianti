@@ -118,7 +118,7 @@ class FormTurma2 extends TPage
         $key = $this->getTurmaKey($param);
         $idEscola = $this->getEscolaTurmaSelecionada($param, $key);  //64 id da turmaoferta
         //echo '<pre>'; print_r($idEscola); echo '</pre>';
-        $items = $this->getAlunosEscola($idEscola);
+        $items = $this->getAlunosEscola($idEscola, $key);
         //echo '<pre>'; print_r($_GET['key']); echo '</pre>';
         $this->userList->addItems($items);
         TTransaction::close();
@@ -354,7 +354,7 @@ class FormTurma2 extends TPage
         return NULL;
     }
 
-    private function getAlunosEscola($idEscola)
+    private function getAlunosEscola($idEscola, $idTurma = NULL)
     {
         $items = array();
 
@@ -370,12 +370,10 @@ class FormTurma2 extends TPage
         $sql .= 'from system_user psu ';
         $sql .= 'inner join system_user_group psug on psu.id = psug.system_user_id ';
         $sql .= 'inner join usuario_escola ue on ue.id_usuario = psu.id ';
-        $sql .= 'inner join escola e on e.id = ue.id_escola ';
-        $sql .= 'left join turma_aluno ta on ta.id_aluno = psu.id ';
-        $sql .= 'left join turma t on ta.id_turma = t.id ';
-        $sql .= 'where (e.id = '.(int) $idEscola.' '; 
-        $sql .= 'or (t.id_escola = '.(int) $idEscola.' and ta.id_turma = t.id)) ';
+        $sql .= 'where ue.id_escola = '.(int) $idEscola.' ';
         $sql .= 'and psug.system_group_id = '.(int) $ini['permission']['default_groups'].' ';
+        $sql .= 'and (not exists (select 1 from turma_aluno ta where ta.id_aluno = psu.id) ';
+        $sql .= 'or exists (select 1 from turma_aluno ta where ta.id_aluno = psu.id and ta.id_turma = '.(int) $idTurma.')) ';
         $sql .= 'order by psu.name ';
 
         //echo '<pre>'; print_r($sql); echo '</pre>';

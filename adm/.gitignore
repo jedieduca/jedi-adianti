@@ -1,3 +1,8 @@
 /lib
 /vendor
 /.env
+/BD
+FormAluno.class.php
+FormAlunoList.class.php
+Aluno.class.php
+/cadjedi

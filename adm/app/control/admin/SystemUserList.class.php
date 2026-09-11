@@ -329,18 +329,35 @@ class SystemUserList extends TStandardList
             try
             {
                 TTransaction::open('jedieduca');
-                $conn = TTransaction::get();
-                $sql = 'SELECT COUNT(*)
-                        FROM system_user_group
-                        WHERE system_user_id = :target_id
-                          AND system_group_id = 4';
 
-                $stmt = $conn->prepare($sql);
-                $stmt->bindValue(':target_id', $targetUserId, PDO::PARAM_INT);
-                $stmt->execute();
-                $count = (int) $stmt->fetchColumn();
+                $targetGroup = SystemUserGroup::where('system_user_id', '=', $targetUserId)
+                                              ->where('system_group_id', '=', 4)
+                                              ->first();
+
+                if (!$targetGroup)
+                {
+                    TTransaction::close();
+                    return false;
+                }
+
+                $professorClasses = TurmaProfessor::where('id_professor', '=', $currentUserId)->load();
+                $sameClass = false;
+
+                foreach ($professorClasses as $professorClass)
+                {
+                    $studentClass = TurmaAluno::where('id_turma', '=', $professorClass->id_turma)
+                                               ->where('id_aluno', '=', $targetUserId)
+                                               ->first();
+
+                    if ($studentClass)
+                    {
+                        $sameClass = true;
+                        break;
+                    }
+                }
+
                 TTransaction::close();
-                return $count > 0;
+                return $sameClass;
             }
             catch (Exception $e)
             {
@@ -352,7 +369,7 @@ class SystemUserList extends TStandardList
             }
         }
 
-        if (!in_array(7, $usergroupids, true))
+        if (!in_array(7, $usergroupids, true) && !in_array(8, $usergroupids, true))
         {
             return false;
         }
@@ -367,13 +384,14 @@ class SystemUserList extends TStandardList
         {
             TTransaction::open('jedieduca');
             $conn = TTransaction::get();
-            $sql = 'SELECT COUNT(*)
+                        $targetGroups = in_array(8, $usergroupids, true) && !in_array(7, $usergroupids, true) ? '4, 6' : '4, 6, 8';
+                        $sql = "SELECT COUNT(*)
                     FROM system_user su
                     INNER JOIN system_user_group sug ON sug.system_user_id = su.id
                     INNER JOIN usuario_escola ue ON ue.id_usuario = su.id
                     WHERE su.id = :target_id
                       AND ue.id_escola = :escola_id
-                      AND sug.system_group_id IN (4, 6, 8)';
+                                            AND sug.system_group_id IN ({$targetGroups})";
 
 
             $stmt = $conn->prepare($sql);
