@@ -126,18 +126,6 @@ class CloudWordView extends TStandardList
         $column_news     = new TDataGridColumn('news', _t('News'), 'left');
         $column_answer   = new TDataGridColumn('answer', _t('News Classification'), 'center');
 
-        // $column_suporte->setTransformer( function($value) {
-        //     return number_format($value, 2, ',' );
-        // });
-
-        // $column_confianca->setTransformer( function($value) {
-        //     return number_format($value, 2, ',' );
-        // });
-
-        // $column_lift->setTransformer( function($value) {
-        //     return ($value >= 3.0) ? "<span class='label label-success' style='padding:4px'>{$value}</span>" : $value;
-        // });
-
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_category);
         $this->datagrid->addColumn($column_news);
@@ -247,12 +235,13 @@ class CloudWordView extends TStandardList
 
                         // Filtro por Categoria
                         if (!empty($filterData->filter_answer)) {
-                            $term   = strtolower($filterData->filter_answer);
-                            $answer = strtolower(implode(', ', (array) $row->respcerta));
-                            if (!str_contains($answer, $term)) {
+                            $term   = mb_strtolower(trim($filterData->filter_answer));
+                            $answer = mb_strtolower(trim((string) $row->resp_certa));
+
+                            if ($answer !== $term) {
                                 $match = false;
-                            }
-                        }
+                            }       
+                        }                       
 
                         return $match;
                     });
@@ -265,11 +254,12 @@ class CloudWordView extends TStandardList
 
                 $limit = 10;
                 $offset = isset($param['offset']) ? (int) $param['offset'] : 0;
-                $total_registros = $apiData['total_registros']; // Total vindo do Python
-                # $total_registros = count($dados);
+                // $total_registros = $apiData['total_registros']; // Total vindo do Python
+                $total_registros = count($dados);
 
                 // Corta o array para a página atual
-                $rows = array_slice($dados, $offset, $limit);
+                // $rows = array_slice($dados, $offset, $limit);
+                $rows = array_slice(array_values($dados), $offset, $limit);
 
                 foreach ($rows as $row) {
                     // Converter arrays de antecedentes/consequentes para string (ex: "item1, item2")
