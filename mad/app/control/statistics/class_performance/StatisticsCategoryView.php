@@ -197,12 +197,8 @@ class StatisticsCategoryView extends TStandardList
 
         // Panel que armazena o gráfico
         $this->panelImagem = new TPanelGroup();
-        $this->panelImagem->style = 'text-align: center; width: 100%; max-height: 850px; overflow-y: auto; overflow-x: auto;';
-
-/*        $this->imageContainer = new THBox;
-        // $this->imageContainer->style = 'width: 100%; margin-bottom: 20px; text-align: center;';
-        $this->imageContainer->style = 'width: 100%; height: auto; display: block; text-align: center; margin-bottom: 20px;';
-*/        
+        // $this->panelImagem->style = 'text-align: center; width: 100%; max-height: 850px; overflow-y: auto; overflow-x: auto;';
+        $this->panelImagem->style = 'text-align: center; width: 100%; height: auto; overflow: visible;';
 
         // vertical box container
         $container = new TVBox;
@@ -244,8 +240,8 @@ class StatisticsCategoryView extends TStandardList
             if (isset($apiData['link_imagem']->grafico_categoria_turma)){
                 // Componente de Imagem
                 $image = new TImage($apiData['link_imagem']->grafico_categoria_turma);
-                // $image->style = 'max-width: 100%; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
-                $image->style = 'max-width: 100%; height: auto; display: block; border: 1px solid #ddd;';
+                // $image->style = 'width: clamp(320px, 90vw, 1024px); max-width: 100%; height: auto; margin: 0 auto 20px auto; display: block; border: 1px solid #ddd; object-fit: contain;';
+                $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
                 $this->panelImagem->add($image);
             } else {
                 $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));     
