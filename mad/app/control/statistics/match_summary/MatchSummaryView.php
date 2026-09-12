@@ -87,7 +87,7 @@ class MatchSummaryView extends TStandardList
         $this->datagrid->setHeight(320);
 
         // creates the datagrid columns
-        $col_id         = new TDataGridColumn('id', 'Id', 'center', 50);
+        // $col_id         = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_escola     = new TDataGridColumn('escola', _t('School'), 'left');
         $col_turma      = new TDataGridColumn('turma', _t('Class'), 'left');
         $col_caract_obs = new TDataGridColumn('caracteristicas_observadas', _t('Observed Characteristics'), 'left');
@@ -104,7 +104,7 @@ class MatchSummaryView extends TStandardList
         });
 
         // add the columns to the DataGrid
-        $this->datagrid->addColumn($col_id);
+        // $this->datagrid->addColumn($col_id);
         $this->datagrid->addColumn($col_escola);
         $this->datagrid->addColumn($col_turma);
         $this->datagrid->addColumn($col_caract_obs);
@@ -112,9 +112,11 @@ class MatchSummaryView extends TStandardList
         $this->datagrid->addColumn($col_desvio);
 
         // creates the datagrid column actions
+        /* 
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');
         $col_id->setAction($order_id);
+        */
 
         $order_escola = new TAction(array($this, 'onReload'));
         $order_escola->setParameter('order', 'escola');
