@@ -46,6 +46,10 @@ class StatisticsAvaliationView extends TStandardList
         parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
         parent::addFilterField('turma', '=', 'turma');                         // filterField, operator, formField
         parent::addFilterField('avaliacao', 'like', 'avaliacao');             // filterField, operator, formField
+
+        // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
+        parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
+
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
@@ -56,9 +60,31 @@ class StatisticsAvaliationView extends TStandardList
 
         // create the form fields
         $id        = new TEntry('id');
-        $escola    = new TDBCombo('escola', 'jedi', 'StatisticsAvaliation', 'escola', 'escola');
-        $turma     = new TDBCombo('turma', 'jedi', 'StatisticsAvaliation', 'turma', 'turma');
+        $escola    = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma     = new TCombo('turma');   // Alterado de TEntry para TCombo
         $avaliacao = new TDBCombo('avaliacao', 'jedi', 'StatisticsAvaliation', 'avaliacao', 'avaliacao');
+
+        // Define a ação de alteração da escola para atualizar as turmas via AJAX
+        $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
+
+        // 1. LER OS DADOS ANTERIORMENTE PESQUISADOS DA SESSÃO
+        $filter_data = TSession::getValue(__CLASS__ . '_filter_data');
+
+        // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
+        TTransaction::open('jedi');
+
+        // Intercepta a query e exibe diretamente na saída padrão
+        // TTransaction::setLogger(new TLoggerSTD);
+
+        // 1. Carrega as Escolas e desabilita a combo se não for admin
+        ClassesSchoolService::loadEscolas($escola);
+
+        // 2. Determina a escola selecionada e carrega as Turmas
+        $selected_escola = $filter_data->escola ?? $escola->getValue();
+        $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
+        $turma->addItems($options_turmas);
+
+        TTransaction::close();        
 
         // $id->setEditable(false);
         $id->setSize('30%');
@@ -236,6 +262,36 @@ class StatisticsAvaliationView extends TStandardList
                 $params = array_filter($params);
             }
 
+            // ==========================================
+            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
+            // ==========================================
+            if (empty($params['escola']))
+            {
+                $profile = ClassesSchoolService::getUserProfile();
+
+                // Se NÃO for administrador, busca a escola atrelada ao usuário
+                if (!$profile['is_admin'])
+                {
+                    TTransaction::open('jedi');
+                    
+                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
+                    
+                    if ($usuario_escolas)
+                    {
+                        // Pega o primeiro vínculo do usuário
+                        $primeira_escola = reset($usuario_escolas);
+                        $objEscola = Schools::find($primeira_escola->id_escola);
+
+                        if ($objEscola && !empty($objEscola->nome))
+                        {
+                            $params['escola'] = $objEscola->nome;
+                        }
+                    }
+
+                    TTransaction::close();
+                }
+            }
+
             // Montamos a Query String
             $queryString = !empty($params) ? '?' . http_build_query($params) : '';
 
@@ -322,4 +378,29 @@ class StatisticsAvaliationView extends TStandardList
             new TMessage('error', $e->getMessage());    
         }
     }
+
+    /**
+     * Ação executada ao alterar a escola no formulário de busca
+     * Recarrega a combo de turmas dinamicamente
+     */
+    public static function onChangeEscola($param)
+    {
+        try
+        {
+            TTransaction::open('jedi');
+
+            $escola_nome    = $param['escola'] ?? null;
+            $options_turmas = ClassesSchoolService::getOptionsTurmas($escola_nome);
+
+            TTransaction::close();
+
+            // Recarrega o combo 'turma' do formulário atual
+            TCombo::reload('form_search_StatisticsAvaliation', 'turma', $options_turmas, true);
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            new TMessage('error', $e->getMessage());
+        }
+    }    
 }

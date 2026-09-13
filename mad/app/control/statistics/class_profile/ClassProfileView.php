@@ -45,6 +45,10 @@ class ClassProfileView extends TStandardList
         parent::addFilterField('id', '=', 'id');                 // filterField, operator, formField
         parent::addFilterField('escola', '=', 'escola');         // filterField, operator, formField
         parent::addFilterField('turma', '=', 'turma');           // filterField, operator, formField
+
+        // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
+        parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
+
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
@@ -55,8 +59,31 @@ class ClassProfileView extends TStandardList
 
         // create the form fields
         $id     = new TEntry('id');
-        $escola = new TDBCombo('escola', 'jedi', 'ClassProfile', 'escola', 'escola');
-        $turma  = new TDBCombo('turma', 'jedi', 'ClassProfile', 'turma', 'turma');
+        $escola = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma  = new TCombo('turma');   // Alterado de TEntry para TCombo
+
+        // Define a ação de alteração da escola para atualizar as turmas via AJAX
+        $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
+
+        // 1. LER OS DADOS ANTERIORMENTE PESQUISADOS DA SESSÃO
+        $filter_data = TSession::getValue(__CLASS__ . '_filter_data');
+
+        // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
+        TTransaction::open('jedi');
+
+        // Intercepta a query e exibe diretamente na saída padrão
+        // TTransaction::setLogger(new TLoggerSTD);
+
+        // 1. Carrega as Escolas e desabilita a combo se não for admin
+        ClassesSchoolService::loadEscolas($escola);
+
+        // 2. Determina a escola selecionada e carrega as Turmas
+        $selected_escola = $filter_data->escola ?? $escola->getValue();
+        $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
+        $turma->addItems($options_turmas);
+
+        TTransaction::close();
+
 
         // $id->setEditable(false);
         $id->setSize('30%');
@@ -298,4 +325,29 @@ class ClassProfileView extends TStandardList
             new TMessage('error', $e->getMessage());    
         }
     }
+
+    /**
+     * Ação executada ao alterar a escola no formulário de busca
+     * Recarrega a combo de turmas dinamicamente
+     */
+    public static function onChangeEscola($param)
+    {
+        try
+        {
+            TTransaction::open('jedi');
+
+            $escola_nome    = $param['escola'] ?? null;
+            $options_turmas = EscolaTurmaService::getOptionsTurmas($escola_nome);
+
+            TTransaction::close();
+
+            // Recarrega o combo 'turma' do formulário atual
+            TCombo::reload('form_search_AssociationRules', 'turma', $options_turmas, true);
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            new TMessage('error', $e->getMessage());
+        }
+    }    
 }

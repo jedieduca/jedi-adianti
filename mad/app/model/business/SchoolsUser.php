@@ -6,7 +6,7 @@ class SchoolsUser extends TRecord
     const DATABASE  = 'jedi';
     const TABLENAME  = 'usuario_escola';
     const PRIMARYKEY = 'id';
-    const IDPOLICY   = 'max'; // {max, serial}
+    const IDPOLICY   = 'serial'; // {max, serial}
 
     public function __construct($id = NULL)
     {

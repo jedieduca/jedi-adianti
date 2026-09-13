@@ -46,6 +46,10 @@ class StatisticsCategoryView extends TStandardList
         parent::addFilterField('escola', 'like', 'escola');             // filterField, operator, formField
         parent::addFilterField('turma', 'like', 'turma');             // filterField, operator, formField
         parent::addFilterField('categoria', 'like', 'categoria');     // filterField, operator, formField
+
+        // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
+        parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
+
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
@@ -56,9 +60,31 @@ class StatisticsCategoryView extends TStandardList
 
         // create the form fields
         $id        = new TEntry('id');
-        $escola    = new TDBCombo('escola', 'jedi', 'StatisticsCategory', 'escola', 'escola');
-        $turma     = new TDBCombo('turma', 'jedi', 'StatisticsCategory', 'turma', 'turma');
+        $escola    = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma     = new TCombo('turma');   // Alterado de TEntry para TCombo        
         $categoria = new TDBCombo('categoria', 'jedi', 'StatisticsCategory', 'categoria', 'categoria');
+
+        // Define a ação de alteração da escola para atualizar as turmas via AJAX
+        $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
+
+        // 1. LER OS DADOS ANTERIORMENTE PESQUISADOS DA SESSÃO
+        $filter_data = TSession::getValue(__CLASS__ . '_filter_data');
+
+        // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
+        TTransaction::open('jedi');
+
+        // Intercepta a query e exibe diretamente na saída padrão
+        // TTransaction::setLogger(new TLoggerSTD);
+
+        // 1. Carrega as Escolas e desabilita a combo se não for admin
+        ClassesSchoolService::loadEscolas($escola);
+
+        // 2. Determina a escola selecionada e carrega as Turmas
+        $selected_escola = $filter_data->escola ?? $escola->getValue();
+        $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
+        $turma->addItems($options_turmas);
+
+        TTransaction::close();        
 
         // $id->setEditable(false);
         $id->setSize('30%');
@@ -158,15 +184,6 @@ class StatisticsCategoryView extends TStandardList
         $panel->addFooter($this->pageNavigation);
        
         $this->filter_label = $panel->addHeaderActionLink(_t('Filters'), new TAction([$this, 'onShowCurtainFilters']), 'fa:filter fa-fw');
-        // $panel->addHeaderActionLink(_t('Apriori'), new TAction([$this, 'onShowCurtainApriori']), 'fa:sitemap fa-fw');
-
-        // header actions
-        // $dropdown = new TDropDown(_t('Algorithms'), 'fa:file-lines');
-        // $dropdown->style = 'height:37px; margin-left:4px; margin-right:4px;';
-        // $dropdown->setPullSide('right');
-        // $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
-        // $dropdown->addAction( _t('Apriori'), new TAction(['AprioriView', 'onEdit'], ['filtros' => TSession::getValue(get_class($this). '_filter_data'), 'data' => $this->datagrid]), 'fa:file-lines fa-fw blue');
-        // $panel->addHeaderWidget( $dropdown );
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->style = 'height:37px;';
@@ -232,6 +249,36 @@ class StatisticsCategoryView extends TStandardList
                 // Removemos campos vazios para não enviar "?escola=&turma="
                 $params = array_filter($params);
             }
+            
+            // ==========================================
+            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
+            // ==========================================
+            if (empty($params['escola']))
+            {
+                $profile = ClassesSchoolService::getUserProfile();
+
+                // Se NÃO for administrador, busca a escola atrelada ao usuário
+                if (!$profile['is_admin'])
+                {
+                    TTransaction::open('jedi');
+                    
+                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
+                    
+                    if ($usuario_escolas)
+                    {
+                        // Pega o primeiro vínculo do usuário
+                        $primeira_escola = reset($usuario_escolas);
+                        $objEscola = Schools::find($primeira_escola->id_escola);
+
+                        if ($objEscola && !empty($objEscola->nome))
+                        {
+                            $params['escola'] = $objEscola->nome;
+                        }
+                    }
+
+                    TTransaction::close();
+                }
+            }
 
             // 3. Montamos a Query String
             $queryString = !empty($params) ? '?' . http_build_query($params) : '';
@@ -240,7 +287,6 @@ class StatisticsCategoryView extends TStandardList
             if (isset($apiData['link_imagem']->grafico_categoria_turma)){
                 // Componente de Imagem
                 $image = new TImage($apiData['link_imagem']->grafico_categoria_turma);
-                // $image->style = 'width: clamp(320px, 90vw, 1024px); max-width: 100%; height: auto; margin: 0 auto 20px auto; display: block; border: 1px solid #ddd; object-fit: contain;';
                 $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
                 $this->panelImagem->add($image);
             } else {
@@ -251,7 +297,6 @@ class StatisticsCategoryView extends TStandardList
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
-
     }
 
     public function onShow()
@@ -323,4 +368,29 @@ class StatisticsCategoryView extends TStandardList
             new TMessage('error', $e->getMessage());    
         }
     }
+
+    /**
+     * Ação executada ao alterar a escola no formulário de busca
+     * Recarrega a combo de turmas dinamicamente
+     */
+    public static function onChangeEscola($param)
+    {
+        try
+        {
+            TTransaction::open('jedi');
+
+            $escola_nome    = $param['escola'] ?? null;
+            $options_turmas = ClassesSchoolService::getOptionsTurmas($escola_nome);
+
+            TTransaction::close();
+
+            // Recarrega o combo 'turma' do formulário atual
+            TCombo::reload('form_search_StatisticsCategory', 'turma', $options_turmas, true);
+        }
+        catch (Exception $e)
+        {
+            TTransaction::rollback();
+            new TMessage('error', $e->getMessage());
+        }
+    }    
 }

@@ -99,50 +99,57 @@ class AssociationRulesView extends TStandardList
 
         // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
         TTransaction::open('jedi');
-        
+
+        // Intercepta a query e exibe diretamente na saída padrão
+        // TTransaction::setLogger(new TLoggerSTD);
+
         // Verifica se o usuário é Administrador (Grupo 1 por padrão no Adianti)
         $user_group_ids = TSession::getValue('usergroupids') ?? [];
-        $is_admin = in_array(1, $user_group_ids); // 1 = Admin Group ID
+        $system_user_id = TSession::getValue('userid'); // ID do usuário logado
+
+        $is_admin       = in_array(1, $user_group_ids); // Grupo 1: Administrador
+        $is_gestor      = in_array(4, $user_group_ids); // Grupo 4: Gestor Escolar
+        $is_secretaria  = in_array(8, $user_group_ids); // Grupo 8: Secretaria
+        $is_professor   = in_array(5, $user_group_ids); // Grupo 5: Professor
 
         $options_escolas = [];
         
-        if ($is_admin)
-        {
+        if ($is_admin) {
+
             // ADMINISTRADOR: Carrega TODAS as escolas cadastradas
             $escolas = Schools::orderBy('nome', 'asc')->load();
-            if ($escolas)
-            {
-                foreach ($escolas as $objEscola)
-                {
+            if ($escolas) {
+
+                foreach ($escolas as $objEscola) {
                     $nome_escola = $objEscola->nome ?? '';
-                    if (!empty($nome_escola))
-                    {
+                    if (!empty($nome_escola)) {
                         $options_escolas[$nome_escola] = $nome_escola;
                     }
                 }
             }
-        }
-        else
-        {
-           
-            // USUÁRIO PADRÃO: LER DA SESSÃO E ORDENAR ALFABETICAMENTE
-            $user_escolas = TSession::getValue('userescolanames') ?? [];
+        } else {
             
-            foreach ($user_escolas as $key => $nome_escola)
-            {
-                if (!empty($nome_escola))
-                {
-                    $options_escolas[$nome_escola] = $nome_escola;
+            // Gestor, Secretaria ou Professor: carrega via vinculação usuario_escola
+            $usuario_escolas = SchoolsUser::where('id_usuario', '=', $system_user_id)->load();
+            if ($usuario_escolas) {
+                
+                foreach ($usuario_escolas as $vinculo) {
+
+                    $objEscola = Schools::find($vinculo->id_escola);
+                    if ($objEscola && !empty($objEscola->nome)) {
+                        $options_escolas[$objEscola->nome] = $objEscola->nome;
+                    }
                 }
             }
-            
+
             asort($options_escolas);
-            
-            if (count($options_escolas) === 1)
-            {
+
+            // Seleciona automaticamente se houver apenas uma escola associada
+            if (count($options_escolas) >= 1) {
                 $escola->setValue(array_key_first($options_escolas));
             }
 
+            // Trava o campo Escola para os perfis restritos
             $escola->setEditable(false);
         }
         
@@ -152,32 +159,57 @@ class AssociationRulesView extends TStandardList
         $options_turmas = [];
         $selected_escola = $filter_data->escola ?? $escola->getValue();
 
-        if (!empty($selected_escola))
-        {
+        if (!empty($selected_escola)) {
+
             // Busca o ID da escola pelo nome selecionado
             $objEscola = Schools::where('nome', '=', $selected_escola)->first();
             
-            if ($objEscola)
-            {
-                $turmas = Classes::where('id_escola', '=', $objEscola->id)
-                                 ->orderBy('identificacao', 'asc')
-                                 ->load();
-            }
-            else
-            {
+            if ($objEscola) {
+
+                if ($is_professor) {
+
+                    // PROFESSOR: Busca turmas vinculadas na entidade turma_professor para a escola selecionada
+                    $vinculos_professor = ClassesTeacher::where('id_professor', '=', $system_user_id)->load();
+                    $turma_ids = [];
+                    if ($vinculos_professor) {
+                        foreach ($vinculos_professor as $v) {
+                            $turma_ids[] = $v->id_turma;
+                        }
+                    }
+
+                    if (!empty($turma_ids)) {
+
+                        $turmas = Classes::where('id', 'in', $turma_ids)
+                                        ->orderBy('identificacao', 'asc')
+                                        ->load();
+                    } else {
+
+                        $turmas = [];
+                    }
+
+                } else {
+
+                    // ADMIN, GESTOR e SECRETARIA: Carrega todas as turmas da escola
+                    $turmas = Classes::where('id_escola', '=', $objEscola->id)
+                                    ->orderBy('identificacao', 'asc')
+                                    ->load();
+                }                
+            } else {
                 $turmas = [];
             }
-        }
-        else
-        {
-            // Se a escola estiver vazia, carrega TODAS as turmas
+
+        } else if ($is_admin) {
+            
+            // Administrador sem escola selecionada vê todas as turmas
             $turmas = Classes::orderBy('identificacao', 'asc')->load();
+        } else {
+            $turmas = [];
         }
 
-        if ($turmas)
-        {
-            foreach ($turmas as $objTurma)
-            {
+        if ($turmas) {
+
+            foreach ($turmas as $objTurma) {
+
                 // CORREÇÃO: Usar o campo correto 'identificacao' mapeado na Model Classes
                 $identificacao = $objTurma->identificacao ?? '';
             
@@ -189,6 +221,7 @@ class AssociationRulesView extends TStandardList
         }
         
         $turma->addItems($options_turmas);
+
         TTransaction::close();
 
         // $id->setEditable(false);
@@ -460,40 +493,59 @@ class AssociationRulesView extends TStandardList
         try
         {
             TTransaction::open('jedi'); 
-            
+        
             $options = [];
             $escola_nome = $param['escola'] ?? null;
 
-            if (!empty($escola_nome))
-            {
-                // Busca a escola pelo nome para recuperar o seu ID
+            $user_group_ids = TSession::getValue('usergroupids') ?? [];
+            $system_user_id = TSession::getValue('userid');
+            $is_professor   = in_array(4, $user_group_ids); // ID do grupo Professor
+
+            if (!empty($escola_nome)) {
+
                 $objEscola = Schools::where('nome', '=', $escola_nome)->first();
 
-                if ($objEscola)
-                {
-                    // Filtra as turmas vinculadas ao id_escola encontrado
-                    $turmas = Classes::where('id_escola', '=', $objEscola->id)
+                if ($objEscola) {
+
+                    if ($is_professor) {
+
+                        $vinculos_professor = ClassesTeacher::where('id_professor', '=', $system_user_id)->load();
+                        $turma_ids = [];
+                        if ($vinculos_professor) {
+
+                            foreach ($vinculos_professor as $v) {
+
+                                $turma_ids[] = $v->turma_id;
+                            }
+                        }
+
+                        $turmas = !empty($turma_ids) 
+                            ? Classes::where('id_escola', '=', $objEscola->id)
+                                     ->where('id', 'in', $turma_ids)
                                      ->orderBy('identificacao', 'asc')
-                                     ->load();
+                                    ->load()
+                            : [];
+
+                    } else {
+                        $turmas = Classes::where('id_escola', '=', $objEscola->id)
+                                         ->orderBy('identificacao', 'asc')
+                                         ->load();
+                    }
+                } else {
+
+                $turmas = [];
                 }
-                else
-                {
-                    $turmas = [];
-                }
-            }
-            else
-            {
-                // Se a escola estiver vazia, carrega TODAS as turmas
-                $turmas = Classes::orderBy('identificacao', 'asc')->load();
+            } else {   
+
+             $turmas = [];
             }
 
-            if ($turmas)
-            {
-                foreach ($turmas as $objTurma)
-                {
+            if ($turmas) {
+
+                foreach ($turmas as $objTurma) {
+
                     $identificacao = $objTurma->identificacao ?? '';
-                    if (!empty($identificacao))
-                    {
+                    if (!empty($identificacao)) {
                         $options[$identificacao] = $identificacao;
                     }
                 }
@@ -501,7 +553,6 @@ class AssociationRulesView extends TStandardList
 
             TTransaction::close();
 
-            // Recarrega o campo 'turma' do formulário
             TCombo::reload('form_search_AssociationRules', 'turma', $options, true);
         }
         catch (Exception $e)
