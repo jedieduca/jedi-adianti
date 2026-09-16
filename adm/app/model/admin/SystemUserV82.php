@@ -1,6 +1,6 @@
 <?php
 /**
- * SystemUser
+ * SystemUserV82
  *
  * @version    8.2
  * @package    model
@@ -193,10 +193,10 @@ class SystemUserV82 extends TRecord
     /**
      * Add a Escola to the user
      */
-    public function addSystemUserEscola(Colegio $escola)
+    public function addSystemUserEscola($id_escola)
     {
         $object = new UsuarioEscola;
-        $object->id_escola = $escola->id;
+        $object->id_escola = $id_escola;
         $object->id_usuario = $this->id;
         $object->store();
     }

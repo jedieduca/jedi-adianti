@@ -121,8 +121,15 @@ class FormTurmaList extends TStandardList
         // create EDIT action
         $action_edit = new TDataGridAction(array('FormTurma2', 'onEdit'));
         $action_edit->setButtonClass('btn btn-default');
-        $action_edit->setLabel(_t('Edit'));
-        $action_edit->setImage('far:edit blue');
+        $action_edit->setLabel('Turma');
+        $action_edit->setImage('fab:tumblr blue');
+        $action_edit->setField('id');
+        $this->datagrid->addAction($action_edit);
+
+        $action_edit = new TDataGridAction(array('FormEnturmamento', 'onEdit'));
+        $action_edit->setButtonClass('btn btn-default');
+        $action_edit->setLabel('Enturmamento');
+        $action_edit->setImage('fa:users blue');
         $action_edit->setField('id');
         $this->datagrid->addAction($action_edit);
         

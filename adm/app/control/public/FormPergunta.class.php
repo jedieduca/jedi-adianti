@@ -49,6 +49,7 @@ class FormPergunta extends TPage
 
         $lblTema = new TLabel('Tema');
         $idTema  = new THidden('id_tema');
+        $idTema->setValue(17);  //tema default Fake News
 
         $lblPergunta = new TLabel('Noticia');
         $pergunta = new TText('pergunta');
@@ -338,6 +339,7 @@ class FormPergunta extends TPage
                     A notícia só aparece em um site obscuro ou em redes sociais.
                     Notícias verdadeiras costumam ser reportadas por mais de um veículo de confiança.';*/
 
+            echo '<pre>'; print_r($data); echo '</pre>';
             $prompt = Prompt::getPrompt( $data->id_tema );
             if (empty($prompt->id)) {
                 throw new Exception('Prompt não encontrado para o tema selecionado. Verifique.');
@@ -774,7 +776,7 @@ class FormPergunta extends TPage
                 $this->form->clear();
                 $this->labelId->setValue('');
                 $obj = new stdClass;
-                $obj->idtema = '17'; //tema default Fake News
+                $obj->id_tema = '17'; //tema default Fake News
                 TSession::setValue('id','');
                 $objPrompt = Prompt::getPrompt( 17 ); //tema default Fake News
                 $obj->caract_sugerida=$objPrompt->caracteristicas;

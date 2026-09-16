@@ -504,7 +504,7 @@ class SystemUserForm extends TPage
                 if( !empty($data->escola) )   
                 {
                     try {
-                            $object->addSystemUserEscola( new Colegio($data->escola) );
+                            $object->addSystemUserEscola($data->escola);
                         }
                     catch (Exception $e) // in case of exception
                     {

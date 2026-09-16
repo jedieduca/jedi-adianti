@@ -43,11 +43,32 @@ class SystemUserList extends TStandardList
 
             if ($userEscolaId > 0)
             {
-                $criteria->add(new TFilter(
-                    'id',
-                    'IN',
-                    "(SELECT id_usuario FROM usuario_escola WHERE id_escola = {$userEscolaId})"
-                ));
+                if (in_array(7, TSession::getValue('usergroupids')) || in_array(8, TSession::getValue('usergroupids')))
+                {
+                    $criteria->add(new TFilter(
+                        'id',
+                        'IN',
+                        "(SELECT id_usuario FROM usuario_escola WHERE id_escola = {$userEscolaId})"
+                    ));
+                }
+                else if (in_array(6, TSession::getValue('usergroupids')))
+                {
+                    $id_prof = TSession::getValue('userid');
+                    $criteria->add(new TFilter(
+                        'id',
+                        'IN',
+                        "(SELECT su.id  FROM usuario_escola ue
+                            INNER JOIN turma_professor tp ON ue.id_usuario=tp.id_professor
+                            INNER JOIN turma_aluno ta ON tp.id_turma=ta.id_turma
+                            INNER JOIN system_user su ON ta.id_aluno=su.id
+                            INNER JOIN escola e ON ue.id_escola=e.id
+                            WHERE id_escola = {$userEscolaId} and tp.id_professor={$id_prof}
+                            UNION
+                            SELECT id  FROM system_user WHERE id={$id_prof})"
+                    ));
+                }
+
+
             }
             else
             {
@@ -477,7 +498,7 @@ class SystemUserList extends TStandardList
         SystemUserV82::where('id', '=', $id)->delete();
 
         //UsuarioInstanciaGestora::where('id_usuario', '=', $id)->delete();
-        //UsuarioEscola::where('id_usuario', '=', $id)->delete();
+        UsuarioEscola::where('id_usuario', '=', $id)->delete();
         TTransaction::close();
 
            

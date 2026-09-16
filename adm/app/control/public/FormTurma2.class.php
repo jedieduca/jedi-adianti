@@ -93,7 +93,7 @@ class FormTurma2 extends TPage
         $row = $this->form->addFields( [new TLabel('Professores')], [$id_professores] );
         $row->layout = ['col-sm-2 control-label', 'col-sm-10'];
       
-        $this->form->appendPage('Associar Alunos');
+        /*$this->form->appendPage('Associar Alunos');
         $this->userList = new TCheckList('user_list');
         $this->userList->setIdColumn('id');
         $this->userList->addColumn('id',    'ID',    'center',  '10%');
@@ -111,19 +111,14 @@ class FormTurma2 extends TPage
         //$this->form->addFields( [new TFormSeparator('Alunos')] );
         $this->form->addFields( [$this->userList] );
         
-        //TTransaction::open('permission');
-        //$this->userList->addItems( SystemUser::get() );
-
         TTransaction::open('jedieduca');
         $key = $this->getTurmaKey($param);
         $idEscola = $this->getEscolaTurmaSelecionada($param, $key);  //64 id da turmaoferta
-        //echo '<pre>'; print_r($idEscola); echo '</pre>';
         $items = $this->getAlunosEscola($idEscola, $key);
-        //echo '<pre>'; print_r($_GET['key']); echo '</pre>';
         $this->userList->addItems($items);
         TTransaction::close();
+        */
 
-        //$this->form->addAction('Send', new TAction(array($this, 'onSend')), 'far:check-circle green');
         $btn = $this->form->addAction( _t('Save'), new TAction(array($this, 'onSave')), 'far:save');
         $btn->class = 'btn btn-sm btn-primary';
         //$btn->style = 'background-color: #245c00';
@@ -160,7 +155,7 @@ class FormTurma2 extends TPage
                 TTransaction::open('jedieduca');
                 
                 $data = $this->form->getData();
-                $data->user_list = $this->userList->getPostData();
+                //$data->user_list = $this->userList->getPostData();
                 $data->id_professores = $this->form->getField('id_professores')->getPostData();
                 $this->form->setData($data); //A função setData preenche o formulário com os valores informados.
                 /*O setData() é mais recomendado, pois o sendData() gera Javascript, logo mais código.
@@ -172,7 +167,6 @@ class FormTurma2 extends TPage
 
                 if (empty($data->id))
                   $data->id=$object->id;
-                //$message = 'Id: '. $data->id . '<br>';
 
                 $professores = is_array($data->id_professores) ? $data->id_professores : array_filter((array) $data->id_professores);
                 TurmaProfessor::where('id_turma', '=', $object->id)->delete();
@@ -193,8 +187,7 @@ class FormTurma2 extends TPage
             {
             }
 
-            //$this->RemoveAlunos($object->id);
-            TurmaAluno::RemoveAlunos($object->id);
+            /*TurmaAluno::RemoveAlunos($object->id);
             //echo '<pre>'; print_r(var_dump($data)); echo '</pre>';
             $vetAlunos = TSession::getValue('selected_users');
             if (!empty($vetAlunos))
@@ -204,7 +197,7 @@ class FormTurma2 extends TPage
                     $object->addSystemUser($aluno);
                     //$object->addSystemUser( new SystemUser( $user_id ) );
                 }
-            }
+            }*/
 
             TTransaction::close();
             
@@ -266,7 +259,8 @@ class FormTurma2 extends TPage
                     $professor_ids[] = $professor->id_professor;
                 }
                 //echo '<pre>'; print_r($user_ids); echo '</pre>';
-                $object->user_list = $user_ids;
+                /*$object->user_list = $user_ids;
+                TSession::setValue('selected_users', $object->user_list);*/
                 $object->id_professores = $professor_ids;
                 TTransaction::close();
 
