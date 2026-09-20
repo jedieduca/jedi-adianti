@@ -100,7 +100,7 @@
     <menuitem label='_t{Statistics}'>
         <icon>fas:arrow-up-right-dots fa-fw</icon>
         <menu>
-            <menuitem label='_t{Number of Matches}'>
+            <menuitem label='_t{Number of matches played}'>
                 <icon>fas:arrow-up-1-9 fa-fw</icon>
                 <action>NumMatchesView</action>
             </menuitem>

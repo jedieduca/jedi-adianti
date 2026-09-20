@@ -84,8 +84,8 @@ class ApplicationTranslator
         $this->messages['es'][] = 'Número de Partidos';
 
         $this->messages['en'][] = 'Number of matches played';
-        $this->messages['pt'][] = 'Número de Partidas Jogadas';
-        $this->messages['es'][] = 'Número de partidos jugados';
+        $this->messages['pt'][] = 'Nº de Partidas Jogadas';
+        $this->messages['es'][] = 'Nº de partidos jugados';
 
         $this->messages['en'][] = 'Time Spent';
         $this->messages['pt'][] = 'Tempo Gasto';
