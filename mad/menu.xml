@@ -100,6 +100,10 @@
     <menuitem label='_t{Statistics}'>
         <icon>fas:arrow-up-right-dots fa-fw</icon>
         <menu>
+            <menuitem label='_t{Number of Matches}'>
+                <icon>fas:arrow-up-1-9 fa-fw</icon>
+                <action>NumMatchesView</action>
+            </menuitem>
             <menuitem label='_t{News Profile}'>
                 <icon>fas:newspaper fa-fw</icon>
                 <menu>

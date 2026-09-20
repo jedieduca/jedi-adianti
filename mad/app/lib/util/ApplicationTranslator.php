@@ -83,6 +83,10 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Número de Partidas';
         $this->messages['es'][] = 'Número de Partidos';
 
+        $this->messages['en'][] = 'Number of matches played';
+        $this->messages['pt'][] = 'Número de Partidas Jogadas';
+        $this->messages['es'][] = 'Número de partidos jugados';
+
         $this->messages['en'][] = 'Time Spent';
         $this->messages['pt'][] = 'Tempo Gasto';
         $this->messages['es'][] = 'Tiempo Dedicado';
@@ -234,6 +238,18 @@ class ApplicationTranslator
         $this->messages['en'][] = 'News';
         $this->messages['pt'][] = 'Notícia';
         $this->messages['es'][] = 'Noticias';
+
+        $this->messages['en'][] = 'Initial Match Date';
+        $this->messages['pt'][] = 'Data Inicial da Partida';
+        $this->messages['es'][] = 'Fecha de inicio del partido';
+
+        $this->messages['en'][] = 'Date of the Final Match';
+        $this->messages['pt'][] = 'Data Final da Partida';
+        $this->messages['es'][] = 'Fecha del partido final';
+
+        $this->messages['en'][] = 'Student';
+        $this->messages['pt'][] = 'Aluno';
+        $this->messages['es'][] = 'Estudiante';
 
         //<entry-point>
         
