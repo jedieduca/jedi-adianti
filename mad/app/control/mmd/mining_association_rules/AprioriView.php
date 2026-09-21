@@ -28,7 +28,7 @@ class AprioriView extends TPage
     protected $datagrid;       // listing
     protected $pageNavigation; // Page Navigation
     protected $form; // Form de Busca
- 
+    protected $cellSummary; // <--- ADICIONE ESTA PROPRIEDADE 
 
     public function __construct()
     {
@@ -84,7 +84,19 @@ class AprioriView extends TPage
         
         // Organizando em uma grade para ficar visualmente limpo
         $table = new TTable;
-        $table->style = 'width: 100%; margin: 10px; border-collapse: separate; border-spacing: 5px;';
+        $table->style = 'width: 100%; margin: 10px; border-collapse: separate; border-spacing: 5px;'; 
+
+        // =========================================================
+        // Linha para exibir os filtros ativos (Container TVBox)
+        // =========================================================
+        $this->cellSummary = new TVBox;
+        $this->cellSummary->style = 'width: 100%;';
+        $this->cellSummary->add($this->buildFilterSummary());
+
+        $row_summary = $table->addRow();
+        $cell_summary = $row_summary->addCell($this->cellSummary);
+        $cell_summary->colspan = 2;
+        // =========================================================
 
         // --- Linha: Text Search ---
         $row1 = $table->addRow();
@@ -183,8 +195,56 @@ class AprioriView extends TPage
     {
         // Chamada ao serviço para confecção do gráfico
         try {
-    
-            $apiData = (array) JediEducaRestService::getData('/regras');
+            // ============================================================================
+            // 1. RESOLUÇÃO DOS FILTROS
+            // ============================================================================
+            if (array_key_exists('filtros', $param ?? []) && !empty($param['filtros'])) {
+                // Caso venha via parâmetro explícito
+                $filterObject = (object) $param['filtros'];
+                TSession::setValue(__CLASS__.'_filter_object', $filterObject);
+            } else if (!isset($param['offset'])) {
+                // Ao abrir a tela diretamente pelo menu/botão (sem paginação):
+                // Lê SEMPRE os filtros mais recentes salvos na sessão da AssociationRulesView
+                $sessao_filtros = (array) TSession::getValue('AssociationRulesView_filter_data');
+                
+                // Limpa valores nulos ou vazios
+                $filtros_ativos = array_filter($sessao_filtros, function($valor) {
+                    return !is_null($valor) && trim((string) $valor) !== '';
+                });
+
+                $filterObject = !empty($filtros_ativos) ? (object) $filtros_ativos : null;
+                TSession::setValue(__CLASS__.'_filter_object', $filterObject);
+            } else {
+                // Em navegações de paginação do DataGrid -> Mantém o filtro já ativo na sessão do AprioriView
+                $filterObject = TSession::getValue(__CLASS__.'_filter_object');
+            }
+
+            // ============================================================================
+            // 2. ATUALIZAÇÃO VISUAL (Badges HTML)
+            // ============================================================================
+            if ($this->cellSummary) {
+                $this->cellSummary->clearChildren();
+                $this->cellSummary->add($this->buildFilterSummary($filterObject));
+            }
+
+            // ============================================================================
+            // 3. PREPARAÇÃO DA REQUISIÇÃO (Monta a query string para a API Python)
+            // ============================================================================
+            $cleanFilters = [];
+            
+            if (!empty($filterObject)) {
+                $cleanFilters = array_filter((array) $filterObject, function($value) {
+                    return !is_null($value) && trim((string) $value) !== '';
+                });
+            }
+
+            $queryParams = http_build_query($cleanFilters);
+            $endpoint = '/regras' . ($queryParams ? '?' . $queryParams : '');
+
+            // ============================================================================
+            // 4. CHAMADA À API E RENDERIZAÇÃO
+            // ============================================================================
+            $apiData = (array) JediEducaRestService::getData($endpoint);            
     
             if ($apiData) {
                 
@@ -236,7 +296,6 @@ class AprioriView extends TPage
 
                 $limit = 10;
                 $offset = isset($param['offset']) ? (int) $param['offset'] : 0;
-                // $total_registros = $apiData['total_regras']; // Total vindo do Python
                 $total_registros = count($regras);
 
                 // Corta o array para a página atual
@@ -286,21 +345,38 @@ class AprioriView extends TPage
 
     public function onClear($param)
     {
-        // Limpa a persistência na sessão
+
+        // 1. Limpa APENAS os filtros locais do formulário Apriori
         TSession::setValue(__CLASS__.'_filter_data', NULL);
         
-        // Limpa o formulário na tela
+        // 2. Limpa os campos do formulário na tela (texto, lift, confiança)
         $this->form->clear();
         
-        // Recarrega os dados sem filtros
-        $this->onReload();
+        // 3. Recarrega a página mantendo os filtros globais
+        $this->onReload($param);
     }
 
     public function onExportCsv($param)
     {
         try {
-            $apiData = (array) JediEducaRestService::getData('/regras');
-            $regras  = (array) $apiData['regras'];
+            // Recupera os parâmetros guardados na sessão
+            $escola     = TSession::getValue(__CLASS__.'_escola');
+            $turma      = TSession::getValue(__CLASS__.'_turma');
+            $capacidade = TSession::getValue(__CLASS__.'_capacidade');
+            $nome       = TSession::getValue(__CLASS__.'_nome');
+
+            $queryParams = http_build_query(array_filter([
+                'escola'     => $escola,
+                'turma'      => $turma,
+                'capacidade' => $capacidade,
+                'nome'       => $nome
+            ], fn($value) => !is_null($value) && $value !== ''));
+
+            $endpoint = '/regras' . ($queryParams ? '?' . $queryParams : '');
+
+
+            $apiData = (array) JediEducaRestService::getData($endpoint);
+            $regras  = (array) ($apiData['regras'] ?? []);
             $filterData = TSession::getValue(__CLASS__.'_filter_data');
 
             // Aplicar a mesma lógica de filtro usada no onReload
@@ -335,4 +411,72 @@ class AprioriView extends TPage
             new TMessage('error', $e->getMessage());
         }
     }
+
+    /**
+     * Monta um container HTML (Badges) com os filtros ativos
+     */
+    private function buildFilterSummary($filterParam = null)
+    {
+        // 1. Tenta pegar dos parâmetros de entrada; se nulo, pega da sessão
+        if (!empty($filterParam)) {
+            $filterObject = is_object($filterParam) ? $filterParam : (object) $filterParam;
+        } else {
+            $filterObject = TSession::getValue(__CLASS__.'_filter_object');
+        }
+
+        // 2. Mapeamento de rótulos amigáveis
+        $labelsMap = [
+            'escola'     => 'Escola',
+            'turma'      => 'Turma',
+            'capacidade' => 'Capacidade Crítica',
+            'nome'       => 'Jogador',
+            'id'         => 'ID'
+        ];
+
+        $tags = [];
+
+        // 3. Desmembra cada item do objeto/array de filtro
+        if (!empty($filterObject)) {
+            $filterVars = is_object($filterObject) ? get_object_vars($filterObject) : (array) $filterObject;
+
+            foreach ($filterVars as $key => $value) {
+                // Remove espaços em branco das extremidades
+                $cleanValue = is_string($value) ? trim($value) : $value;
+
+                // Exibe apenas chaves que realmente contenham algum valor
+                if (!is_null($cleanValue) && $cleanValue !== '') {
+                    $labelName = $labelsMap[$key] ?? ucfirst($key);
+                    $tags[] = "<b>{$labelName}:</b> {$cleanValue}";
+                }
+            }
+        }
+
+        // 4. Constrói o container visual com as tags
+        $html = new TElement('div');
+        $html->id = 'filter_summary_container';
+        $html->style = 'margin: 10px 0 5px 0; text-align: left;';
+
+        if (!empty($tags)) {
+            $label = new TElement('span');
+            $label->style = 'margin-right: 8px; font-weight: bold; color: #555;';
+            $label->add('<i class="fa fa-filter"></i> Filtros Ativos: ');
+            $html->add($label);
+
+            foreach ($tags as $tag) {
+                $badge = new TElement('span');
+                $badge->class = 'label label-info';
+                $badge->style = 'margin-right: 5px; font-size: 11px; padding: 5px 8px; display: inline-block;';
+                $badge->add($tag);
+                $html->add($badge);
+            }
+        } else {
+            $badge = new TElement('span');
+            $badge->class = 'label label-default';
+            $badge->style = 'font-size: 11px; padding: 5px 8px;';
+            $badge->add('Nenhum filtro aplicado (Exibindo todos os registros)');
+            $html->add($badge);
+        }
+
+        return $html;
+    }     
 }

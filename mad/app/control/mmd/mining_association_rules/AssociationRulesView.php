@@ -45,7 +45,7 @@ class AssociationRulesView extends TStandardList
         parent::addFilterField('escola', '=', 'escola');                 // filterField, operator, formField
         parent::addFilterField('turma', '=', 'turma');                   // filterField, operator, formField
         parent::addFilterField('nome', 'like', 'nome');                  // filterField, operator, formField
-        parent::addFilterField('capacidade_critica', '=', 'capacidade'); // filterField, operator, formField
+        parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
 
         // ==========================================
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL
@@ -80,12 +80,12 @@ class AssociationRulesView extends TStandardList
         $this->form->setFormTitle(_t('Mining Association Rules'));
 
         // create the form fields
-        $id         = new TEntry('id');
-        $escola     = new TCombo('escola');  // Novo campo TCombo para Escola
-        $turma      = new TCombo('turma');   // Alterado de TEntry para TCombo        
-        $nome       = new TEntry('nome');
-        $capacidade = new TCombo('capacidade');
-        $capacidade->addItems( [
+        $id                 = new TEntry('id');
+        $escola             = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma              = new TCombo('turma');   // Alterado de TEntry para TCombo        
+        $nome               = new TEntry('nome');
+        $capacidade_critica = new TCombo('capacidade_critica');
+        $capacidade_critica->addItems( [
             'AUMENTOU' => 'AUMENTOU',
             'MANTEVE'  => 'MANTEVE',
             'DIMINUIU' => 'DIMINUIU',
@@ -103,123 +103,12 @@ class AssociationRulesView extends TStandardList
         // Intercepta a query e exibe diretamente na saída padrão
         // TTransaction::setLogger(new TLoggerSTD);
 
-        // Verifica se o usuário é Administrador (Grupo 1 por padrão no Adianti)
-        $user_group_ids = TSession::getValue('usergroupids') ?? [];
-        $system_user_id = TSession::getValue('userid'); // ID do usuário logado
+        // 1. Carrega as Escolas e desabilita a combo se não for admin
+        ClassesSchoolService::loadEscolas($escola);
 
-        $is_admin       = in_array(1, $user_group_ids); // Grupo 1: Administrador
-        $is_gestor      = in_array(4, $user_group_ids); // Grupo 4: Gestor Escolar
-        $is_secretaria  = in_array(8, $user_group_ids); // Grupo 8: Secretaria
-        $is_professor   = in_array(5, $user_group_ids); // Grupo 5: Professor
-
-        $options_escolas = [];
-        
-        if ($is_admin) {
-
-            // ADMINISTRADOR: Carrega TODAS as escolas cadastradas
-            $escolas = Schools::orderBy('nome', 'asc')->load();
-            if ($escolas) {
-
-                foreach ($escolas as $objEscola) {
-                    $nome_escola = $objEscola->nome ?? '';
-                    if (!empty($nome_escola)) {
-                        $options_escolas[$nome_escola] = $nome_escola;
-                    }
-                }
-            }
-        } else {
-            
-            // Gestor, Secretaria ou Professor: carrega via vinculação usuario_escola
-            $usuario_escolas = SchoolsUser::where('id_usuario', '=', $system_user_id)->load();
-            if ($usuario_escolas) {
-                
-                foreach ($usuario_escolas as $vinculo) {
-
-                    $objEscola = Schools::find($vinculo->id_escola);
-                    if ($objEscola && !empty($objEscola->nome)) {
-                        $options_escolas[$objEscola->nome] = $objEscola->nome;
-                    }
-                }
-            }
-
-            asort($options_escolas);
-
-            // Seleciona automaticamente se houver apenas uma escola associada
-            if (count($options_escolas) >= 1) {
-                $escola->setValue(array_key_first($options_escolas));
-            }
-
-            // Trava o campo Escola para os perfis restritos
-            $escola->setEditable(false);
-        }
-        
-        $escola->addItems($options_escolas);
-
-        // --- LÓGICA DE CARREGAMENTO INICIAL DAS TURMAS ---
-        $options_turmas = [];
+        // 2. Determina a escola selecionada e carrega as Turmas
         $selected_escola = $filter_data->escola ?? $escola->getValue();
-
-        if (!empty($selected_escola)) {
-
-            // Busca o ID da escola pelo nome selecionado
-            $objEscola = Schools::where('nome', '=', $selected_escola)->first();
-            
-            if ($objEscola) {
-
-                if ($is_professor) {
-
-                    // PROFESSOR: Busca turmas vinculadas na entidade turma_professor para a escola selecionada
-                    $vinculos_professor = ClassesTeacher::where('id_professor', '=', $system_user_id)->load();
-                    $turma_ids = [];
-                    if ($vinculos_professor) {
-                        foreach ($vinculos_professor as $v) {
-                            $turma_ids[] = $v->id_turma;
-                        }
-                    }
-
-                    if (!empty($turma_ids)) {
-
-                        $turmas = Classes::where('id', 'in', $turma_ids)
-                                        ->orderBy('identificacao', 'asc')
-                                        ->load();
-                    } else {
-
-                        $turmas = [];
-                    }
-
-                } else {
-
-                    // ADMIN, GESTOR e SECRETARIA: Carrega todas as turmas da escola
-                    $turmas = Classes::where('id_escola', '=', $objEscola->id)
-                                    ->orderBy('identificacao', 'asc')
-                                    ->load();
-                }                
-            } else {
-                $turmas = [];
-            }
-
-        } else if ($is_admin) {
-            
-            // Administrador sem escola selecionada vê todas as turmas
-            $turmas = Classes::orderBy('identificacao', 'asc')->load();
-        } else {
-            $turmas = [];
-        }
-
-        if ($turmas) {
-
-            foreach ($turmas as $objTurma) {
-
-                // CORREÇÃO: Usar o campo correto 'identificacao' mapeado na Model Classes
-                $identificacao = $objTurma->identificacao ?? '';
-            
-                if (!empty($identificacao))
-                {
-                    $options_turmas[$identificacao] = $identificacao;
-                }
-            }
-        }
-        
+        $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
         $turma->addItems($options_turmas);
 
         TTransaction::close();
@@ -230,14 +119,14 @@ class AssociationRulesView extends TStandardList
         $turma->setSize('100%');
         $turma->style = 'margin-right:4px;';
         $nome->setSize('100%');
-        $capacidade->setSize('100%');
+        $capacidade_critica->setSize('100%');
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] ); // Campo Escola
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
         $this->form->addFields( [new TLabel(_t('Player'))], [$nome] );
-        $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade] );
+        $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade_critica] );
 
         // keep the form filled during navigation with session data
         $this->form->setData( TSession::getValue(__CLASS__ . '_filter_data') );
@@ -248,9 +137,7 @@ class AssociationRulesView extends TStandardList
 
         // creates a DataGrid
         $this->datagrid = new BootstrapDatagridWrapper(new TDataGrid);
-        // $this->datagrid->datatable = 'true';
         $this->datagrid->width = '100%';
-        //$this->datagrid->enablePopover('Detalhes: ', '<b>ID: </b> {id} <br> <b>Escola: </b> {escola} <br>');
         $this->datagrid->setHeight(320);
 
         // creates the datagrid columns
@@ -261,10 +148,6 @@ class AssociationRulesView extends TStandardList
         $col_gameDate = new TDataGridColumn('dt_jogo', _t('Game Date'), 'left');
         $col_age      = new TDataGridColumn('idade', _t('Age'), 'right');
         $col_capacity = new TDataGridColumn('capacidade_critica', _t('Critical Capacity'), 'left');
-
-        // $col_school->enableAutoHide(500);
-        // $col_class->enableAutoHide(500);
-        // $col_age->enableAutoHide(500);
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
@@ -348,7 +231,10 @@ class AssociationRulesView extends TStandardList
         $dropdown->style = 'height:37px; margin-left:4px; margin-right:4px;';
         $dropdown->setPullSide('right');
         $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
-        $dropdown->addAction( _t('Apriori'), new TAction(['AprioriView', 'onShow'], ['filtros' => TSession::getValue(get_class($this). '_filter_data'), 'data' => $this->datagrid]), 'fa:file-lines fa-fw blue');
+
+        // Cria a ação do dropdown sem tentar ler a sessão antecipadamente
+        $dropdown->addAction(_t('Apriori'), new TAction(['AprioriView', 'onShow']), 'fa:file-lines fa-fw blue');
+
         $panel->addHeaderWidget( $dropdown );
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
@@ -407,16 +293,8 @@ class AssociationRulesView extends TStandardList
         {
             $this->filter_label->class = 'btn btn-default';
             $this->filter_label->setLabel(_t('Filters'));
-        }
-    
-        /*
-        if (!empty(TSession::getValue(get_class($this). '_filter_data')))
-        {
-            $obj = new stdClass;
-            $obj->name = TSession::getValue(get_class($this).'_filter_data')->name;
-            TForm::sendData('form_search_name', $obj);
-        }
-        */
+        }    
+
     }
 
     /**
@@ -560,5 +438,5 @@ class AssociationRulesView extends TStandardList
             TTransaction::rollback();
             new TMessage('error', $e->getMessage());
         }
-    }
+    } 
 }
