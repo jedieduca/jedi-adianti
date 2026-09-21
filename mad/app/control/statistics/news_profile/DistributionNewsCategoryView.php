@@ -82,9 +82,10 @@ class DistributionNewsCategoryView extends TStandardList
         $col_id            = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_categoria     = new TDataGridColumn('categoria', _t('Category'), 'left');
         $col_fake_qt       = new TDataGridColumn('fake_qt', 'Fake (Qt.)', 'right');
-        $col_fake_perc     = new TDataGridColumn('fake_perc', 'Fake (%)', 'right');
-        $col_nao_fake_qt   = new TDataGridColumn('nao_fake_qt', 'Não Fake (Qt.)', 'right');
-        $col_nao_fake_perc = new TDataGridColumn('nao_fake_perc', 'Não Fake (%)', 'right');
+        $col_fake_perc     = new TDataGridColumn('fake_perc', '<div style="text-align: center;">Fake (%)</div>', 'right');
+        $col_nao_fake_qt   = new TDataGridColumn('nao_fake_qt', '<div style="text-align: center;">Não Fake (Qt.)</div>', 'right');
+        $col_nao_fake_perc = new TDataGridColumn('nao_fake_perc', '<div style="text-align: center;">Não Fake (%)</div>', 'right');
+        $col_total         = new TDataGridColumn('total', '<div style="text-align: center;">Total</div>', 'right');
 
         // format the columns in the DataGrid
         $col_fake_perc->setTransformer( function($value, $object, $row) {
@@ -102,7 +103,7 @@ class DistributionNewsCategoryView extends TStandardList
         $this->datagrid->addColumn($col_fake_perc);
         $this->datagrid->addColumn($col_nao_fake_qt);
         $this->datagrid->addColumn($col_nao_fake_perc);
-
+        $this->datagrid->addColumn($col_total);
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');
@@ -127,6 +128,10 @@ class DistributionNewsCategoryView extends TStandardList
         $order_nao_fake_perc = new TAction(array($this, 'onReload'));
         $order_nao_fake_perc->setParameter('order', 'nao_fake_perc');
         $col_nao_fake_perc->setAction($order_nao_fake_perc);
+
+        $order_total = new TAction(array($this, 'onReload'));
+        $order_total->setParameter('order', 'total');
+        $col_total->setAction($order_total);
 
         // create EDIT action
         $action_view = new TDataGridAction(array('DistributionNewsCategoryForm', 'onView'), ['register_state' => 'false'] );

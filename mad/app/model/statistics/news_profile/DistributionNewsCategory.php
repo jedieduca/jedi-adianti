@@ -19,5 +19,6 @@ class DistributionNewsCategory extends TRecord
         parent::addAttribute('fake_perc');
         parent::addAttribute('nao_fake_qt');
         parent::addAttribute('nao_fake_perc');
+        parent::addAttribute('total');
     }
 }
