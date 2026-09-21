@@ -31,6 +31,10 @@ class DistributionNewsCategoryView extends TStandardList
     protected $datagrid;       // listing
     protected $pageNavigation; // Page Navigation
     protected $filter_label;
+    protected $isLastPage = false;
+    protected $totalGeralFake;
+    protected $totalGeralNaoFake;
+    protected $totalGeralAbsoluto;
 
     /**
     * Page constructor
@@ -78,7 +82,7 @@ class DistributionNewsCategoryView extends TStandardList
         //$this->datagrid->enablePopover('Detalhes: ', '<b>ID: </b> {id} <br> <b>Escola: </b> {escola} <br>');
         $this->datagrid->setHeight(320);
 
-        // creates the datagrid columns
+         // creates the datagrid columns
         $col_id            = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_categoria     = new TDataGridColumn('categoria', _t('Category'), 'left');
         $col_fake_qt       = new TDataGridColumn('fake_qt', 'Fake (Qt.)', 'right');
@@ -86,15 +90,6 @@ class DistributionNewsCategoryView extends TStandardList
         $col_nao_fake_qt   = new TDataGridColumn('nao_fake_qt', '<div style="text-align: center;">Não Fake (Qt.)</div>', 'right');
         $col_nao_fake_perc = new TDataGridColumn('nao_fake_perc', '<div style="text-align: center;">Não Fake (%)</div>', 'right');
         $col_total         = new TDataGridColumn('total', '<div style="text-align: center;">Total</div>', 'right');
-
-        // format the columns in the DataGrid
-        $col_fake_perc->setTransformer( function($value, $object, $row) {
-            return number_format($value, 2, ',');
-        });
-
-        $col_nao_fake_perc->setTransformer( function($value, $object, $row) {
-            return number_format($value, 2, ',');
-        });
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
@@ -104,6 +99,46 @@ class DistributionNewsCategoryView extends TStandardList
         $this->datagrid->addColumn($col_nao_fake_qt);
         $this->datagrid->addColumn($col_nao_fake_perc);
         $this->datagrid->addColumn($col_total);
+
+        // format the columns in the DataGrid
+        $col_fake_qt->setTransformer( function($value) {
+            return number_format((float)$value, 0, ',', '.');
+        });
+
+        $col_nao_fake_qt->setTransformer( function($value) {
+            return number_format((float)$value, 0, ',', '.');
+        });
+
+        $col_total->setTransformer( function($value) {
+            return number_format((float)$value, 0, ',', '.');
+        });
+
+        $col_fake_perc->setTransformer( function($value, $object, $row) {
+            return number_format($value, 2, ',');
+        });
+
+        $col_nao_fake_perc->setTransformer( function($value, $object, $row) {
+            return number_format($value, 2, ',');
+        });
+
+        // Define o rótulo para a linha de totais na coluna Categoria
+        $col_categoria->setTotalFunction( function($values) {
+            $label = $this->isLastPage ? 'Total Geral' : 'Total Parcial';
+            return "<b>{$label}</b>";
+        });
+
+        $col_fake_qt->setTotalFunction( function($values) {
+            return array_sum((array)$values);
+        });
+
+        $col_nao_fake_qt->setTotalFunction( function($values) {
+            return array_sum((array)$values);
+        });
+
+        $col_total->setTotalFunction( function($values) {
+            return array_sum((array)$values);
+        });
+
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
         $order_id->setParameter('order', 'id');
@@ -204,8 +239,19 @@ class DistributionNewsCategoryView extends TStandardList
     {
         // Carrega os dados do Banco de Dados local (Padrão TStandardList)
         parent::onReload($param);
+        
+        // Identifica se estamos na última página
+        $page  = $this->pageNavigation->getPage(); // Página atual (inicia em 1)
+        $limit = $this->pageNavigation->getLimit(); // Registros por página
+        $count = $this->pageNavigation->getCount(); // Total geral de registros no banco
+
+        $totalPages = ceil($count / $limit);
+
+        // Se a página atual for maior ou igual ao total de páginas (ou se só houver 1 página)
+        $this->isLastPage = ($page >= $totalPages) || ($totalPages <= 1);
 
         try {
+            
             // Recupera os dados do filtro que o Adianti salvou na sessão
             $filterData = TSession::getValue(__CLASS__ . '_filter_data');
 
