@@ -84,7 +84,6 @@ class ClassProfileView extends TStandardList
 
         TTransaction::close();
 
-
         // $id->setEditable(false);
         $id->setSize('30%');
         $escola->setSize('70%');
@@ -113,15 +112,17 @@ class ClassProfileView extends TStandardList
         $col_id        = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_escola    = new TDataGridColumn('escola', _t('School'), 'left');
         $col_turma     = new TDataGridColumn('turma', _t('Class'), 'left');
-        $col_alunos    = new TDataGridColumn('total_alunos', _t('Number of Students'), 'right');
-        $col_idade     = new TDataGridColumn('idade', _t('Age (Mean ± Standard Deviation)'), 'right');
+        $col_alunos    = new TDataGridColumn('total_alunos', '<div style="text-align: center;">' . _t('Number of Students') . '</div>', 'right');
+        $col_2_mais    = new TDataGridColumn('total_2_mais', '<div style="text-align: center;">' . _t('2 matches or more') . '</div>', 'right');
+        $col_idade     = new TDataGridColumn('idade', '<div style="text-align: center;">' . _t('Age (Mean ± Standard Deviation)') . '</div>', 'right');
         $col_local_geo = new TDataGridColumn('localizacao_geo', _t('Geographic Location'), 'left');
-
+    
         // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
         $this->datagrid->addColumn($col_escola);
         $this->datagrid->addColumn($col_turma );
         $this->datagrid->addColumn($col_alunos);
+        $this->datagrid->addColumn($col_2_mais);
         $this->datagrid->addColumn($col_idade);
         $this->datagrid->addColumn($col_local_geo);
 
@@ -138,9 +139,13 @@ class ClassProfileView extends TStandardList
         $order_turma->setParameter('order', 'turma');
         $col_turma->setAction($order_turma);
 
-        $order_total_alunos = new TAction(array($this, 'onReload'));
+        $order_total_alunos= new TAction(array($this, 'onReload'));
         $order_total_alunos->setParameter('order', 'total_alunos');
         $col_alunos->setAction($order_total_alunos);
+
+        $order_total_2_mais = new TAction(array($this, 'onReload'));
+        $order_total_2_mais->setParameter('order', 'total_2_mais');
+        $col_2_mais->setAction($order_total_2_mais);
 
         $order_idade = new TAction(array($this, 'onReload'));
         $order_idade->setParameter('order', 'idade');

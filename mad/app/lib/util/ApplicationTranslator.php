@@ -251,6 +251,10 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Aluno';
         $this->messages['es'][] = 'Estudiante';
 
+        $this->messages['en'][] = '2 matches or more';
+        $this->messages['pt'][] = '2 partidas ou mais';
+        $this->messages['es'][] = '2 partidos o más';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)

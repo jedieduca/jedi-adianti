@@ -17,6 +17,7 @@ class ClassProfile extends TRecord
         parent::addAttribute('escola');
         parent::addAttribute('turma');
         parent::addAttribute('total_alunos');
+        parent::addAttribute('total_2_mais');
         parent::addAttribute('idade');
         parent::addAttribute('localizacao_geo');
     }
