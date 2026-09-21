@@ -229,7 +229,7 @@ class ClassProfileView extends TStandardList
 
         try {
             // Recupera os dados do filtro que o Adianti salvou na sessão
-            /*
+
             $filterData = TSession::getValue(__CLASS__ . '_filter_data');
 
             $params = [];
@@ -254,7 +254,6 @@ class ClassProfileView extends TStandardList
                 $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
                 $this->panelImagem->add($this->imageContainer);
             }
-                */
     
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
@@ -342,12 +341,12 @@ class ClassProfileView extends TStandardList
             TTransaction::open('jedi');
 
             $escola_nome    = $param['escola'] ?? null;
-            $options_turmas = EscolaTurmaService::getOptionsTurmas($escola_nome);
+            $options_turmas = ClassesSchoolService::getOptionsTurmas($escola_nome);
 
             TTransaction::close();
 
             // Recarrega o combo 'turma' do formulário atual
-            TCombo::reload('form_search_AssociationRules', 'turma', $options_turmas, true);
+            TCombo::reload('form_search_ClassProfile', 'turma', $options_turmas, true);
         }
         catch (Exception $e)
         {
