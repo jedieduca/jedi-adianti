@@ -10,7 +10,7 @@ use Adianti\Widget\Form\TLabel;
 use Adianti\Widget\Util\TTextDisplay;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class SchoollProfilesForm extends TPage
+class SchoolProfilesForm extends TPage
 {
     protected $form; // form
 

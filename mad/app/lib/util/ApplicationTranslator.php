@@ -275,6 +275,14 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Nº de Secretários Escolares';
         $this->messages['es'][] = 'Número de secretarios escolares';
 
+        $this->messages['en'][] = 'Total';
+        $this->messages['pt'][] = 'Total';  
+        $this->messages['es'][] = 'Total';
+
+        $this->messages['en'][] = 'Group';
+        $this->messages['pt'][] = 'Grupo';  
+        $this->messages['es'][] = 'Grupo';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)

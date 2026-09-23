@@ -23,7 +23,7 @@ use Adianti\Widget\Wrapper\TDBCombo;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class SchoollProfilesView extends TStandardList
+class SchoolProfilesView extends TStandardList
 {
     protected $form;
     protected $panelImagem;
@@ -40,7 +40,7 @@ class SchoollProfilesView extends TStandardList
         parent::__construct();
 
         parent::setDatabase('jedi');                           // defines the database
-        parent::setActiveRecord('SchoollProfiles');            // defines the active record
+        parent::setActiveRecord('SchoolProfiles');             // defines the active record
         parent::setDefaultOrder('id', 'asc');                  // defines the default order
         parent::addFilterField('id', '=', 'id');               // filterField, operator, formField
         parent::addFilterField('escola', '=', 'escola');       // filterField, operator, formField
@@ -161,7 +161,7 @@ class SchoollProfilesView extends TStandardList
         $col_total->setAction($order_total);
 
         // create EDIT action
-        $action_view = new TDataGridAction(array('SchoollProfilesForm', 'onView'), ['register_state' => 'false'] );
+        $action_view = new TDataGridAction(array('SchoolProfilesForm', 'onView'), ['register_state' => 'false'] );
         $action_view->setButtonClass('btn btn-default');
         $action_view->setLabel(_t('See more'));
         $action_view->setImage('fa:eye orange');

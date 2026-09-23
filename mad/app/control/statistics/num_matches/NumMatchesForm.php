@@ -20,8 +20,8 @@ class NumMatchesForm extends TPage
 
         parent::setTargetContainer('adianti_right_panel');
         // creates the form
-        $this->form = new BootstrapFormBuilder('formStatisticsCategory');
-        $this->form->setFormTitle(_t('Distribution of Results by News Categories'));
+        $this->form = new BootstrapFormBuilder('formNumMatches');
+        $this->form->setFormTitle(_t('Number of matches played'));
 
         $this->form->addHeaderActionLink(_t('Close'), new TAction([$this, 'onClose']), 'fa:times red');
 
@@ -41,32 +41,32 @@ class NumMatchesForm extends TPage
                 TTransaction::open('jedi');
 
                 // instantiates object System_user
-                $statisticsCategory = new StatisticsCategory($param['key']);
+                $numMatches = new NumMatches($param['key']);
                 $this->form->addFields(
                     [new TLabel('ID')],
-                    [new TTextDisplay($statisticsCategory->id)],
+                    [new TTextDisplay($numMatches->id)],
+                );
+                $this->form->addFields(
+                    [new TLabel(_t('School'))],
+                    [new TTextDisplay($numMatches->escola)],
                 );
                 $this->form->addFields(
                     [new TLabel(_t('Class'))],
-                    [new TTextDisplay($statisticsCategory->escola)],
+                    [new TTextDisplay($numMatches->turma)],
                 );
                 $this->form->addFields(
-                    [new TLabel(_t('Class'))],
-                    [new TTextDisplay($statisticsCategory->turma)],
+                    [new TLabel(_t('Group'))],
+                    [new TTextDisplay($numMatches->grupo)],
                 );
                 $this->form->addFields(
-                    [new TLabel(_t('Category'))],
-                    [new TTextDisplay($statisticsCategory->categoria)],
-                );
-                $this->form->addFields(
-                    [new TLabel(_t('Average number of correct answers'))],
-                    [new TTextDisplay(number_format($statisticsCategory->media_acertos, 2, ','))],
-                    [new TLabel(_t('Error average'))],
-                    [new TTextDisplay(number_format($statisticsCategory->media_erros, 2, ','))],
+                    [new TLabel(_t('Student'))],
+                    [new TTextDisplay($numMatches->aluno)],
+                    [new TLabel(_t('Game Date'))],
+                    [new TTextDisplay($numMatches->dt_jogo)],
                 );
 
                 // fill the form with the active record data
-                $this->form->setData($statisticsCategory);
+                $this->form->setData($numMatches);
 
                 // close the transaction
                 TTransaction::close();

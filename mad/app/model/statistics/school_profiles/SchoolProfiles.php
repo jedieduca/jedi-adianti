@@ -2,7 +2,7 @@
 
 use Adianti\Database\TRecord;
 
-class SchoollProfiles extends TRecord
+class SchoolProfiles extends TRecord
 {
     const TABLENAME  = 'vw_perfil_escolas';
     const PRIMARYKEY = 'id';
