@@ -255,6 +255,26 @@ class ApplicationTranslator
         $this->messages['pt'][] = '2 partidas ou mais';
         $this->messages['es'][] = '2 partidos o más';
 
+        $this->messages['en'][] = 'School Profiles';
+        $this->messages['pt'][] = 'Perfil das Escolas';
+        $this->messages['es'][] = 'Perfiles de las escuelas';
+
+        $this->messages['en'][] = 'Number of Students';
+        $this->messages['pt'][] = 'Nº de Alunos';
+        $this->messages['es'][] = 'Número de estudiantes';
+
+        $this->messages['en'][] = 'Number of Teachers';
+        $this->messages['pt'][] = 'Nº de Docentes';
+        $this->messages['es'][] = 'Número de docentes';
+
+        $this->messages['en'][] = 'Number of Educational Managers';
+        $this->messages['pt'][] = 'Nº de Gestores Educacionais';
+        $this->messages['es'][] = 'Número de directores educativos';
+
+        $this->messages['en'][] = 'Number of School Secretaries';
+        $this->messages['pt'][] = 'Nº de Secretários Escolares';
+        $this->messages['es'][] = 'Número de secretarios escolares';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)

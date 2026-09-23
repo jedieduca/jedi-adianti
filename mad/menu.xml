@@ -104,6 +104,10 @@
                 <icon>fas:arrow-up-1-9 fa-fw</icon>
                 <action>NumMatchesView</action>
             </menuitem>
+            <menuitem label='_t{School Profiles}'>
+                <icon>fas:school fa-fw</icon>
+                <action>SchoollProfilesView</action>
+            </menuitem>
             <menuitem label='_t{News Profile}'>
                 <icon>fas:newspaper fa-fw</icon>
                 <menu>

@@ -23,7 +23,7 @@ use Adianti\Widget\Wrapper\TDBCombo;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
 
-class NumMatchesView extends TStandardList
+class SchoollProfilesView extends TStandardList
 {
     protected $form;
     protected $panelImagem;
@@ -40,13 +40,10 @@ class NumMatchesView extends TStandardList
         parent::__construct();
 
         parent::setDatabase('jedi');                           // defines the database
-        parent::setActiveRecord('NumMatches');                 // defines the active record
-        parent::setDefaultOrder('numero_partidas', 'desc');    // defines the default order
+        parent::setActiveRecord('SchoollProfiles');            // defines the active record
+        parent::setDefaultOrder('id', 'asc');                  // defines the default order
         parent::addFilterField('id', '=', 'id');               // filterField, operator, formField
         parent::addFilterField('escola', '=', 'escola');       // filterField, operator, formField
-        parent::addFilterField('turma', '=', 'turma');         // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '=', 'dt_jogo_ini'); // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '=', 'dt_jogo_fim'); // filterField, operator, formField
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
@@ -56,22 +53,12 @@ class NumMatchesView extends TStandardList
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
 
         // creates the form
-        $this->form = new BootstrapFormBuilder('form_search_NumMatches');
-        $this->form->setFormTitle(_t('Number of matches played'));
+        $this->form = new BootstrapFormBuilder('form_search_SchoolProfiles');
+        $this->form->setFormTitle(_t('School Profiles'));
 
         // create the form fields
         $id          = new TEntry('id');
         $escola      = new TCombo('escola');  // Novo campo TCombo para Escola
-        $turma       = new TCombo('turma');   // Alterado de TEntry para TCombo        
-
-        $dt_jogo_ini = new TDate('dt_jogo_ini');
-        $dt_jogo_ini->setMask('dd/mm/yyyy');
-        $dt_jogo_ini->setDatabaseMask('yyyy-mm-dd');
-        
-        $dt_jogo_fim = new TDate('dt_jogo_fim');
-        $dt_jogo_fim->setMask('dd/mm/yyyy');
-        $dt_jogo_fim->setDatabaseMask('yyyy-mm-dd');
-
 
         // Define a ação de alteração da escola para atualizar as turmas via AJAX
         $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
@@ -90,24 +77,18 @@ class NumMatchesView extends TStandardList
 
         // 2. Determina a escola selecionada e carrega as Turmas
         $selected_escola = $filter_data->escola ?? $escola->getValue();
-        $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
-        $turma->addItems($options_turmas);
+        //$options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
+        // $turma->addItems($options_turmas);
 
         TTransaction::close();        
 
         // $id->setEditable(false);
         $id->setSize('30%');
         $escola->setSize('70%');
-        $turma->setSize('70%');
-        $dt_jogo_ini->setSize('50%');
-        $dt_jogo_fim->setSize('50%');
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] );
-        $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
-        $this->form->addFields( [new TLabel(_t('Initial Match Date'))], [$dt_jogo_ini] );
-        $this->form->addFields( [new TLabel(_t('Date of the Final Match'))], [$dt_jogo_fim] );
 
         // keep the form filled during navigation with session data
         $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data') );
@@ -122,25 +103,29 @@ class NumMatchesView extends TStandardList
         $this->datagrid->setHeight(320);
 
         // creates the datagrid columns
-        $col_id            = new TDataGridColumn('id', 'Id', 'center', 50);
-        $col_escola        = new TDataGridColumn('escola', _t('School'), 'left');
-        $col_turma         = new TDataGridColumn('turma', _t('Class'), 'left');
-        $col_aluno         = new TDataGridColumn('aluno', _t('Student'), 'left');
-        $col_dt_jogo       = new TDataGridColumn('dt_jogo', _t('Game Date'), 'left');
-        $col_num_partidas  = new TDataGridColumn('numero_partidas', _t('Number of Matches'), 'right');
+        $col_id              = new TDataGridColumn('id', 'Id', 'center', 50);
+        $col_escola          = new TDataGridColumn('escola', _t('School'), 'left');
+        $col_num_turmas      = new TDataGridColumn('num_turmas', _t('Class'), 'right');
+        $col_num_discentes   = new TDataGridColumn('num_discentes', _t('Number of Students'), 'right');
+        $col_num_docentes    = new TDataGridColumn('num_docentes', _t('Number of Teachers'), 'right');
+        $col_num_gestores    = new TDataGridColumn('num_gestores', _t('Number of Educational Managers'), 'right');
+        $col_num_secretarios = new TDataGridColumn('num_secretarios', _t('Number of Educational Managers'), 'right');
+        $col_total           = new TDataGridColumn('total', _t('Total'), 'right');
 
         // format the columns in the DataGrid
-        $col_num_partidas->setTransformer( function($value, $object, $row) {
+        $col_total->setTransformer( function($value, $object, $row) {
             return number_format($value, 0, ',', '.');
         });
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
         $this->datagrid->addColumn($col_escola);
-        $this->datagrid->addColumn($col_turma);
-        $this->datagrid->addColumn($col_aluno);
-        $this->datagrid->addColumn($col_dt_jogo);
-        $this->datagrid->addColumn($col_num_partidas);
+        $this->datagrid->addColumn($col_num_turmas);
+        $this->datagrid->addColumn($col_num_discentes);
+        $this->datagrid->addColumn($col_num_docentes);
+        $this->datagrid->addColumn($col_num_gestores);
+        $this->datagrid->addColumn($col_num_secretarios);
+        $this->datagrid->addColumn($col_total);
 
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
@@ -151,24 +136,32 @@ class NumMatchesView extends TStandardList
         $order_escola->setParameter('order', 'escola');
         $col_escola->setAction($order_escola);
 
-        $order_turma = new TAction(array($this, 'onReload'));
-        $order_turma->setParameter('order', 'turma');
-        $col_turma->setAction($order_turma);
+        $order_num_turmas = new TAction(array($this, 'onReload'));
+        $order_num_turmas->setParameter('order', 'num_turmas');
+        $col_num_turmas->setAction($order_num_turmas);
 
-        $order_aluno = new TAction(array($this, 'onReload'));
-        $order_aluno->setParameter('order', 'aluno');
-        $col_aluno->setAction($order_aluno);
+        $order_num_discentes = new TAction(array($this, 'onReload'));
+        $order_num_discentes->setParameter('order', 'num_discentes');
+        $col_num_discentes->setAction($order_num_discentes);
 
-        $order_dt_jogo = new TAction(array($this, 'onReload'));
-        $order_dt_jogo->setParameter('order', 'dt_jogo');
-        $col_dt_jogo->setAction($order_dt_jogo);
+        $order_num_docentes = new TAction(array($this, 'onReload'));
+        $order_num_docentes->setParameter('order', 'num_docentes');
+        $col_num_docentes->setAction($order_num_docentes);
 
-        $order_num_partidas = new TAction(array($this, 'onReload'));
-        $order_num_partidas->setParameter('order', 'num_partidas');
-        $col_num_partidas->setAction($order_num_partidas);
+        $order_num_gestores = new TAction(array($this, 'onReload'));
+        $order_num_gestores->setParameter('order', 'num_gestores');
+        $col_num_gestores->setAction($order_num_gestores);
+
+        $order_num_secretarios = new TAction(array($this, 'onReload'));
+        $order_num_secretarios->setParameter('order', 'num_secretarios');
+        $col_num_secretarios->setAction($order_num_secretarios);
+
+        $order_total = new TAction(array($this, 'onReload'));
+        $order_total->setParameter('order', 'total');
+        $col_total->setAction($order_total);
 
         // create EDIT action
-        $action_view = new TDataGridAction(array('NumMatchesForm', 'onView'), ['register_state' => 'false'] );
+        $action_view = new TDataGridAction(array('SchoollProfilesForm', 'onView'), ['register_state' => 'false'] );
         $action_view->setButtonClass('btn btn-default');
         $action_view->setLabel(_t('See more'));
         $action_view->setImage('fa:eye orange');
@@ -247,9 +240,6 @@ class NumMatchesView extends TStandardList
                 // Ajuste as chaves abaixo para baterem com o que o seu FastAPI espera
                 $params['id']          = $filterData->id ?? null;
                 $params['escola']      = $filterData->escola ?? null;
-                $params['turma']       = $filterData->turma ?? null;
-                $params['dt_jogo_ini'] = $filterData->dt_jogo_ini ?? null;
-                $params['dt_jogo_fim'] = $filterData->dt_jogo_fim ?? null;
 
                 // Removemos campos vazios para não enviar "?escola=&turma="
                 $params = array_filter($params);
@@ -287,11 +277,11 @@ class NumMatchesView extends TStandardList
 
             // 3. Montamos a Query String
             $queryString = !empty($params) ? '?' . http_build_query($params) : '';
-            $apiData = (array) JediEducaRestService::getData('/estatisticas/ranking_partidas'. $queryString);
+            $apiData = (array) JediEducaRestService::getData('/estatisticas/perfil_escolas'. $queryString);
 
-            if (isset($apiData['link_imagem']->grafico_ranking_partidas)){
+            if (isset($apiData['link_imagem']->grafico_perfil_escolas)){
                 // Componente de Imagem
-                $image = new TImage($apiData['link_imagem']->grafico_ranking_partidas);
+                $image = new TImage($apiData['link_imagem']->grafico_perfil_escolas);
                 $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
                 $this->panelImagem->add($image);
             } else {
