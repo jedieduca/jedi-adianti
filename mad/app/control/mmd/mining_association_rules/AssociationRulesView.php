@@ -41,10 +41,13 @@ class AssociationRulesView extends TStandardList
         parent::setDatabase('jedi');                                     // defines the database
         parent::setActiveRecord('AssociationRule');                      // defines the active record
         parent::setDefaultOrder('id', 'asc');                            // defines the default order
-        parent::addFilterField('id', '=', 'id');                         // filterField, operator, formField
-        parent::addFilterField('escola', '=', 'escola');                 // filterField, operator, formField
-        parent::addFilterField('turma', '=', 'turma');                   // filterField, operator, formField
-        parent::addFilterField('nome', 'like', 'nome');                  // filterField, operator, formField
+
+        parent::addFilterField('id', '=', 'id');                                 // filterField, operator, formField
+        parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
+        parent::addFilterField('turma', '=', 'turma');                           // filterField, operator, formField
+        parent::addFilterField('nome', 'like', 'nome');                          // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini');                  // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim');                  // filterField, operator, formField
         parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
 
         // ==========================================
@@ -80,10 +83,18 @@ class AssociationRulesView extends TStandardList
         $this->form->setFormTitle(_t('Mining Association Rules'));
 
         // create the form fields
-        $id                 = new TEntry('id');
-        $escola             = new TCombo('escola');  // Novo campo TCombo para Escola
-        $turma              = new TCombo('turma');   // Alterado de TEntry para TCombo        
-        $nome               = new TEntry('nome');
+        $id     = new TEntry('id');
+        $escola = new TCombo('escola');  // Novo campo TCombo para Escola
+        $turma  = new TCombo('turma');   // Alterado de TEntry para TCombo        
+        $nome   = new TEntry('nome');
+        
+        $dt_jogo_ini = new TDate('dt_jogo_ini');
+        $dt_jogo_ini->setMask('dd/mm/yyyy');
+        $dt_jogo_ini->setDatabaseMask('yyyy-mm-dd');
+        $dt_jogo_fim = new TDate('dt_jogo_fim');
+        $dt_jogo_fim->setMask('dd/mm/yyyy');
+        $dt_jogo_fim->setDatabaseMask('yyyy-mm-dd');
+
         $capacidade_critica = new TCombo('capacidade_critica');
         $capacidade_critica->addItems( [
             'AUMENTOU' => 'AUMENTOU',
@@ -119,6 +130,8 @@ class AssociationRulesView extends TStandardList
         $turma->setSize('100%');
         $turma->style = 'margin-right:4px;';
         $nome->setSize('100%');
+        $dt_jogo_ini->setSize('100%');
+        $dt_jogo_fim->setSize('100%');
         $capacidade_critica->setSize('100%');
 
         // add the fields
@@ -126,6 +139,8 @@ class AssociationRulesView extends TStandardList
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] ); // Campo Escola
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
         $this->form->addFields( [new TLabel(_t('Player'))], [$nome] );
+        $this->form->addFields( [new TLabel(_t('Initial Date'))], [$dt_jogo_ini] );
+        $this->form->addFields( [new TLabel(_t('Final Date'))], [$dt_jogo_fim] );
         $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade_critica] );
 
         // keep the form filled during navigation with session data
@@ -439,4 +454,35 @@ class AssociationRulesView extends TStandardList
             new TMessage('error', $e->getMessage());
         }
     } 
+
+    /**
+     * Sobrescreve a ação de busca para validar o intervalo de datas
+     */
+    public function onSearch($param = null)
+    {
+        // 1. Obtém os dados submetidos pelo formulário
+        $data = $this->form->getData();
+
+        // 2. Verifica se AMBOS os campos de data estão preenchidos
+        if (!empty($data->dt_jogo_ini) && !empty($data->dt_jogo_fim))
+        {
+            // Converte para timestamps para comparar com precisão (considera formato YYYY-MM-DD do TDate)
+            $dt_ini = strtotime($data->dt_jogo_ini);
+            $dt_fim = strtotime($data->dt_jogo_fim);
+
+            // 3. Aplica a crítica: Data Final menor que Data Inicial
+            if ($dt_fim < $dt_ini)
+            {
+                // Re-alimenta o formulário com os dados digitados pelo usuário
+                $this->form->setData($data);
+
+                // Exibe mensagem de erro e bloqueia a continuação
+                new TMessage('error', 'A **Data Final** não pode ser menor que a **Data Inicial**.');
+                return;
+            }
+        }
+
+        // 4. Se a validação passar (ou se um dos campos estiver vazio), executa a busca padrão
+        parent::onSearch($param);
+    }
 }

@@ -283,6 +283,14 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Grupo';  
         $this->messages['es'][] = 'Grupo';
 
+        $this->messages['en'][] = 'Initial Date';
+        $this->messages['pt'][] = 'Data Inicial';  
+        $this->messages['es'][] = 'Fecha de inicio';
+
+        $this->messages['en'][] = 'Final Date';
+        $this->messages['pt'][] = 'Data Final';  
+        $this->messages['es'][] = 'Fecha final';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)
