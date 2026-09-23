@@ -40,3 +40,9 @@ _____________________________________________________________________
 
 Altere o método CanManageUser, para que o usuário que seja do grupo 6, isto é, TSession::getValue('usergroupids')==6, possa executar o método onEdit do SystemUserForm para usuários que sejam do grupo 4, isto é, system_user_group.system_user_id={id} e system_user_group.system_group_id=4
 __________________________________________________________________________
+
+Crie um formulário chamado FormPartidaList.php que terá um datagrid com os registros da tabela partidas_perguntas e com a ação de remover pelo id o registro da tabela partidas_perguntas e todas as ocorrências na tabela log_perguntas (log_perguntas.id_partida=id (key)). As colunas que devem aparecer no datagrid são: usuário (system_user.name), jogador, idade, id_pergunta, pontuação, qtd_acertos, qtd_erros, tempo gasto e tutor (use setTransformer para 1="Sim" e 0="Não". Para obter o usuário, será necessário a relação partidas_perguntas.id_usuario=system_user.id
+______________________________________________________________________________________________________
+
+Adicione no FormPartidaList.php, os filtros por data (dt\_jogo), use o tipo TDate no objeto, usuário (system\_user.name),  pontuação (pontuacao) e finalizado (finalizado). Esses filtros vão interagir com o método onReload.
+__________________________________________________________________________________________

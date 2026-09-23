@@ -23,6 +23,10 @@
         <action>SystemMenuEditor</action>
         <icon>far:edit fa-fw</icon>
       </menuitem>
+      <menuitem label="Partidas">
+        <action>FormPartidaList</action>
+        <icon>fas:dice fa-fw</icon>
+      </menuitem>
     </menu>
   </menuitem>
   <menuitem label="Gestão Escolar">
@@ -39,9 +43,6 @@
       <menuitem label="Turma">
         <action>FormTurmaList</action>
       </menuitem>
-      <!--<menuitem label="Aluno">
-        <action>FormAlunoList#tipo=Cadastro</action>
-      </menuitem>-->
     </menu>
   </menuitem>
   <menuitem label="Gestão de Conteúdo">
