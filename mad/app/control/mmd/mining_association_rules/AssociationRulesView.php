@@ -45,7 +45,6 @@ class AssociationRulesView extends TStandardList
         parent::addFilterField('id', '=', 'id');                                 // filterField, operator, formField
         parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
         parent::addFilterField('turma', '=', 'turma');                           // filterField, operator, formField
-        parent::addFilterField('nome', 'like', 'nome');                          // filterField, operator, formField
         parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini');                  // filterField, operator, formField
         parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim');                  // filterField, operator, formField
         parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
@@ -86,7 +85,6 @@ class AssociationRulesView extends TStandardList
         $id     = new TEntry('id');
         $escola = new TCombo('escola');  // Novo campo TCombo para Escola
         $turma  = new TCombo('turma');   // Alterado de TEntry para TCombo        
-        $nome   = new TEntry('nome');
         
         $dt_jogo_ini = new TDate('dt_jogo_ini');
         $dt_jogo_ini->setMask('dd/mm/yyyy');
@@ -129,7 +127,6 @@ class AssociationRulesView extends TStandardList
         $escola->setSize('100%');
         $turma->setSize('100%');
         $turma->style = 'margin-right:4px;';
-        $nome->setSize('100%');
         $dt_jogo_ini->setSize('100%');
         $dt_jogo_fim->setSize('100%');
         $capacidade_critica->setSize('100%');
@@ -138,7 +135,6 @@ class AssociationRulesView extends TStandardList
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] ); // Campo Escola
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
-        $this->form->addFields( [new TLabel(_t('Player'))], [$nome] );
         $this->form->addFields( [new TLabel(_t('Initial Date'))], [$dt_jogo_ini] );
         $this->form->addFields( [new TLabel(_t('Final Date'))], [$dt_jogo_fim] );
         $this->form->addFields( [new TLabel(_t('Critical Capacity'))], [$capacidade_critica] );
@@ -279,14 +275,101 @@ class AssociationRulesView extends TStandardList
             $this->filter_label->setLabel(_t('Filters') . ' ('. TSession::getValue(get_class($this).'_filter_counter').')');
         }
 
+        // Panel que armazena o gráfico
+        $this->panelImagem = new TPanelGroup();
+        // $this->panelImagem->style = 'text-align: center; width: 100%; max-height: 850px; overflow-y: auto; overflow-x: auto;';
+        $this->panelImagem->style = 'text-align: center; width: 100%; height: auto; overflow: visible;';
+
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         $container->add($panel);
+        $container->add($this->panelImagem);
         
         parent::add($container);
     }
+
+    public function onReload($param = NULL)
+    {
+        // Carrega os dados do Banco de Dados local (Padrão TStandardList)
+        parent::onReload($param);
+        parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
+        parent::addFilterField('turma', '=', 'turma');                           // filterField, operator, formField
+        parent::addFilterField('nome', 'like', 'nome');                          // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini');                  // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim');                  // filterField, operator, formField
+        parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
+
+        try {
+            // Recupera os dados do filtro que o Adianti salvou na sessão
+            $filterData = TSession::getValue(__CLASS__ . '_filter_data');
+
+            $params = [];
+            if (!empty($filterData)) {
+                // Convertemos o objeto de dados do formulário em um array para o service
+                // Ajuste as chaves abaixo para baterem com o que o seu FastAPI espera
+                $params['id']          = $filterData->id ?? null;
+                $params['escola']      = $filterData->escola ?? null;
+                $params['turma']       = $filterData->turma ?? null;
+/*              $params['dt_jogo_ini'] = $filterData->dt_jogo_ini ?? null;
+                $params['dt_jogo_fim'] = $filterData->dt_jogo_fim ?? null;
+*/                
+                $params['capacidade_critica'] = $filterData->capacidade_critica ?? null;
+
+                // Removemos campos vazios para não enviar "?escola=&turma="
+                $params = array_filter($params);
+            }
+            
+            // ==========================================
+            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
+            // ==========================================
+            if (empty($params['escola']))
+            {
+                $profile = ClassesSchoolService::getUserProfile();
+
+                // Se NÃO for administrador, busca a escola atrelada ao usuário
+                if (!$profile['is_admin'])
+                {
+                    TTransaction::open('jedi');
+                    
+                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
+                    
+                    if ($usuario_escolas)
+                    {
+                        // Pega o primeiro vínculo do usuário
+                        $primeira_escola = reset($usuario_escolas);
+                        $objEscola = Schools::find($primeira_escola->id_escola);
+
+                        if ($objEscola && !empty($objEscola->nome))
+                        {
+                            $params['escola'] = $objEscola->nome;
+                        }
+                    }
+
+                    TTransaction::close();
+                }
+            }
+
+            // 3. Montamos a Query String
+            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $apiData = (array) JediEducaRestService::getData('/estatisticas/capacidade_critica'. $queryString);
+
+            if (isset($apiData['link_imagem']->grafico_capacidade_critica)){
+                // Componente de Imagem
+                $image = new TImage($apiData['link_imagem']->grafico_capacidade_critica);
+                $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
+                $this->panelImagem->add($image);
+            } else {
+                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));     
+
+            }
+    
+        } catch (Exception $e) {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
 
     public static function onChangeLimit($param)
     {
