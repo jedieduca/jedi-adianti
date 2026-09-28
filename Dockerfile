@@ -4,11 +4,11 @@ FROM php:8.3-fpm
 # ==============================
 # 🔹 UID/GID (ADICIONE AQUI)
 # ==============================
-# ARG UID=1002
-# ARG GID=1005
+ARG UID=33
+ARG GID=33
 
-# RUN groupmod -g ${GID} www-data \
-#     && usermod -u ${UID} -g ${GID} www-data
+RUN groupmod -g ${GID} www-data \
+    && usermod -u ${UID} -g ${GID} www-data
 
 # Instala as extensões PHP essenciais (ex: MySQL/Postgres, GD para imagens)
 # A ordem aqui é importante:
@@ -47,7 +47,7 @@ WORKDIR /var/www/html
 # Use um arquivo .conf personalizado se precisar ajustar pool de workers, etc.
 # COPY ./docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
-USER www-data
+# USER www-data
 
 # Copia as aplicações
 #COPY ./cadJEDI/adm ./adm

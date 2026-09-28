@@ -359,6 +359,10 @@ class CloudWordView extends TStandardList
 
             $file = 'tmp/nuvem_palavras_' . uniqid() . '.csv';
             $handle = fopen($file, 'w');
+            if ($handle === false) {
+                throw new Exception("Não foi possível criar o arquivo {$file}. Verifique a permissão de escrita da pasta tmp.");
+            }
+
 
             // BOM UTF-8 para o Excel exibir acentos corretamente
             fwrite($handle, "\xEF\xBB\xBF");
