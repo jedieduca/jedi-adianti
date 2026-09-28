@@ -1,0 +1,579 @@
+Antecedentes;Consequentes;Suporte;Confianca;Lift
+turma_1o. EM IFA LGG/CHS C;escola_Colégio Estadual Almirante Tamandaré;0.32291666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.3125;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.20833333333333;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.85416666666667;0.96470588235294;0.99582542694497
+escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.85416666666667;0.88172043010753;0.99582542694497
+categoria_Direitos Humanos;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+categoria_Educação;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Esporte;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Meio Ambiente e Clima;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;0.90322580645161
+categoria_Mídia, Informação e Redes Sociais;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar;escola_Colégio Estadual Almirante Tamandaré;0.28125;0.96428571428571;0.99539170506912
+categoria_Segurança e Justiça;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.28125;0.9;0.92903225806452
+auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.34375;1;1.0322580645161
+auto_avaliacao_Noob;escola_Colégio Estadual Almirante Tamandaré;0.15625;1;1.0322580645161
+auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.15625;1;1.0322580645161
+avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.27083333333333;0.92857142857143;0.95852534562212
+avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.22916666666667;1;1.0322580645161
+avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.4375;0.97674418604651;1.0082520630158
+capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.375;0.97297297297297;1.0043591979076
+capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.54166666666667;0.9811320754717;1.0127814972611
+capacidade_critica_MANTEVE;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.86021505376344
+turma_1o. EM IFA LGG/CHS C;fx_idade_adolescente;0.27083333333333;0.83870967741935;0.94724857685009
+turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.27083333333333;0.86666666666667;0.97882352941176
+turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.19791666666667;0.95;1.0729411764706
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã;fx_idade_adolescente;0.11458333333333;0.91666666666667;1.0352941176471
+categoria_Direitos Humanos;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+categoria_Economia e Negócios;fx_idade_adolescente;0.09375;0.75;0.84705882352941
+categoria_Esporte;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+categoria_Meio Ambiente e Clima;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+categoria_Saúde e Bem-estar;fx_idade_adolescente;0.23958333333333;0.82142857142857;0.92773109243697
+categoria_Segurança e Justiça;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+auto_avaliacao_Casual;fx_idade_adolescente;0.28125;0.9;1.0164705882353
+auto_avaliacao_Iniciante;fx_idade_adolescente;0.3125;0.90909090909091;1.0267379679144
+auto_avaliacao_Noob;fx_idade_adolescente;0.13541666666667;0.86666666666667;0.97882352941176
+auto_avaliacao_Proplayer;fx_idade_adolescente;0.14583333333333;0.93333333333333;1.0541176470588
+avaliacao_jogo_Avançado;fx_idade_adolescente;0.27083333333333;0.92857142857143;1.0487394957983
+avaliacao_jogo_Casual;fx_idade_adolescente;0.20833333333333;0.90909090909091;1.0267379679144
+avaliacao_jogo_Proplayer;fx_idade_adolescente;0.375;0.83720930232558;0.94555403556772
+capacidade_critica_AUMENTOU;fx_idade_adolescente;0.33333333333333;0.86486486486486;0.97678855325914
+capacidade_critica_DIMINUIU;fx_idade_adolescente;0.51041666666667;0.92452830188679;1.0441731409545
+categoria_Meio Ambiente e Clima;capacidade_critica_AUMENTOU;0.0625;0.75;1.9459459459459
+capacidade_critica_MANTEVE;avaliacao_jogo_Proplayer;0.052083333333333;0.83333333333333;1.8604651162791
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.27083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.27083333333333;0.83870967741935;0.94724857685009
+turma_1o. EM IFA LGG/CHS C;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.27083333333333;0.83870967741935;0.98190401258851
+turma_1o. EM IFA LGG/CHS C, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.19791666666667;1;1.0322580645161
+fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.27083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.27083333333333;0.86666666666667;0.97882352941176
+turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.27083333333333;0.86666666666667;1.0146341463415
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+auto_avaliacao_Noob, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.13541666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;1;1.0322580645161
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.19791666666667;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.19791666666667;0.95;1.0729411764706
+turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.19791666666667;0.95;1.1121951219512
+categoria_Saúde e Bem-estar, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+avaliacao_jogo_Avançado, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.11458333333333;0.91666666666667;1.0352941176471
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;0.91666666666667;1.0731707317073
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Direitos Humanos, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Direitos Humanos, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+categoria_Direitos Humanos;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;0.75;0.84705882352941
+categoria_Economia e Negócios;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;0.75;0.8780487804878
+fx_idade_adolescente, categoria_Esporte;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Esporte, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+categoria_Esporte;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, categoria_Meio Ambiente e Clima;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;0.90322580645161
+escola_Colégio Estadual Almirante Tamandaré, categoria_Meio Ambiente e Clima;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+categoria_Meio Ambiente e Clima;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;1.0243902439024
+categoria_Saúde e Bem-estar, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.22916666666667;0.95652173913043;0.98737727910238
+categoria_Saúde e Bem-estar, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.22916666666667;0.81481481481481;0.9202614379085
+categoria_Saúde e Bem-estar;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.22916666666667;0.78571428571429;0.9198606271777
+fx_idade_adolescente, categoria_Segurança e Justiça;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+categoria_Segurança e Justiça, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+categoria_Segurança e Justiça;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;1.0536585365854
+fx_idade_adolescente, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.25;0.88888888888889;0.91756272401434
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.25;0.88888888888889;1.0039215686275
+auto_avaliacao_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.25;0.8;0.93658536585366
+fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.3125;1;1.0322580645161
+auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.3125;0.90909090909091;1.0267379679144
+auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.3125;0.90909090909091;1.0643015521064
+auto_avaliacao_Noob, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.13541666666667;1;1.0322580645161
+auto_avaliacao_Noob, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.13541666666667;0.86666666666667;0.97882352941176
+auto_avaliacao_Noob;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.13541666666667;0.86666666666667;1.0146341463415
+auto_avaliacao_Proplayer, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.0322580645161
+auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.14583333333333;0.93333333333333;1.0541176470588
+auto_avaliacao_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;0.93333333333333;1.0926829268293
+fx_idade_adolescente, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.25;0.92307692307692;0.95285359801489
+avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.25;0.92307692307692;1.0425339366516
+avaliacao_jogo_Avançado;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.25;0.85714285714286;1.0034843205575
+fx_idade_adolescente, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.20833333333333;1;1.0322580645161
+escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.20833333333333;0.90909090909091;1.0267379679144
+avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.20833333333333;0.90909090909091;1.0643015521064
+fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.36458333333333;0.97222222222222;1.0035842293907
+avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.36458333333333;0.83333333333333;0.94117647058824
+avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.36458333333333;0.81395348837209;0.95292115711855
+fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.32291666666667;0.96875;1
+escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.32291666666667;0.86111111111111;0.97254901960784
+capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.32291666666667;0.83783783783784;0.98088332234674
+capacidade_critica_DIMINUIU, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.5;0.97959183673469;1.0111915734036
+capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.5;0.92307692307692;1.0425339366516
+capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.5;0.90566037735849;1.0602853198343
+auto_avaliacao_Casual, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+auto_avaliacao_Iniciante, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Economia e Negócios, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Meio Ambiente e Clima, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.86021505376344
+categoria_Saúde e Bem-estar, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;0.90322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Noob;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+categoria_Saúde e Bem-estar, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.125;0.92307692307692;0.95285359801489
+categoria_Saúde e Bem-estar, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.1875;0.94736842105263;0.97792869269949
+capacidade_critica_DIMINUIU, categoria_Segurança e Justiça;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+avaliacao_jogo_Avançado, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.81818181818182;0.84457478005865
+auto_avaliacao_Casual, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;0.92903225806452
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;0.92903225806452
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.1875;0.94736842105263;0.97792869269949
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+auto_avaliacao_Iniciante, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.0322580645161
+auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.19791666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.0322580645161
+auto_avaliacao_Noob, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Noob;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+auto_avaliacao_Proplayer, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;0.92903225806452
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.17708333333333;1;1.0322580645161
+avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.23958333333333;0.95833333333333;0.98924731182796
+capacidade_critica_MANTEVE, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_MANTEVE, escola_Colégio Estadual Almirante Tamandaré;avaliacao_jogo_Proplayer;0.052083333333333;1;2.2325581395349
+capacidade_critica_MANTEVE;avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;1.9047619047619
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual;fx_idade_adolescente;0.072916666666667;0.875;0.98823529411765
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer;fx_idade_adolescente;0.09375;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.13541666666667;0.8125;0.91764705882353
+turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.1875;0.94736842105263;1.0699690402477
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.10416666666667;0.83333333333333;0.94117647058824
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;fx_idade_adolescente;0.125;1;1.1294117647059
+auto_avaliacao_Noob, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Casual;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.11458333333333;0.84615384615385;0.95565610859729
+turma_1o. EM IFA LGG/CHS D, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.15625;0.9375;1.0588235294118
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.11458333333333;1;1.1294117647059
+turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Iniciante;fx_idade_adolescente;0.0625;1;1.1294117647059
+avaliacao_jogo_Avançado, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.0625;1;1.1294117647059
+turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+turma_1o.Tec.Enf. - ET AS - B, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.11458333333333;0.91666666666667;1.0352941176471
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;capacidade_critica_DIMINUIU;0.052083333333333;0.83333333333333;1.5094339622642
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, auto_avaliacao_Iniciante;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+fx_idade_adolescente, categoria_Meio Ambiente e Clima;capacidade_critica_AUMENTOU;0.0625;0.75;1.9459459459459
+categoria_Meio Ambiente e Clima, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;1;1.1294117647059
+categoria_Meio Ambiente e Clima;fx_idade_adolescente, capacidade_critica_AUMENTOU;0.0625;0.75;2.25
+categoria_Saúde e Bem-estar, auto_avaliacao_Casual;fx_idade_adolescente;0.0625;0.75;0.84705882352941
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+categoria_Saúde e Bem-estar, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.10416666666667;0.76923076923077;0.86877828054299
+categoria_Saúde e Bem-estar, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;0.75;0.84705882352941
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.17708333333333;0.89473684210526;1.0105263157895
+capacidade_critica_DIMINUIU, categoria_Segurança e Justiça;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+auto_avaliacao_Casual, avaliacao_jogo_Avançado;fx_idade_adolescente;0.10416666666667;0.90909090909091;1.0267379679144
+auto_avaliacao_Casual, avaliacao_jogo_Casual;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+auto_avaliacao_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.083333333333333;0.8;0.90352941176471
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual;fx_idade_adolescente;0.1875;0.94736842105263;1.0699690402477
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;fx_idade_adolescente;0.10416666666667;1;1.1294117647059
+auto_avaliacao_Iniciante, avaliacao_jogo_Casual;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;fx_idade_adolescente;0.125;0.85714285714286;0.96806722689076
+auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.16666666666667;0.84210526315789;0.95108359133127
+capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;fx_idade_adolescente;0.14583333333333;1;1.1294117647059
+auto_avaliacao_Noob, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.083333333333333;0.8;0.90352941176471
+capacidade_critica_DIMINUIU, auto_avaliacao_Noob;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+auto_avaliacao_Proplayer, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+capacidade_critica_DIMINUIU, auto_avaliacao_Proplayer;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;fx_idade_adolescente;0.16666666666667;0.94117647058824;1.0629757785467
+avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.10416666666667;0.90909090909091;1.0267379679144
+capacidade_critica_DIMINUIU, avaliacao_jogo_Casual;fx_idade_adolescente;0.10416666666667;0.90909090909091;1.0267379679144
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.11458333333333;0.78571428571429;0.88739495798319
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.22916666666667;0.91666666666667;1.0352941176471
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios;auto_avaliacao_Casual;0.052083333333333;0.83333333333333;2.6666666666667
+auto_avaliacao_Casual, categoria_Economia e Negócios;capacidade_critica_DIMINUIU;0.052083333333333;1;1.811320754717
+auto_avaliacao_Iniciante, categoria_Economia e Negócios;capacidade_critica_AUMENTOU;0.052083333333333;1;2.5945945945946
+categoria_Economia e Negócios, capacidade_critica_AUMENTOU;auto_avaliacao_Iniciante;0.052083333333333;1;2.9090909090909
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer;capacidade_critica_DIMINUIU;0.052083333333333;0.83333333333333;1.5094339622642
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+categoria_Saúde e Bem-estar, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU;0.10416666666667;0.76923076923077;1.3933236574746
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU;0.09375;0.9;1.6301886792453
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;0.91056910569106
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;0.875;0.98823529411765
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;1.0243902439024
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.1707317073171
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;1.0406504065041
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.13541666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.13541666666667;0.8125;0.91764705882353
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.13541666666667;0.8125;0.95121951219512
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.1875;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.1875;0.94736842105263;1.0699690402477
+turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.1875;0.94736842105263;1.1091142490372
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;1.4358974358974
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;1.4358974358974
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+categoria_Saúde e Bem-estar, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.10416666666667;0.83333333333333;0.94117647058824
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;0.83333333333333;0.97560975609756
+fx_idade_adolescente, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.125;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.1707317073171
+auto_avaliacao_Noob, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+auto_avaliacao_Noob, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+auto_avaliacao_Noob, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;0.91056910569106
+fx_idade_adolescente, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;1.0406504065041
+fx_idade_adolescente, avaliacao_jogo_Casual, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.11458333333333;0.84615384615385;0.95565610859729
+turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;0.84615384615385;0.9906191369606
+fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+turma_1o. EM IFA LGG/CHS D, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;1.0536585365854
+capacidade_critica_DIMINUIU, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.15625;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.15625;0.9375;1.0588235294118
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.15625;0.9375;1.0975609756098
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+auto_avaliacao_Noob, turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.11458333333333;1;1.1294117647059
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.1707317073171
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré, auto_avaliacao_Iniciante;fx_idade_adolescente;0.0625;1;1.1294117647059
+turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+avaliacao_jogo_Avançado, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;1;1.1294117647059
+avaliacao_jogo_Avançado, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.1707317073171
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+turma_1o.Tec.Enf. - ET AS - B, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.1707317073171
+capacidade_critica_DIMINUIU, fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.11458333333333;0.91666666666667;1.0352941176471
+capacidade_critica_DIMINUIU, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;0.91666666666667;1.0731707317073
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.052083333333333;0.83333333333333;1.5094339622642
+avaliacao_jogo_Proplayer, turma_1o.Tec.Enf. - ET AS - B;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;1.5384615384615
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+turma_NEM EPT IF TEC ENFERM-ET AS - B Manhã, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.1707317073171
+fx_idade_adolescente, categoria_Economia e Negócios, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, fx_idade_adolescente, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+fx_idade_adolescente, categoria_Meio Ambiente e Clima, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.86021505376344
+escola_Colégio Estadual Almirante Tamandaré, categoria_Meio Ambiente e Clima, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+categoria_Meio Ambiente e Clima, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+categoria_Saúde e Bem-estar, fx_idade_adolescente, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.86021505376344
+categoria_Saúde e Bem-estar, fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.1707317073171
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;0.91056910569106
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;0.92903225806452
+categoria_Saúde e Bem-estar, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;0.75;0.84705882352941
+categoria_Saúde e Bem-estar, fx_idade_adolescente, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;0.75;0.84705882352941
+categoria_Saúde e Bem-estar, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.75;0.8780487804878
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;0.94117647058824;0.97153700189753
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.16666666666667;0.88888888888889;1.0039215686275
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;0.84210526315789;0.98587933247754
+capacidade_critica_DIMINUIU, fx_idade_adolescente, categoria_Segurança e Justiça;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, categoria_Segurança e Justiça, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+capacidade_critica_DIMINUIU, categoria_Segurança e Justiça;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+fx_idade_adolescente, auto_avaliacao_Casual, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;0.8258064516129
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Avançado;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+fx_idade_adolescente, auto_avaliacao_Casual, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+auto_avaliacao_Casual, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;1.0406504065041
+fx_idade_adolescente, auto_avaliacao_Casual, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;0.91756272401434
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;0.93658536585366
+fx_idade_adolescente, auto_avaliacao_Casual, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.875;0.90322580645161
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.072916666666667;0.77777777777778;0.87843137254902
+capacidade_critica_DIMINUIU, fx_idade_adolescente, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.17708333333333;0.94444444444444;0.97491039426523
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.17708333333333;0.94444444444444;1.0666666666667
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.17708333333333;0.89473684210526;1.0474967907574
+fx_idade_adolescente, auto_avaliacao_Iniciante, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.10416666666667;1;1.1294117647059
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.1707317073171
+fx_idade_adolescente, auto_avaliacao_Iniciante, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+auto_avaliacao_Iniciante, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+fx_idade_adolescente, auto_avaliacao_Iniciante, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.125;1;1.0322580645161
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.125;0.85714285714286;0.96806722689076
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.125;0.85714285714286;1.0034843205575
+fx_idade_adolescente, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;1;1.0322580645161
+auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.16666666666667;0.84210526315789;0.95108359133127
+auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;0.84210526315789;0.98587933247754
+capacidade_critica_DIMINUIU, fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.14583333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.14583333333333;1;1.1707317073171
+auto_avaliacao_Noob, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+auto_avaliacao_Noob, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.083333333333333;0.8;0.90352941176471
+auto_avaliacao_Noob, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;0.93658536585366
+auto_avaliacao_Noob, fx_idade_adolescente, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Noob, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+capacidade_critica_DIMINUIU, auto_avaliacao_Noob;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.1707317073171
+auto_avaliacao_Proplayer, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+auto_avaliacao_Proplayer, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+capacidade_critica_DIMINUIU, fx_idade_adolescente, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+capacidade_critica_DIMINUIU, auto_avaliacao_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;1.0536585365854
+fx_idade_adolescente, avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;0.91756272401434
+avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+avaliacao_jogo_Avançado, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;0.93658536585366
+capacidade_critica_DIMINUIU, fx_idade_adolescente, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.16666666666667;0.94117647058824;1.0629757785467
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.16666666666667;0.94117647058824;1.1018651362984
+fx_idade_adolescente, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.10416666666667;0.90909090909091;1.0267379679144
+avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;0.90909090909091;1.0643015521064
+capacidade_critica_DIMINUIU, fx_idade_adolescente, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.10416666666667;0.90909090909091;1.0267379679144
+capacidade_critica_DIMINUIU, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.10416666666667;0.90909090909091;1.0643015521064
+fx_idade_adolescente, avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.11458333333333;0.78571428571429;0.88739495798319
+avaliacao_jogo_Proplayer, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.11458333333333;0.78571428571429;0.9198606271777
+capacidade_critica_DIMINUIU, fx_idade_adolescente, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.21875;0.95454545454545;0.98533724340176
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.21875;0.91304347826087;1.0312020460358
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.21875;0.875;1.0243902439024
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré;auto_avaliacao_Casual;0.052083333333333;0.83333333333333;2.6666666666667
+auto_avaliacao_Casual, categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.052083333333333;1;1.811320754717
+capacidade_critica_DIMINUIU, categoria_Economia e Negócios;auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;2.962962962963
+auto_avaliacao_Casual, categoria_Economia e Negócios;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.8461538461538
+auto_avaliacao_Iniciante, categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_AUMENTOU;0.052083333333333;1;2.5945945945946
+auto_avaliacao_Iniciante, categoria_Economia e Negócios, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Economia e Negócios, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;auto_avaliacao_Iniciante;0.052083333333333;1;2.9090909090909
+auto_avaliacao_Iniciante, categoria_Economia e Negócios;escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;0.052083333333333;1;2.6666666666667
+categoria_Economia e Negócios, capacidade_critica_AUMENTOU;auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;2.9090909090909
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.5824175824176
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, auto_avaliacao_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.052083333333333;0.83333333333333;1.5094339622642
+categoria_Saúde e Bem-estar, auto_avaliacao_Proplayer;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;1.5384615384615
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.072916666666667;0.77777777777778;1.4088050314465
+categoria_Saúde e Bem-estar, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;0.77777777777778;1.4358974358974
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.09375;0.9;0.92903225806452
+categoria_Saúde e Bem-estar, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.09375;0.75;1.3584905660377
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, avaliacao_jogo_Proplayer;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;0.91756272401434
+auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU;0.083333333333333;0.88888888888889;1.6100628930818
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;1.4769230769231
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+auto_avaliacao_Iniciante, avaliacao_jogo_Casual, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.0625;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU;0.0625;0.75;1.3584905660377
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU;fx_idade_adolescente;0.09375;1;1.1294117647059
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+categoria_Saúde e Bem-estar, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU;0.083333333333333;0.8;1.4490566037736
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;1;1.1294117647059
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;fx_idade_adolescente;0.0625;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.0625;1;1.1294117647059
+fx_idade_adolescente, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU;0.0625;0.75;1.3584905660377
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;fx_idade_adolescente;0.0625;1;1.1294117647059
+categoria_Saúde e Bem-estar, fx_idade_adolescente, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU, fx_idade_adolescente;0.0625;0.85714285714286;1.6793002915452
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.09375;0.9;1.0164705882353
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU;0.09375;0.9;1.6301886792453
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, avaliacao_jogo_Avançado;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, avaliacao_jogo_Proplayer;fx_idade_adolescente;0.09375;1;1.1294117647059
+fx_idade_adolescente, auto_avaliacao_Casual, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU;0.09375;1;1.811320754717
+auto_avaliacao_Casual, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU, fx_idade_adolescente;0.09375;0.9;1.7632653061224
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;0.75;0.84705882352941
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;fx_idade_adolescente;0.0625;1;1.1294117647059
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;0.83333333333333;0.94117647058824
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;0.83333333333333;0.97560975609756
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.5824175824176
+categoria_Saúde e Bem-estar, turma_1o. EM IFA LGG/CHS C, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+turma_1o. EM IFA LGG/CHS C, fx_idade_adolescente, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, capacidade_critica_DIMINUIU, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, auto_avaliacao_Proplayer, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré, fx_idade_adolescente;capacidade_critica_DIMINUIU;0.0625;0.75;1.3584905660377
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, fx_idade_adolescente;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.75;1.3846153846154
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU, fx_idade_adolescente;escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.09375;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS C, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.09375;1;1.1707317073171
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.0322580645161
+categoria_Saúde e Bem-estar, fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU;0.083333333333333;0.8;1.4490566037736
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+categoria_Saúde e Bem-estar, fx_idade_adolescente, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;1.4769230769231
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;1;1.1294117647059
+turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+capacidade_critica_DIMINUIU, fx_idade_adolescente, auto_avaliacao_Iniciante, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;1;1.1294117647059
+capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+fx_idade_adolescente, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU;0.0625;0.75;1.3584905660377
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.0625;1;1.1294117647059
+fx_idade_adolescente, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.75;1.3846153846154
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU, turma_1o. EM IFA LGG/CHS D;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, turma_1o. EM IFA LGG/CHS D;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Casual, avaliacao_jogo_Casual;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré, avaliacao_jogo_Casual;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, avaliacao_jogo_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+capacidade_critica_DIMINUIU, fx_idade_adolescente, turma_1o.Tec.Enf. - ET AS - B, auto_avaliacao_Casual;escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.0322580645161
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.072916666666667;1;1.1294117647059
+capacidade_critica_DIMINUIU, auto_avaliacao_Casual, turma_1o.Tec.Enf. - ET AS - B;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.072916666666667;1;1.1707317073171
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, fx_idade_adolescente, auto_avaliacao_Iniciante;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, fx_idade_adolescente, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;1;1.1294117647059
+categoria_Saúde e Bem-estar, fx_idade_adolescente, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.5824175824176
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU, fx_idade_adolescente;0.0625;0.85714285714286;1.6793002915452
+categoria_Saúde e Bem-estar, auto_avaliacao_Iniciante;capacidade_critica_DIMINUIU, fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.7142857142857
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Avançado, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.0625;0.85714285714286;1.5525606469003
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;0.85714285714286;0.96806722689076
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Avançado;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.5824175824176
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.85714285714286;1.0034843205575
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Proplayer, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;0.91756272401434
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.083333333333333;0.88888888888889;1.6100628930818
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.083333333333333;0.88888888888889;1.0039215686275
+categoria_Saúde e Bem-estar, fx_idade_adolescente, avaliacao_jogo_Proplayer;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;1.4769230769231
+categoria_Saúde e Bem-estar, capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;0.93658536585366
+fx_idade_adolescente, avaliacao_jogo_Avançado, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Proplayer, auto_avaliacao_Casual, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;0.91756272401434
+fx_idade_adolescente, avaliacao_jogo_Proplayer, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU;0.083333333333333;1;1.811320754717
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.083333333333333;1;1.1294117647059
+fx_idade_adolescente, avaliacao_jogo_Proplayer, auto_avaliacao_Casual;capacidade_critica_DIMINUIU, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;1.6410256410256
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Casual;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.88888888888889;1.0406504065041
+avaliacao_jogo_Proplayer, auto_avaliacao_Casual, escola_Colégio Estadual Almirante Tamandaré;capacidade_critica_DIMINUIU, fx_idade_adolescente;0.083333333333333;0.88888888888889;1.7414965986395
+avaliacao_jogo_Proplayer, auto_avaliacao_Casual;capacidade_critica_DIMINUIU, fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.083333333333333;0.8;1.6
+fx_idade_adolescente, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.052083333333333;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Avançado, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.052083333333333;1;1.1707317073171
+fx_idade_adolescente, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré, capacidade_critica_AUMENTOU;fx_idade_adolescente;0.0625;0.75;0.84705882352941
+avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, capacidade_critica_AUMENTOU;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;0.75;0.8780487804878
+fx_idade_adolescente, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, capacidade_critica_DIMINUIU;escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.0322580645161
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante, escola_Colégio Estadual Almirante Tamandaré;fx_idade_adolescente;0.0625;1;1.1294117647059
+capacidade_critica_DIMINUIU, avaliacao_jogo_Proplayer, auto_avaliacao_Iniciante;fx_idade_adolescente, escola_Colégio Estadual Almirante Tamandaré;0.0625;1;1.1707317073171
