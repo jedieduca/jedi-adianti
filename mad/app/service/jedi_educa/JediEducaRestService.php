@@ -61,7 +61,11 @@ class JediEducaRestService
         unset($ch); 
 
         if ($authHttpCode !== 200) {
-            throw new Exception("Erro durante o processamento do serviço: " . ($authResponse->detail ?? 'Erro'));
+            $detail = $data->detail ?? 'Erro';
+            if (!is_string($detail)) {
+                $detail = json_encode($detail, JSON_UNESCAPED_UNICODE);
+            }
+            throw new Exception("Erro durante o processamento do serviço: " . $detail);
         }
             
         return $data;

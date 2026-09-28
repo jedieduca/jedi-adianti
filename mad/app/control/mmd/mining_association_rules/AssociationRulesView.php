@@ -312,9 +312,9 @@ class AssociationRulesView extends TStandardList
                 $params['id']          = $filterData->id ?? null;
                 $params['escola']      = $filterData->escola ?? null;
                 $params['turma']       = $filterData->turma ?? null;
-/*              $params['dt_jogo_ini'] = $filterData->dt_jogo_ini ?? null;
+                $params['dt_jogo_ini'] = $filterData->dt_jogo_ini ?? null;
                 $params['dt_jogo_fim'] = $filterData->dt_jogo_fim ?? null;
-*/                
+                
                 $params['capacidade_critica'] = $filterData->capacidade_critica ?? null;
 
                 // Removemos campos vazios para não enviar "?escola=&turma="
