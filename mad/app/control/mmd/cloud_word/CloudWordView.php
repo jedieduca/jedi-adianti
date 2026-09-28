@@ -317,40 +317,69 @@ class CloudWordView extends TStandardList
     public function onExportCsv($param)
     {
         try {
-            $apiData = (array) JediEducaRestService::getData('/regras');
-            $regras  = (array) $apiData['regras'];
             $filterData = TSession::getValue(__CLASS__ . '_filter_data');
+            $query = [];
 
-            // Aplicar a mesma lógica de filtro usada no onReload
+            // Mesmos parâmetros usados no onReload
+            if (!empty($filterData->filter_category)) $query['categoria'] = $filterData->filter_category;
+            if (!empty($filterData->filter_answer))   $query['respcerta'] = $filterData->filter_answer;
+
+            $queryString = !empty($query) ? '?' . http_build_query($query) : '';
+
+            $apiData = (array) JediEducaRestService::getData('/nuvem_palavras' . $queryString);
+            $dados   = (array) ($apiData['dados'] ?? []);
+
+            // Mesma lógica de filtro do onReload
             if (!empty($filterData)) {
-                $regras = array_filter($regras, function ($row) use ($filterData) {
-                    $match = true;
-                    if (!empty($filterData->filter_text)) {
-                        $term = strtolower($filterData->filter_text);
-                        $ant = strtolower(implode(', ', (array) $row->antecedents));
-                        $con = strtolower(implode(', ', (array) $row->consequents));
-                        if (!str_contains($ant, $term) && !str_contains($con, $term)) $match = false;
+                $dados = array_filter($dados, function ($row) use ($filterData) {
+                    if (!empty($filterData->filter_category)) {
+                        $term     = strtolower($filterData->filter_category);
+                        $category = strtolower(implode(', ', (array) $row->categoria));
+                        if (!str_contains($category, $term)) {
+                            return false;
+                        }
                     }
-                    if (!empty($filterData->filter_lift) && $row->lift < (float)$filterData->filter_lift) $match = false;
-                    if (!empty($filterData->filter_conf) && $row->confidence < (float)$filterData->filter_conf) $match = false;
-                    return $match;
+
+                    if (!empty($filterData->filter_answer)) {
+                        $term   = mb_strtolower(trim($filterData->filter_answer));
+                        $answer = mb_strtolower(trim((string) $row->resp_certa));
+                        if ($answer !== $term) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
             }
 
-            if ($regras) {
-                $csv = "Antecedentes;Consequentes;Suporte;Confianca;Lift\n";
-                foreach ($regras as $row) {
-                    $ant = implode(', ', (array) $row->antecedents);
-                    $con = implode(', ', (array) $row->consequents);
-                    $csv .= "{$ant};{$con};{$row->support};{$row->confidence};{$row->lift}\n";
-                }
-
-                $file = 'tmp/regras_apriori_' . uniqid() . '.csv';
-                file_put_contents($file, $csv);
-                TPage::openFile($file);
+            if (empty($dados)) {
+                new TMessage('info', 'Nenhum registro para exportar.');
+                return;
             }
+
+            $file = 'tmp/nuvem_palavras_' . uniqid() . '.csv';
+            $handle = fopen($file, 'w');
+
+            // BOM UTF-8 para o Excel exibir acentos corretamente
+            fwrite($handle, "\xEF\xBB\xBF");
+
+            // Cabeçalho = colunas do grid
+            fputcsv($handle, ['Id', _t('Category'), _t('News'), _t('News Classification')], ';');
+
+            foreach ($dados as $row) {
+                fputcsv($handle, [
+                    $row->id,
+                    implode(', ', (array) $row->categoria),
+                    $row->pergunta,
+                    $row->resp_certa,
+                ], ';');
+            }
+
+            fclose($handle);
+            TPage::openFile($file);
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
     }
+
 }
