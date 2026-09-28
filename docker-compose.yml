@@ -5,9 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      args:
-        UID: 1002
-        GID: 1005  
     container_name: php_cadjedi
     restart: unless-stopped
     expose:
