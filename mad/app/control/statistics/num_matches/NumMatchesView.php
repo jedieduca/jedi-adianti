@@ -45,8 +45,8 @@ class NumMatchesView extends TStandardList
         parent::addFilterField('id', '=', 'id');               // filterField, operator, formField
         parent::addFilterField('escola', '=', 'escola');       // filterField, operator, formField
         parent::addFilterField('turma', '=', 'turma');         // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '=', 'dt_jogo_ini'); // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '=', 'dt_jogo_fim'); // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini'); // filterField, operator, formField
+        parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim'); // filterField, operator, formField
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
