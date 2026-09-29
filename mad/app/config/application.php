@@ -36,6 +36,16 @@ return [
         'client_secret' => "pZ51QzZaNystmR1-DG37rFzrpsGkU75gAHrdkDmXAZ8",
         /*'password_renewal_interval' => '',*/
     ],
+    'mail' => [
+        'host'   => 'smtp.hostinger.com',           // Ex: smtp.gmail.com ou smtp.office365.com
+        'port'   => '465',                          // Porta do SMTP (geralmente 587 para TLS ou 465 para SSL)
+        'auth'   => '1',                            // 1 para requerer autenticação, 0 se não requerer
+        'user'   => 'contato@jedieduca.com.br',     // E-mail ou usuário de autenticação do SMTP
+        'pass'   => 'J3d1@3duc@',                   // Senha da conta ou senha de aplicativo
+        'secure' => 'ssl',                          // 'ssl' para porta 465, 'tls' para porta 587
+        'from'   => 'contato@jedieduca.com.br',     // E-mail remetente padrão
+        'name'   => 'JEDi Educa - Contato',         // Nome do remetente padrão
+    ],                   
     'recaptcha' => [
         'enabled' => '0',
         'key' => '...',

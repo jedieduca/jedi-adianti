@@ -71,12 +71,23 @@ class SystemRequestPasswordResetForm extends TPage
             {
                 throw new Exception(_t('A new seed is required in the application.ini for security reasons'));
             }
-            
+
+            if (empty($ini['mail']))
+            {
+                throw new Exception('As configurações de e-mail [mail] não foram definidas no application.ini');
+            }
+
             TTransaction::open('jedieduca');
-            
+
             $login = $param['login'];
             $user  = SystemUser::newFromLogin($login);
-            
+
+            if (!$user instanceof SystemUser)
+            {
+                // Se não encontrar pelo login, tenta localizar pelo e-mail
+                $user = SystemUser::newFromEmail($login);
+            }
+
             if ($user instanceof SystemUser)
             {
                 if ($user->active == 'N')
@@ -94,8 +105,9 @@ class SystemRequestPasswordResetForm extends TPage
                     
                     $jwt = JWT::encode($token, $key);
                     
-                    $referer = $_SERVER['HTTP_REFERER'];
-                    $url = substr($referer, 0, strpos($referer, 'index.php'));
+                    $referer = $_SERVER['HTTP_REFERER'] ?? '';
+                    $pos     = strpos($referer, 'index.php');
+                    $url     = ($pos !== false) ? substr($referer, 0, $pos) : '';
                     $url .= 'index.php?class=SystemPasswordResetForm&method=onLoad&jwt='.$jwt;
                     
                     $replaces = [];
@@ -104,7 +116,34 @@ class SystemRequestPasswordResetForm extends TPage
                     $html = new THtmlRenderer('app/resources/system_reset_password.html');
                     $html->enableSection('main', $replaces);
                     
-                    MailService::send( $user->email, _t('Password reset'), $html->getContents(), 'html' );
+                    // --- ENVIO VIA TMAIL COM OS DADOS DO APPLICATION.INI ---
+                    $mailConfig = $ini['mail'];
+
+                    if (empty($user->email))
+                    {
+                        throw new Exception('Usuário sem e-mail cadastrado');
+                    }
+
+                    $mail = new TMail;
+                    $mail->SetUseSmtp( !empty($mailConfig['auth']) );
+                    $mail->SetSmtpHost($mailConfig['host'], (int) $mailConfig['port']);
+                    $mail->SetSmtpUser($mailConfig['user'], $mailConfig['pass']);
+
+                    // TMail não expõe setter de segurança; usa a instância interna do PHPMailer
+                    if (!empty($mailConfig['secure']))
+                    {
+                        $mail->getInternalInstance()->SMTPSecure = $mailConfig['secure'];
+                    }
+
+                    $mail->setFrom($mailConfig['from'], $mailConfig['name'] ?? 'JEDi Educa');
+                    $mail->addAddress($user->email, $user->name);
+                    $mail->setSubject(_t('Password reset'));
+                    $mail->setHtmlBody($html->getContents());
+
+                    $mail->send();
+
+                    TTransaction::close();
+
                     new TMessage('info', _t('Message sent successfully'));
                 }
             }
@@ -113,7 +152,7 @@ class SystemRequestPasswordResetForm extends TPage
                 throw new Exception(_t('User not found'));
             }
         }
-        catch (Exception $e)
+        catch (Throwable $e)
         {
             new TMessage('error',$e->getMessage());
             TTransaction::rollback();
