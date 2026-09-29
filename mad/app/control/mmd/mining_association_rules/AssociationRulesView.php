@@ -369,6 +369,61 @@ class AssociationRulesView extends TStandardList
         }
     }
 
+    /**
+     * Sobrescreve a exportação CSV do framework:
+     * usa ";" como separador e grava o BOM UTF-8 (compatível com Excel pt-BR)
+     */
+    protected function exportToCSV($output)
+    {
+        $this->limit = 0;                 // exporta todos os registros, não só a página atual
+        $objects = $this->onReload([]);
+
+        $handler = @fopen($output, 'w');
+        if ($handler === false) {
+            throw new Exception("Permissão negada: {$output}");
+        }
+
+        // BOM UTF-8 para o Excel exibir acentos corretamente
+        fwrite($handler, "\xEF\xBB\xBF");
+
+        TTransaction::openFake($this->database);
+
+        // Cabeçalho
+        $row = [];
+        foreach ($this->datagrid->getColumns() as $column) {
+            if ($column->isPrintable()) {
+                $row[] = $column->getLabel();
+            }
+        }
+        fputcsv($handler, $row, ';', '"', '', "\n");
+
+        // Linhas
+        if ($objects) {
+            foreach ($objects as $object) {
+                $row = [];
+                foreach ($this->datagrid->getColumns() as $column) {
+                    if ($column->isPrintable()) {
+                        $column_name = $column->getName();
+
+                        if (isset($object->$column_name)) {
+                            $row[] = is_scalar($object->$column_name) ? $object->$column_name : '';
+                        } else if (method_exists($object, 'render')) {
+                            $column_name = (strpos($column_name, '{') === false) ? ('{' . $column_name . '}') : $column_name;
+                            $row[] = $object->render($column_name);
+                        } else {
+                            $row[] = '';
+                        }
+                    }
+                }
+                fputcsv($handler, $row, ';', '"', '', "\n");
+            }
+        }
+
+        fclose($handler);
+        TTransaction::close();
+    }
+
+
 
     public static function onChangeLimit($param)
     {
