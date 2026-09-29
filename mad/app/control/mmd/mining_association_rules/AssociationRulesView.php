@@ -293,13 +293,12 @@ class AssociationRulesView extends TStandardList
     public function onReload($param = NULL)
     {
         // Carrega os dados do Banco de Dados local (Padrão TStandardList)
-        parent::onReload($param);
-        parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
-        parent::addFilterField('turma', '=', 'turma');                           // filterField, operator, formField
-        parent::addFilterField('nome', 'like', 'nome');                          // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini');                  // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim');                  // filterField, operator, formField
-        parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
+        // parent::onReload($param);
+        $objects = parent::onReload($param);
+
+        if (str_starts_with($_REQUEST['method'] ?? '', 'onExport')) {
+            return $objects;
+        }
 
         try {
             // Recupera os dados do filtro que o Adianti salvou na sessão
