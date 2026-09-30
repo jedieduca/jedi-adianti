@@ -371,7 +371,7 @@ class SchoolProfilesView extends TStandardList
             TTransaction::close();
 
             // Recarrega o combo 'turma' do formulário atual
-            TCombo::reload('form_search_NumMatches', 'turma', $options_turmas, true);
+            TCombo::reload('form_search_ClassProfile', 'turma', $options_turmas, true);
         }
         catch (Exception $e)
         {

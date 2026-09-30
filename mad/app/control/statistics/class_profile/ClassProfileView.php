@@ -5,7 +5,6 @@ use Adianti\Control\TAction;
 use Adianti\Control\TPage;
 use Adianti\Core\AdiantiCoreApplication;
 use Adianti\Registry\TSession;
-use Adianti\Widget\Container\THBox;
 use Adianti\Widget\Container\TPanelGroup;
 use Adianti\Widget\Container\TVBox;
 use Adianti\Widget\Datagrid\TDataGrid;
@@ -27,7 +26,6 @@ class ClassProfileView extends TStandardList
 {
     protected $form;
     protected $panelImagem;
-    protected $imageContainer;
     protected $datagrid;       // listing
     protected $pageNavigation; // Page Navigation
     protected $filter_label;
@@ -207,9 +205,7 @@ class ClassProfileView extends TStandardList
 
         // Panel que armazena o gráfico
         $this->panelImagem = new TPanelGroup();
-        $this->panelImagem->style = 'text-align: center; width: 100%;'; 
-        $this->imageContainer = new THBox;
-        $this->imageContainer->style = 'width: 100%; margin-bottom: 20px; text-align: center;';        
+        $this->panelImagem->style = 'text-align: center; width: 100%; height: auto; overflow: visible;';
 
         // vertical box container
         $container = new TVBox;
@@ -217,7 +213,7 @@ class ClassProfileView extends TStandardList
         $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
         //$container->add($this->form);
         $container->add($panel);
-        // $container->add($this->panelImagem);
+        $container->add($this->panelImagem);
         
         parent::add($container);
     }
@@ -229,35 +225,85 @@ class ClassProfileView extends TStandardList
 
         try {
             // Recupera os dados do filtro que o Adianti salvou na sessão
-
             $filterData = TSession::getValue(__CLASS__ . '_filter_data');
 
             $params = [];
             if (!empty($filterData)) {
-                // Convertemos o objeto de dados do formulário em um array para o service
-                // Ajuste as chaves abaixo para baterem com o que o seu FastAPI espera
-                $params['id']        = $filterData->id ?? null;
-                $params['categoria'] = $filterData->categoria ?? null;
-                
+                $params['escola'] = $filterData->escola ?? null;
+                $params['turma']  = $filterData->turma ?? null;
+
+                // O 'id' desta tela é o id do perfil da turma (ClassProfile), e não o id da vw_analise_idade.
+                // Por isso é convertido em escola/turma, respeitando o filtro de segurança por perfil.
+                if (!empty($filterData->id)) {
+                    TTransaction::open('jedi');
+
+                    $criteria = ClassesSchoolService::getSecurityCriteria();
+                    $criteria->add(new TFilter('id', '=', $filterData->id));
+                    $perfis = (new TRepository('ClassProfile'))->load($criteria);
+
+                    TTransaction::close();
+
+                    if (empty($perfis)) {
+                        $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                        return;
+                    }
+
+                    $perfil = reset($perfis);
+                    $params['escola'] = $perfil->escola;
+                    $params['turma']  = $perfil->turma;
+                }
+
                 // Removemos campos vazios para não enviar "?escola=&turma="
                 $params = array_filter($params);
             }
 
+            // ==========================================
+            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
+            // ==========================================
+            if (empty($params['escola']))
+            {
+                $profile = ClassesSchoolService::getUserProfile();
+
+                // Se NÃO for administrador, busca a escola atrelada ao usuário
+                if (!$profile['is_admin'])
+                {
+                    TTransaction::open('jedi');
+
+                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
+
+                    if ($usuario_escolas)
+                    {
+                        // Pega o primeiro vínculo do usuário
+                        $primeira_escola = reset($usuario_escolas);
+                        $objEscola = Schools::find($primeira_escola->id_escola);
+
+                        if ($objEscola && !empty($objEscola->nome))
+                        {
+                            $params['escola'] = $objEscola->nome;
+                        }
+                    }
+
+                    TTransaction::close();
+                }
+            }
+
             // Montamos a Query String
             $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $apiData = (array) JediEducaRestService::getData('/estatisticas/analise_idade' . $queryString);
 
-            $apiData = (array) JediEducaRestService::getData('/estatisticas/perfil_noticia'. $queryString);
-
-            if (isset($apiData['link_imagem']->grafico_perfil_noticia)){
+            if (isset($apiData['link_imagem']->grafico_analise_idade)) {
                 // Componente de Imagem
-                $this->imageContainer = new TImage($apiData['link_imagem']->grafico_perfil_noticia);
-                $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
-                $this->panelImagem->add($this->imageContainer);
+                $image = new TImage($apiData['link_imagem']->grafico_analise_idade);
+                $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
+                $this->panelImagem->add($image);
+            } else {
+                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
             }
-    
+
         } catch (Exception $e) {
+            TTransaction::rollback();
             new TMessage('error', $e->getMessage());
-        }        
+        }
     }
 
     public function onShow()
