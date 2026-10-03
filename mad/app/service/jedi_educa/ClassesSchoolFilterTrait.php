@@ -16,7 +16,7 @@ trait ClassesSchoolFilterTrait
             return;
         }
 
-        $data = ClassesSchoolService::getDefaultFilterData(in_array('turma', $this->formFilters));
+        $data = ClassesSchoolService::getDefaultFilterData();
 
         if (empty($data))
         {

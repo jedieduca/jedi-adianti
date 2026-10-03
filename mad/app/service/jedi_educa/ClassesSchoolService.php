@@ -306,11 +306,10 @@ class ClassesSchoolService
     }
 
     /**
-     * Retorna os filtros padrão (escola/turma) conforme o perfil do usuário
-     * @param $useTurma false quando a tela não filtra por turma
+     * Retorna o filtro padrão (escola) conforme o perfil do usuário
      * @return stdClass|null null para administrador ou usuário sem vínculo
      */
-    public static function getDefaultFilterData($useTurma = true)
+    public static function getDefaultFilterData()
     {
         $profile = self::getUserProfile();
 
@@ -333,14 +332,6 @@ class ClassesSchoolService
 
         $data = new stdClass;
         $data->escola = reset($escolas) ?: null;
-
-        // Docente: primeira turma vinculada na escola
-        if ($useTurma && !empty($data->escola) && self::isRestritoTurmas($profile))
-        {
-            $objEscola   = Schools::where('nome', '=', $data->escola)->first();
-            $turmas      = $objEscola ? self::getTurmasProfessor($objEscola->id) : [];
-            $data->turma = reset($turmas) ?: null;
-        }
 
         if ($open_transaction)
         {
