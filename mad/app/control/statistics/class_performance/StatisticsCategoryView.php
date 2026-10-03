@@ -25,6 +25,8 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 
 class StatisticsCategoryView extends TStandardList
 {
+    use ClassesSchoolFilterTrait;
+
     protected $form;
     protected $panelImagem;
     protected $imageContainer;    
@@ -49,6 +51,9 @@ class StatisticsCategoryView extends TStandardList
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
+
+        // FILTROS PADRÃO POR PERFIL NA PRIMEIRA ABERTURA DA TELA (CONSUMO DA SERVICE)
+        $this->applyDefaultProfileFilters();
 
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 

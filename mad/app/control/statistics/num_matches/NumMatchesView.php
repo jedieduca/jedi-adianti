@@ -25,6 +25,8 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 
 class NumMatchesView extends TStandardList
 {
+    use ClassesSchoolFilterTrait;
+
     protected $form;
     protected $panelImagem;
     protected $imageContainer;    
@@ -50,6 +52,9 @@ class NumMatchesView extends TStandardList
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
+
+        // FILTROS PADRÃO POR PERFIL NA PRIMEIRA ABERTURA DA TELA (CONSUMO DA SERVICE)
+        $this->applyDefaultProfileFilters();
 
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 

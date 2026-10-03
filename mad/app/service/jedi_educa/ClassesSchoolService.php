@@ -304,4 +304,49 @@ class ClassesSchoolService
 
         return empty($params['escola']) ? null : array_filter($params);
     }
+
+    /**
+     * Retorna os filtros padrão (escola/turma) conforme o perfil do usuário
+     * @param $useTurma false quando a tela não filtra por turma
+     * @return stdClass|null null para administrador ou usuário sem vínculo
+     */
+    public static function getDefaultFilterData($useTurma = true)
+    {
+        $profile = self::getUserProfile();
+
+        // Administrador não recebe filtro padrão
+        if ($profile['is_admin'])
+        {
+            return null;
+        }
+
+        // Abre transação somente se o chamador ainda não tiver aberto uma
+        $open_transaction = !TTransaction::get();
+
+        if ($open_transaction)
+        {
+            TTransaction::open('jedi');
+        }
+
+        // Gestor/Secretaria/Docente: primeira escola vinculada
+        $escolas = self::getEscolasUsuario();
+
+        $data = new stdClass;
+        $data->escola = reset($escolas) ?: null;
+
+        // Docente: primeira turma vinculada na escola
+        if ($useTurma && !empty($data->escola) && self::isRestritoTurmas($profile))
+        {
+            $objEscola   = Schools::where('nome', '=', $data->escola)->first();
+            $turmas      = $objEscola ? self::getTurmasProfessor($objEscola->id) : [];
+            $data->turma = reset($turmas) ?: null;
+        }
+
+        if ($open_transaction)
+        {
+            TTransaction::close();
+        }
+
+        return empty($data->escola) ? null : $data;
+    }
 }

@@ -25,6 +25,8 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 
 class SchoolProfilesView extends TStandardList
 {
+    use ClassesSchoolFilterTrait;
+
     protected $form;
     protected $panelImagem;
     protected $imageContainer;    
@@ -48,6 +50,9 @@ class SchoolProfilesView extends TStandardList
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         // (null: a vw_perfil_escolas não possui coluna de turma)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria(null));
+
+        // FILTROS PADRÃO POR PERFIL NA PRIMEIRA ABERTURA DA TELA (CONSUMO DA SERVICE)
+        $this->applyDefaultProfileFilters();
 
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
