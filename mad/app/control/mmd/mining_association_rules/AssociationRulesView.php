@@ -49,29 +49,8 @@ class AssociationRulesView extends TStandardList
         parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim');                  // filterField, operator, formField
         parent::addFilterField('capacidade_critica', '=', 'capacidade_critica'); // filterField, operator, formField
 
-        // ==========================================
-        // FILTRO DE SEGURANÇA NO GRID POR PERFIL
-        // ==========================================
-        $user_group_ids = TSession::getValue('usergroupids') ?? [];
-        $is_admin = in_array(1, $user_group_ids);
-
-        if (!$is_admin)
-        {
-            $user_escolas = TSession::getValue('userescolanames') ?? [];
-            if (!empty($user_escolas))
-            {
-                $criteria = new TCriteria;
-                $criteria->add(new TFilter('escola', 'in', array_values($user_escolas)));
-                parent::setCriteria($criteria);
-            }
-            else
-            {
-                $criteria = new TCriteria;
-                $criteria->add(new TFilter('id', '=', -1));
-                parent::setCriteria($criteria);
-            }
-        }
-        // ==========================================
+        // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
+        parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
 
         parent::setLimit(TSession::getValue(__CLASS__ . '_limit') ?? 10);
 
@@ -320,34 +299,13 @@ class AssociationRulesView extends TStandardList
                 $params = array_filter($params);
             }
             
-            // ==========================================
-            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
-            // ==========================================
-            if (empty($params['escola']))
+            // FILTRO DE SEGURANÇA NOS PARÂMETROS DA API POR PERFIL (CONSUMO DA SERVICE)
+            $params = ClassesSchoolService::applySecurityParams($params);
+
+            if ($params === null)
             {
-                $profile = ClassesSchoolService::getUserProfile();
-
-                // Se NÃO for administrador, busca a escola atrelada ao usuário
-                if (!$profile['is_admin'])
-                {
-                    TTransaction::open('jedi');
-                    
-                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
-                    
-                    if ($usuario_escolas)
-                    {
-                        // Pega o primeiro vínculo do usuário
-                        $primeira_escola = reset($usuario_escolas);
-                        $objEscola = Schools::find($primeira_escola->id_escola);
-
-                        if ($objEscola && !empty($objEscola->nome))
-                        {
-                            $params['escola'] = $objEscola->nome;
-                        }
-                    }
-
-                    TTransaction::close();
-                }
+                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                return;
             }
 
             // 3. Montamos a Query String
@@ -522,64 +480,10 @@ class AssociationRulesView extends TStandardList
     {
         try
         {
-            TTransaction::open('jedi'); 
-        
-            $options = [];
+            TTransaction::open('jedi');
+
             $escola_nome = $param['escola'] ?? null;
-
-            $user_group_ids = TSession::getValue('usergroupids') ?? [];
-            $system_user_id = TSession::getValue('userid');
-            $is_professor   = in_array(4, $user_group_ids); // ID do grupo Professor
-
-            if (!empty($escola_nome)) {
-
-                $objEscola = Schools::where('nome', '=', $escola_nome)->first();
-
-                if ($objEscola) {
-
-                    if ($is_professor) {
-
-                        $vinculos_professor = ClassesTeacher::where('id_professor', '=', $system_user_id)->load();
-                        $turma_ids = [];
-                        if ($vinculos_professor) {
-
-                            foreach ($vinculos_professor as $v) {
-
-                                $turma_ids[] = $v->turma_id;
-                            }
-                        }
-
-                        $turmas = !empty($turma_ids) 
-                            ? Classes::where('id_escola', '=', $objEscola->id)
-                                     ->where('id', 'in', $turma_ids)
-                                     ->orderBy('identificacao', 'asc')
-                                    ->load()
-                            : [];
-
-                    } else {
-                        $turmas = Classes::where('id_escola', '=', $objEscola->id)
-                                         ->orderBy('identificacao', 'asc')
-                                         ->load();
-                    }
-                } else {
-
-                $turmas = [];
-                }
-            } else {   
-
-             $turmas = [];
-            }
-
-            if ($turmas) {
-
-                foreach ($turmas as $objTurma) {
-
-                    $identificacao = $objTurma->identificacao ?? '';
-                    if (!empty($identificacao)) {
-                        $options[$identificacao] = $identificacao;
-                    }
-                }
-            }
+            $options     = ClassesSchoolService::getOptionsTurmas($escola_nome);
 
             TTransaction::close();
 

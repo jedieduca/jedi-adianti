@@ -262,34 +262,13 @@ class StatisticsAvaliationView extends TStandardList
                 $params = array_filter($params);
             }
 
-            // ==========================================
-            // FILTRAGEM AUTOMÁTICA DE ESCOLA PARA NÃO-ADMIN
-            // ==========================================
-            if (empty($params['escola']))
+            // FILTRO DE SEGURANÇA NOS PARÂMETROS DA API POR PERFIL (CONSUMO DA SERVICE)
+            $params = ClassesSchoolService::applySecurityParams($params);
+
+            if ($params === null)
             {
-                $profile = ClassesSchoolService::getUserProfile();
-
-                // Se NÃO for administrador, busca a escola atrelada ao usuário
-                if (!$profile['is_admin'])
-                {
-                    TTransaction::open('jedi');
-                    
-                    $usuario_escolas = SchoolsUser::where('id_usuario', '=', $profile['system_user_id'])->load();
-                    
-                    if ($usuario_escolas)
-                    {
-                        // Pega o primeiro vínculo do usuário
-                        $primeira_escola = reset($usuario_escolas);
-                        $objEscola = Schools::find($primeira_escola->id_escola);
-
-                        if ($objEscola && !empty($objEscola->nome))
-                        {
-                            $params['escola'] = $objEscola->nome;
-                        }
-                    }
-
-                    TTransaction::close();
-                }
+                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                return;
             }
 
             // Montamos a Query String
