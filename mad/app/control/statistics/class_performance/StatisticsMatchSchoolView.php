@@ -210,7 +210,7 @@ class StatisticsMatchSchoolView extends TStandardList
 
         // Panel que armazena o gráfico
         $this->panelImagem = new TPanelGroup();
-        $this->panelImagem->style = 'text-align: center; width: 100%; max-height: 800px; overflow-y: auto; overflow-x: auto;';
+        $this->panelImagem->style = 'text-align: center; width: 100%; height: auto; overflow: visible;';
         $this->imageContainer = new THBox;
         $this->imageContainer->style = 'width: 100%; margin-bottom: 20px; text-align: center;';
 
