@@ -286,12 +286,12 @@ class AprioriView extends TPage
 
                 // Componente de Imagem
                 $this->image = new TImage($apiData['links_imagens']->grafico_lift);
-                $this->image->style = 'width: 100%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
+                $this->image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->imageContainer->add($this->image);
     
                 // Componente de Imagem
                 $this->image = new TImage($apiData['links_imagens']->grafico_dispersao);
-                $this->image->style = 'width: 100%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
+                $this->image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->imageContainer->add($this->image);
 
                 $limit = 10;

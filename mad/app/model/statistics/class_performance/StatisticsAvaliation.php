@@ -16,8 +16,8 @@ class StatisticsAvaliation extends TRecord
         parent::__construct($id);
         parent::addAttribute('escola');
         parent::addAttribute('turma');
-        parent::addAttribute('avaliacao');
-        parent::addAttribute('autoavaliacao');
-        parent::addAttribute('avaliacao_jogo');
+        parent::addAttribute('tipo_avaliacao');
+        parent::addAttribute('nota');
+        parent::addAttribute('qtd');
     }
 }

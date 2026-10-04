@@ -249,7 +249,7 @@ class CloudWordView extends TStandardList
 
                 // Componente de Imagem/*
                 $this->image = new TImage($apiData['link_grafico']->link);
-                $this->image->style = 'width: 100%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';
+                $this->image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->imageContainer->add($this->image);
 
                 $limit = 10;

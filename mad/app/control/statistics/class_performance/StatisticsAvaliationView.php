@@ -22,6 +22,7 @@ use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Widget\Wrapper\TDBCombo;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
+use Adianti\Widget\Base\TElement;
 
 class StatisticsAvaliationView extends TStandardList
 {
@@ -45,9 +46,8 @@ class StatisticsAvaliationView extends TStandardList
         parent::setActiveRecord('StatisticsAvaliation');                 // defines the active record
         parent::setDefaultOrder('id', 'asc');                            // defines the default order
         parent::addFilterField('id', '=', 'id');                         // filterField, operator, formField
-        parent::addFilterField('escola', '=', 'escola');                         // filterField, operator, formField
-        parent::addFilterField('turma', '=', 'turma');                         // filterField, operator, formField
-        parent::addFilterField('avaliacao', 'like', 'avaliacao');             // filterField, operator, formField
+        parent::addFilterField('escola', '=', 'escola');                 // filterField, operator, formField
+        parent::addFilterField('turma', '=', 'turma');                   // filterField, operator, formField
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
@@ -67,7 +67,6 @@ class StatisticsAvaliationView extends TStandardList
         $id        = new TEntry('id');
         $escola    = new TCombo('escola');  // Novo campo TCombo para Escola
         $turma     = new TCombo('turma');   // Alterado de TEntry para TCombo
-        $avaliacao = new TDBCombo('avaliacao', 'jedi', 'StatisticsAvaliation', 'avaliacao', 'avaliacao');
 
         // Define a ação de alteração da escola para atualizar as turmas via AJAX
         $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
@@ -95,15 +94,11 @@ class StatisticsAvaliationView extends TStandardList
         $id->setSize('30%');
         $escola->setSize('70%');
         $turma->setSize('70%');
-        $avaliacao->setSize('70%');
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] );
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
-        $this->form->addFields( [new TLabel(_t('Assessment'))], [$avaliacao] );
-        // $this->form->addFields( [new TLabel(_t('Self-assessment'))], [$autoavaliacao] );
-        // $this->form->addFields( [new TLabel(_t('Game review'))], [$avaliacao_jogo] );
 
         // keep the form filled during navigation with session data
         $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data') );
@@ -123,26 +118,17 @@ class StatisticsAvaliationView extends TStandardList
         $col_id             = new TDataGridColumn('id', 'Id', 'center', 50);
         $col_escola         = new TDataGridColumn('escola', _t('School'), 'left');
         $col_turma          = new TDataGridColumn('turma', _t('Class'), 'left');
-        $col_avaliacao      = new TDataGridColumn('avaliacao', _t('Assessment'), 'left');
-        $col_autoavaliacao  = new TDataGridColumn('autoavaliacao', _t('Self-assessment'), 'right');
-        $col_avaliacao_jogo = new TDataGridColumn('avaliacao_jogo', _t('Game review'), 'right');
+        $col_tipo_avaliacao = new TDataGridColumn('tipo_avaliacao', _t('Assessment'), 'left');
+        $col_nota           = new TDataGridColumn('nota', _t('Rating'), 'left');
+        $col_qtd            = new TDataGridColumn('qtd', _t('Quantity'), 'right');
 
-        // format the columns in the DataGrid
-        $col_autoavaliacao->setTransformer( function($value, $object, $row) {
-            return number_format($value, 2, ',');
-        });
-
-        $col_avaliacao_jogo->setTransformer( function($value, $object, $row) {
-            return number_format($value, 2, ',');
-        });
-
-        // add the columns to the DataGrid
+            // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
         $this->datagrid->addColumn($col_escola);
         $this->datagrid->addColumn($col_turma);
-        $this->datagrid->addColumn($col_avaliacao);
-        $this->datagrid->addColumn($col_autoavaliacao);
-        $this->datagrid->addColumn($col_avaliacao_jogo);
+        $this->datagrid->addColumn($col_tipo_avaliacao);
+        $this->datagrid->addColumn($col_nota);
+        $this->datagrid->addColumn($col_qtd);
 
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
@@ -157,17 +143,17 @@ class StatisticsAvaliationView extends TStandardList
         $order_turma->setParameter('order', 'turma');
         $col_turma->setAction($order_turma);
 
-        $order_avaliacao = new TAction(array($this, 'onReload'));
-        $order_avaliacao->setParameter('order', 'avaliacao');
-        $col_avaliacao->setAction($order_avaliacao);
+        $order_tipo_avaliacao = new TAction(array($this, 'onReload'));
+        $order_tipo_avaliacao->setParameter('order', 'tipo_avaliacao');
+        $col_tipo_avaliacao->setAction($order_tipo_avaliacao);
 
-        $order_autoavaliacao = new TAction(array($this, 'onReload'));
-        $order_autoavaliacao->setParameter('order', 'autoavaliacao');
-        $col_autoavaliacao->setAction($order_autoavaliacao);
+        $order_nota = new TAction(array($this, 'onReload'));
+        $order_nota->setParameter('order', 'nota');
+        $col_nota->setAction($order_nota);
 
-        $order_avaliacao_jogo = new TAction(array($this, 'onReload'));
-        $order_avaliacao_jogo->setParameter('order', 'avaliacao_jogo');
-        $col_avaliacao_jogo->setAction($order_avaliacao_jogo);
+        $order_qtd = new TAction(array($this, 'onReload'));
+        $order_qtd->setParameter('order', 'qtd');
+        $col_qtd->setAction($order_qtd);
 
         // create EDIT action
         $action_view = new TDataGridAction(array('StatisticsAvaliationForm', 'onView'), ['register_state' => 'false'] );
@@ -192,14 +178,6 @@ class StatisticsAvaliationView extends TStandardList
        
         $this->filter_label = $panel->addHeaderActionLink(_t('Filters'), new TAction([$this, 'onShowCurtainFilters']), 'fa:filter fa-fw');
         // $panel->addHeaderActionLink(_t('Apriori'), new TAction([$this, 'onShowCurtainApriori']), 'fa:sitemap fa-fw');
-
-        // header actions
-        // $dropdown = new TDropDown(_t('Algorithms'), 'fa:file-lines');
-        // $dropdown->style = 'height:37px; margin-left:4px; margin-right:4px;';
-        // $dropdown->setPullSide('right');
-        // $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
-        // $dropdown->addAction( _t('Apriori'), new TAction(['AprioriView', 'onEdit'], ['filtros' => TSession::getValue(get_class($this). '_filter_data'), 'data' => $this->datagrid]), 'fa:file-lines fa-fw blue');
-        // $panel->addHeaderWidget( $dropdown );
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
         $dropdown->style = 'height:37px;';
@@ -261,7 +239,6 @@ class StatisticsAvaliationView extends TStandardList
                 $params['id']        = $filterData->id ?? null;
                 $params['escola']    = $filterData->escola ?? null;
                 $params['turma']     = $filterData->turma ?? null;
-                $params['avaliacao'] = $filterData->avaliacao ?? null;
                 
                 // Removemos campos vazios para não enviar "?escola=&turma="
                 $params = array_filter($params);
@@ -282,9 +259,26 @@ class StatisticsAvaliationView extends TStandardList
             $apiData = (array) JediEducaRestService::getData('/estatisticas/avaliacao'. $queryString);
 
             if (isset($apiData['link_imagem']->grafico_avaliacao)){
-                // Componente de Imagem
-                $this->imageContainer = new TImage($apiData['link_imagem']->grafico_avaliacao);
-                $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
+                $url = $apiData['link_imagem']->grafico_avaliacao;
+
+                // Imagem em tamanho real (só reduz em telas menores que a figura)
+                $imagem = new TImage($url);
+                $imagem->style = 'width: 100%; max-width: 1200px; height: auto;';
+                // $imagem->title = 'Clique para abrir o gráfico em tamanho original';
+
+                // Clique abre o original em nova aba (zoom do navegador)
+                // $link = new TElement('a');
+                // $link->href   = $url;
+                // $link->target = '_blank';
+                // $link->add($imagem);
+
+                // Área com rolagem: várias turmas geram uma imagem alta
+                $this->imageContainer = new TElement('div');
+                // $this->imageContainer->style = 'max-height: 80vh; overflow-y: auto; text-align: center; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;';
+                $this->imageContainer->style = 'text-align: center; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;';
+                // $this->imageContainer->add($link);
+                $this->imageContainer->add($imagem);
+
                 $this->panelImagem->add($this->imageContainer);
             }
     

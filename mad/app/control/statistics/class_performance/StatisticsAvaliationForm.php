@@ -56,16 +56,17 @@ class StatisticsAvaliationForm extends TPage
                 );
                 $this->form->addFields(
                     [new TLabel(_t('Assessment'))],
-                    [new TTextDisplay($statisticsAvaliation->avaliacao)],
+                    [new TTextDisplay($statisticsAvaliation->tipo_avaliacao)],
                 );
                 $this->form->addFields(
-                    [new TLabel(_t('Self-assessment'))],
-                    [new TTextDisplay(number_format($statisticsAvaliation->autoavaliacao, 2, ','))],
+                    [new TLabel(_t('Rating'))],
+                    [new TTextDisplay($statisticsAvaliation->nota)],
                 );
                 $this->form->addFields(
-                    [new TLabel(_t('Game review'))],
-                    [new TTextDisplay(number_format($statisticsAvaliation->avaliacao_jogo, 2, ','))],
+                    [new TLabel(_t('Quantity'))],
+                    [new TTextDisplay($statisticsAvaliation->qtd)],
                 );
+                                
                 // fill the form with the active record data
                 $this->form->setData($statisticsAvaliation);
 

@@ -265,7 +265,7 @@ class StatisticsMatchSchoolView extends TStandardList
                 // Componente de Imagem
                 $this->imageContainer = new TImage($apiData['link_imagem']->grafico_escola_turma);
                 // $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
-                $this->imageContainer->style = 'width: 100%; height: auto; max-width: 1100px; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
+                $this->imageContainer->style = 'width: 100%; height: auto; max-width: 1200px; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($this->imageContainer);
             }
     

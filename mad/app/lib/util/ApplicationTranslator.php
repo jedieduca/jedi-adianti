@@ -291,6 +291,14 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Data Final';  
         $this->messages['es'][] = 'Fecha final';
 
+        $this->messages['en'][] = 'Rating';
+        $this->messages['pt'][] = 'Nota';
+        $this->messages['es'][] = 'Nota';
+
+        $this->messages['en'][] = 'Quantity';
+        $this->messages['pt'][] = 'Quantidade';
+        $this->messages['es'][] = 'Cantidad';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)

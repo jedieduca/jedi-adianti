@@ -320,7 +320,7 @@ class AssociationRulesView extends TStandardList
             if (isset($apiData['link_imagem']->grafico_capacidade_critica)){
                 // Componente de Imagem
                 $image = new TImage($apiData['link_imagem']->grafico_capacidade_critica);
-                $image->style = 'width: clamp(320px, 90vw, 1024px); height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd; object-fit: contain;';
+                $image->style = 'width: 100%; max-width: 750px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);
             } else {
                 $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));     
