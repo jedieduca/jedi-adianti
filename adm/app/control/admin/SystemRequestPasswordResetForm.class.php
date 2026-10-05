@@ -145,6 +145,8 @@ class SystemRequestPasswordResetForm extends TPage
                     TTransaction::close();
 
                     new TMessage('info', _t('Message sent successfully'));
+
+                    AdiantiCoreApplication::gotoPage('LoginForm');
                 }
             }
             else

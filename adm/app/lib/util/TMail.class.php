@@ -32,15 +32,7 @@ class TMail
             
         $this->pm-> CharSet = 'utf-8';
     }
-
-    /**
-     * Return internal instance
-     */
-    public function getInternalInstance()
-    {
-        return $this->pm;
-    }
-
+    
     /**
      * Turn ON/OFF the debug
      */

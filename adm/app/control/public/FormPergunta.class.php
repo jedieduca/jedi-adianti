@@ -339,7 +339,7 @@ class FormPergunta extends TPage
                     A notícia só aparece em um site obscuro ou em redes sociais.
                     Notícias verdadeiras costumam ser reportadas por mais de um veículo de confiança.';*/
 
-            echo '<pre>'; print_r($data); echo '</pre>';
+            //echo '<pre>'; print_r($data); echo '</pre>';
             $prompt = Prompt::getPrompt( $data->id_tema );
             if (empty($prompt->id)) {
                 throw new Exception('Prompt não encontrado para o tema selecionado. Verifique.');

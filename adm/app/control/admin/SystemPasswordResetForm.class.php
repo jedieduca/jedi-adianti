@@ -124,6 +124,7 @@ class SystemPasswordResetForm extends TPage
                     $user->store();
                     
                     new TMessage('info', _t('The password has been changed'));
+                    AdiantiCoreApplication::gotoPage('LoginForm');
                 }
             }
             TTransaction::close();

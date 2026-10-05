@@ -26,7 +26,7 @@ class LoginForm extends TPage
         $this->style = 'clear:both';
         // creates the form
         $this->form = new BootstrapFormBuilder('form_login');
-        $this->form->setFormTitle( 'Entre com as suas credênciais' );
+        $this->form->setFormTitle( 'Entre com as suas credenciais' );
         
         // create the form fields
         $login = new TEntry('login');

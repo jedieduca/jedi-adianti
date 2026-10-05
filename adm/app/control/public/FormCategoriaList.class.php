@@ -153,7 +153,7 @@ class FormCategoriaList extends TStandardList
             // run query
 
             $sql="select * FROM pergunta_categoria pc ";
-            $sql.="WHERE pc.categoria='$key'";
+            $sql.="WHERE pc.id_categoria='$key'";
             $result=$conn->query($sql);
 
             if ($result->rowCount()>0)
