@@ -125,15 +125,11 @@ class CloudWordView extends TStandardList
         $column_category = new TDataGridColumn('category', _t('Category'), 'left');
         $column_news     = new TDataGridColumn('news', _t('News'), 'left');
         $column_answer   = new TDataGridColumn('answer', _t('News Classification'), 'center');
-        $column_analise  = new TDataGridColumn('analise', _t('Analysis Proposal'), 'left');
-        $column_fala     = new TDataGridColumn('fala', _t('Speech Proposal'), 'left');
 
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_category);
         $this->datagrid->addColumn($column_news);
         $this->datagrid->addColumn($column_answer);
-        $this->datagrid->addColumn($column_analise);
-        $this->datagrid->addColumn($column_fala);
 
         // create the datagrid model
         $this->datagrid->createModel();
