@@ -285,15 +285,20 @@ class ClassesSchoolService
             $objEscola = Schools::where('nome', '=', $params['escola'])->first();
             $turmas    = $objEscola ? self::getTurmasProfessor($objEscola->id) : [];
 
-            if (empty($params['turma']) || !isset($turmas[$params['turma']]))
-            {
-                $params['turma'] = reset($turmas) ?: null;
-            }
-
-            if (empty($params['turma']))
+            if (empty($turmas))
             {
                 // Força o retorno sem dados caso não tenha vínculo com nenhuma turma
                 $params['escola'] = null;
+            }
+            else
+            {
+                // Turma escolhida e vinculada ao professor: mantém. Caso contrário: todas as turmas dele na escola
+                $escolhida = $params['turma'] ?? null;
+
+                if (!is_string($escolhida) || !isset($turmas[$escolhida]))
+                {
+                    $params['turma'] = array_values($turmas);
+                }
             }
         }
 
@@ -303,6 +308,20 @@ class ClassesSchoolService
         }
 
         return empty($params['escola']) ? null : array_filter($params);
+    }
+
+    /**
+     * Monta a query string no formato aceito pela API (FastAPI):
+     * listas viram parâmetros repetidos (?turma=A&turma=B), e não turma[0]=A&turma[1]=B
+     */
+    public static function buildQueryString(array $params)
+    {
+        if (empty($params))
+        {
+            return '';
+        }
+
+        return '?' . preg_replace('/%5B\d+%5D=/', '=', http_build_query($params));
     }
 
     /**

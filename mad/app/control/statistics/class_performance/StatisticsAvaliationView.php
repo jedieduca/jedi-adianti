@@ -254,7 +254,7 @@ class StatisticsAvaliationView extends TStandardList
             }
 
             // Montamos a Query String
-            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $queryString = ClassesSchoolService::buildQueryString($params);
 
             $apiData = (array) JediEducaRestService::getData('/estatisticas/avaliacao'. $queryString);
 

@@ -265,7 +265,7 @@ class StatisticsCategoryView extends TStandardList
             }
 
             // 3. Montamos a Query String
-            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $queryString = ClassesSchoolService::buildQueryString($params);
             $apiData = (array) JediEducaRestService::getData('/estatisticas/categoria_turma'. $queryString);
 
             if (isset($apiData['link_imagem']->grafico_categoria_turma)){

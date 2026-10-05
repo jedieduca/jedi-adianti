@@ -270,7 +270,7 @@ class NumMatchesView extends TStandardList
             }
 
             // 3. Montamos a Query String
-            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $queryString = ClassesSchoolService::buildQueryString($params);
             $apiData = (array) JediEducaRestService::getData('/estatisticas/ranking_partidas'. $queryString);
 
             if (isset($apiData['link_imagem']->grafico_ranking_partidas)){

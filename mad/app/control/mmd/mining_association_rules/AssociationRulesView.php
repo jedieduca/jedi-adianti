@@ -314,7 +314,7 @@ class AssociationRulesView extends TStandardList
             }
 
             // 3. Montamos a Query String
-            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $queryString = ClassesSchoolService::buildQueryString($params);
             $apiData = (array) JediEducaRestService::getData('/estatisticas/capacidade_critica'. $queryString);
 
             if (isset($apiData['link_imagem']->grafico_capacidade_critica)){

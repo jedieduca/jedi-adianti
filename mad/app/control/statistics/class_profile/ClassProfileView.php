@@ -272,7 +272,7 @@ class ClassProfileView extends TStandardList
             }
 
             // Montamos a Query String
-            $queryString = !empty($params) ? '?' . http_build_query($params) : '';
+            $queryString = ClassesSchoolService::buildQueryString($params);
             $apiData = (array) JediEducaRestService::getData('/estatisticas/analise_idade' . $queryString);
 
             if (isset($apiData['link_imagem']->grafico_analise_idade)) {
