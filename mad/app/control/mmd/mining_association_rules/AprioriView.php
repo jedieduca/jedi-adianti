@@ -40,29 +40,43 @@ class AprioriView extends TPage
         // 2. Criar o Form de Busca
         $this->form = new TForm('form_busca');
         $this->form->setData(TSession::getValue(__CLASS__.'_filter_data'));
-        $filter_field = new TEntry('filter_text');
-        $filter_field->placeholder = 'Filtrar por antecedente ou consequente...';
-        $filter_field->setSize('100%');
 
-        $filter_lift = new TNumeric('filter_lift', 2, ',', '.'); // 2 decimais
-        $filter_lift->placeholder = 'Lift Mínimo';
-        $filter_lift->setSize('100%');
+        $filter_antecedent = new TEntry('filter_antecedent');
+        $filter_antecedent->placeholder = 'Contém no antecedente...';
+        $filter_antecedent->setSize('100%');
 
-        $filter_conf = new TNumeric('filter_conf', 4, ',', '.'); // 4 decimais
+        $filter_consequent = new TEntry('filter_consequent');
+        $filter_consequent->placeholder = 'Contém no consequente...';
+        $filter_consequent->setSize('100%');
+
+        $filter_support = new TNumeric('filter_support', 2, ',', '.', true);
+        $filter_support->placeholder = 'Suporte Mín.';
+        $filter_support->setSize('30%');
+
+        $filter_conf = new TNumeric('filter_conf', 2, ',', '.', true); // 4 decimais
         $filter_conf->placeholder = 'Confiança Mín.';
-        $filter_conf->setSize('100%');
+        $filter_conf->setSize('30%');
+
+        $filter_lift = new TNumeric('filter_lift', 2, ',', '.', true); // 2 decimais
+        $filter_lift->placeholder = 'Lift Mínimo';
+        $filter_lift->setSize('30%');
+
 
         $btn_search = TButton::create('btn_search', [$this, 'onSearch'], 'Filtrar Regras', 'fa:search blue');
         $btn_clear  = TButton::create('btn_clear',  [$this, 'onClear'],  'Limpar',  'fa:eraser red');
-        $btn_export = TButton::create('btn_export', [$this, 'onExportCsv'], 'Exportar CSV', 'fa:file-csv green');
+        $btn_export = new TButton('btn_export');
+        $btn_export->setAction(new TAction([__CLASS__, 'onExportCsv'], ['static' => '1']), 'Exportar CSV');
+        $btn_export->setImage('fa:file-csv green');
 
         // REGISTRO OBRIGATÓRIO DOS CAMPOS NO FORMULÁRIO
         $this->form->setFields([
-            $filter_field, 
-            $filter_lift, 
-            $filter_conf, 
-            $btn_search, 
-            $btn_clear, 
+            $filter_antecedent,
+            $filter_consequent,
+            $filter_support,
+            $filter_conf,
+            $filter_lift,
+            $btn_search,
+            $btn_clear,
             $btn_export
         ]);
 
@@ -78,10 +92,6 @@ class AprioriView extends TPage
         $button_box->add($btn_clear);
         $button_box->add($btn_export);
 
-        // Criar o separador visual
-        $separator = new TElement('hr');
-        $separator->style = 'margin: 15px 0; border-top: 2px dotted #ccc; width: 100%';
-        
         // Organizando em uma grade para ficar visualmente limpo
         $table = new TTable;
         $table->style = 'width: 100%; margin: 10px; border-collapse: separate; border-spacing: 5px;'; 
@@ -98,30 +108,32 @@ class AprioriView extends TPage
         $cell_summary->colspan = 2;
         // =========================================================
 
-        // --- Linha: Text Search ---
-        $row1 = $table->addRow();
-        $lbl1 = $row1->addCell(new TLabel(_t('Text search') . ' :'));
-        $lbl1->style = 'text-align: right; width: 15%; vertical-align: middle;'; // Alinha o Label à direita
-        $row1->addCell($filter_field); // O campo permanece à esquerda por padrão
+        $addFilterRow = function ($label, $field) use ($table) {
+            $row = $table->addRow();
+            $lbl = $row->addCell(new TLabel($label));
+            $lbl->style = 'text-align: right; width: 15%; vertical-align: middle;';
+            $row->addCell($field);
+        };
 
-        // --- Linha: Lift ---
-        $row2 = $table->addRow();
-        $lbl2 = $row2->addCell(new TLabel('Lift >= :'));
-        $lbl2->style = 'text-align: right; vertical-align: middle;';
-        $row2->addCell($filter_lift);
+        $addSeparatorRow = function () use ($table) {
+            $separator = new TElement('hr');
+            $separator->style = 'margin: 15px 0; border-top: 2px solid #ccc; width: 100%';
+            $cell = $table->addRow()->addCell($separator);
+            $cell->colspan = 2;
+        };
 
-        // --- Linha: Trust ---
-        $row3 = $table->addRow();
-        $lbl3 = $row3->addCell(new TLabel(_t('Trust') . ' >= :'));
-        $lbl3->style = 'text-align: right; vertical-align: middle;';
-        $row3->addCell($filter_conf);
+        $addSeparatorRow();
 
-        // --- Linha: Separador ---
-        $row4 = $table->addRow();
-        $separator = new TElement('hr');
-        $separator->style = 'margin: 15px 0; border-top: 2px solid #ccc; width: 100%';
-        $cell_sep = $row4->addCell($separator);
-        $cell_sep->colspan = 2;
+        $addFilterRow(_t('Antecedent') . ' :', $filter_antecedent);
+        $addFilterRow(_t('Consequent') . ' :', $filter_consequent);
+
+        $addSeparatorRow();
+        
+        $addFilterRow(_t('Support')    . ' >= :', $filter_support);
+        $addFilterRow(_t('Trust')      . ' >= :', $filter_conf);
+        $addFilterRow(_t('Lift')       . ' >= :', $filter_lift);
+
+        $addSeparatorRow();
 
         // --- Linha: Botões ---
         $row5 = $table->addRow();
@@ -190,6 +202,36 @@ class AprioriView extends TPage
         $container->add($this->panelImagem);        
         parent::add($container);
     }
+
+    private static function applyLocalFilters(array $regras, $filterData): array
+    {
+        if (empty($filterData)) {
+            return $regras;
+        }
+
+        $ant_term = mb_strtolower(trim($filterData->filter_antecedent ?? ''));
+        $con_term = mb_strtolower(trim($filterData->filter_consequent ?? ''));
+        $min_sup  = $filterData->filter_support ?? null;
+        $min_conf = $filterData->filter_conf    ?? null;
+        $min_lift = $filterData->filter_lift    ?? null;
+
+        return array_filter($regras, function ($row) use ($ant_term, $con_term, $min_sup, $min_conf, $min_lift) {
+            if (!empty($min_sup)  && $row->support    < (float) $min_sup)  return false;
+            if (!empty($min_conf) && $row->confidence < (float) $min_conf) return false;
+            if (!empty($min_lift) && $row->lift       < (float) $min_lift) return false;
+
+            if ($ant_term !== '') {
+                $ant = mb_strtolower(implode(', ', (array) $row->antecedents));
+                if (!str_contains($ant, $ant_term)) return false;
+            }
+            if ($con_term !== '') {
+                $con = mb_strtolower(implode(', ', (array) $row->consequents));
+                if (!str_contains($con, $con_term)) return false;
+            }
+            return true;
+        });
+    }
+
     
     public function onReload($param = NULL)
     {
@@ -254,35 +296,7 @@ class AprioriView extends TPage
 
                 // --- LÓGICA DE FILTRO ---
                 $regras = (array) $apiData['regras'];
-                $filterData = TSession::getValue(__CLASS__.'_filter_data');
-
-                if (!empty($filterData)) {
-                    $regras = array_filter($regras, function($row) use ($filterData) {
-                        $match = true;
-
-                        // 1. Filtro de Texto (Antecedentes ou Consequentes)
-                        if (!empty($filterData->filter_text)) {
-                            $term = strtolower($filterData->filter_text);
-                            $ant = strtolower(implode(', ', (array) $row->antecedents));
-                            $con = strtolower(implode(', ', (array) $row->consequents));
-                            if (!str_contains($ant, $term) && !str_contains($con, $term)) {
-                                $match = false;
-                            }
-                        }
-
-                        // 2. Filtro de Lift Mínimo
-                        if (!empty($filterData->filter_lift) && $row->lift < (float)$filterData->filter_lift) {
-                            $match = false;
-                        }
-
-                        // 3. Filtro de Confiança Mínima
-                        if (!empty($filterData->filter_conf) && $row->confidence < (float)$filterData->filter_conf) {
-                            $match = false;
-                        }
-
-                        return $match;
-                    });
-                }
+                $regras = self::applyLocalFilters($regras, TSession::getValue(__CLASS__.'_filter_data'));
 
                 // Componente de Imagem
                 $this->image = new TImage($apiData['links_imagens']->grafico_lift);
@@ -356,7 +370,7 @@ class AprioriView extends TPage
         $this->onReload($param);
     }
 
-    public function onExportCsv($param)
+    public static function onExportCsv($param)
     {
         try {
             // Recupera os parâmetros guardados na sessão
@@ -374,37 +388,31 @@ class AprioriView extends TPage
 
             $endpoint = '/regras' . ($queryParams ? '?' . $queryParams : '');
 
-
             $apiData = (array) JediEducaRestService::getData($endpoint);
             $regras  = (array) ($apiData['regras'] ?? []);
-            $filterData = TSession::getValue(__CLASS__.'_filter_data');
-
-            // Aplicar a mesma lógica de filtro usada no onReload
-            if (!empty($filterData)) {
-                $regras = array_filter($regras, function($row) use ($filterData) {
-                    $match = true;
-                    if (!empty($filterData->filter_text)) {
-                        $term = strtolower($filterData->filter_text);
-                        $ant = strtolower(implode(', ', (array) $row->antecedents));
-                        $con = strtolower(implode(', ', (array) $row->consequents));
-                        if (!str_contains($ant, $term) && !str_contains($con, $term)) $match = false;
-                    }
-                    if (!empty($filterData->filter_lift) && $row->lift < (float)$filterData->filter_lift) $match = false;
-                    if (!empty($filterData->filter_conf) && $row->confidence < (float)$filterData->filter_conf) $match = false;
-                    return $match;
-                });
-            }
+            $regras  = self::applyLocalFilters($regras, TSession::getValue(__CLASS__.'_filter_data'));
 
             if ($regras) {
-                $csv = "Antecedentes;Consequentes;Suporte;Confianca;Lift\n";
-                foreach ($regras as $row) {
-                    $ant = implode(', ', (array) $row->antecedents);
-                    $con = implode(', ', (array) $row->consequents);
-                    $csv .= "{$ant};{$con};{$row->support};{$row->confidence};{$row->lift}\n";
-                }
-
                 $file = 'tmp/regras_apriori_' . uniqid() . '.csv';
-                file_put_contents($file, $csv);
+                $fp   = fopen($file, 'w');
+                if (!$fp) {
+                    throw new Exception("Não foi possível criar o arquivo {$file}. Verifique a permissão de escrita na pasta tmp/.");
+                }
+                
+                // BOM UTF-8: faz o Excel reconhecer a acentuação
+                fwrite($fp, "\xEF\xBB\xBF");
+
+                fputcsv($fp, ['Antecedentes', 'Consequentes', 'Suporte', 'Confiança', 'Lift'], ';');
+                foreach ($regras as $row) {
+                    fputcsv($fp, [
+                        implode(', ', (array) $row->antecedents),
+                        implode(', ', (array) $row->consequents),
+                        number_format($row->support,    4, ',', ''),
+                        number_format($row->confidence, 4, ',', ''),
+                        number_format($row->lift,       2, ',', ''),
+                    ], ';');
+                }
+                fclose($fp);
                 TPage::openFile($file);
             }
         } catch (Exception $e) {

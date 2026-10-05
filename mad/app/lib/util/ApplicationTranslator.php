@@ -299,6 +299,22 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Quantidade';
         $this->messages['es'][] = 'Cantidad';
 
+        $this->messages['en'][] = 'Support';
+        $this->messages['pt'][] = 'Suporte';
+        $this->messages['es'][] = 'Soporte';
+
+        $this->messages['en'][] = 'Antecedent';
+        $this->messages['pt'][] = 'Antecedente';
+        $this->messages['es'][] = 'Antecedente';
+
+        $this->messages['en'][] = 'Consequent';
+        $this->messages['pt'][] = 'Consequente';
+        $this->messages['es'][] = 'Consequente';
+
+        $this->messages['en'][] = 'Lift';
+        $this->messages['pt'][] = 'Lift';
+        $this->messages['es'][] = 'Lift';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)
