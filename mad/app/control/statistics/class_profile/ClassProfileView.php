@@ -249,7 +249,7 @@ class ClassProfileView extends TStandardList
                     TTransaction::close();
 
                     if (empty($perfis)) {
-                        $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                        $this->panelImagem->add(JediEducaRestService::getAviso(['nivel' => 'info', 'mensagem' => 'Nenhum gráfico disponível para os filtros selecionados.']));
                         return;
                     }
 
@@ -267,7 +267,7 @@ class ClassProfileView extends TStandardList
 
             if ($params === null)
             {
-                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                $this->panelImagem->add(JediEducaRestService::getAviso(['nivel' => 'info', 'mensagem' => 'Nenhum gráfico disponível para os filtros selecionados.']));
                 return;
             }
 
@@ -275,13 +275,19 @@ class ClassProfileView extends TStandardList
             $queryString = ClassesSchoolService::buildQueryString($params);
             $apiData = (array) JediEducaRestService::getData('/estatisticas/analise_idade' . $queryString);
 
+            // API respondeu sem dados (ou sem idade informada): exibe o aviso no lugar do gráfico
+            if ($aviso = JediEducaRestService::getAviso($apiData)) {
+                $this->panelImagem->add($aviso);
+                return;
+            }
+
             if (isset($apiData['link_imagem']->grafico_analise_idade)) {
                 // Componente de Imagem
                 $image = new TImage($apiData['link_imagem']->grafico_analise_idade);
                 $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);
             } else {
-                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                $this->panelImagem->add(JediEducaRestService::getAviso(['nivel' => 'info', 'mensagem' => 'Nenhum gráfico disponível para os filtros selecionados.']));
             }
 
         } catch (Exception $e) {

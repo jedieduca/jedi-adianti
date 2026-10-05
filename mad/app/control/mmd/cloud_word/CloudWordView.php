@@ -125,11 +125,15 @@ class CloudWordView extends TStandardList
         $column_category = new TDataGridColumn('category', _t('Category'), 'left');
         $column_news     = new TDataGridColumn('news', _t('News'), 'left');
         $column_answer   = new TDataGridColumn('answer', _t('News Classification'), 'center');
+        $column_analise  = new TDataGridColumn('analise', _t('Analysis Proposal'), 'left');
+        $column_fala     = new TDataGridColumn('fala', _t('Speech Proposal'), 'left');
 
         $this->datagrid->addColumn($column_id);
         $this->datagrid->addColumn($column_category);
         $this->datagrid->addColumn($column_news);
         $this->datagrid->addColumn($column_answer);
+        $this->datagrid->addColumn($column_analise);
+        $this->datagrid->addColumn($column_fala);
 
         // create the datagrid model
         $this->datagrid->createModel();
@@ -218,6 +222,12 @@ class CloudWordView extends TStandardList
                 $this->datagrid->clear();
                 $this->imageContainer->clearChildren();
 
+                // API respondeu sem dados: exibe o aviso no lugar da nuvem
+                if ($aviso = JediEducaRestService::getAviso($apiData)) {
+                    $this->imageContainer->add($aviso);
+                    return;
+                }
+
                 // --- LÓGICA DE FILTRO ---
                 $dados = (array) $apiData['dados'];
                 if (!empty($filterData)) {
@@ -268,6 +278,8 @@ class CloudWordView extends TStandardList
                     $item->category = $row->categoria;
                     $item->news     = $row->pergunta;
                     $item->answer   = $row->resp_certa;
+                    $item->analise  = $row->analise_proposta;
+                    $item->fala     = $row->fala_proposta;
 
                     $this->datagrid->addItem($item);
                 }

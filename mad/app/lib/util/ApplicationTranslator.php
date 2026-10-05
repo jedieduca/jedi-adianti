@@ -315,6 +315,14 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Lift';
         $this->messages['es'][] = 'Lift';
 
+        $this->messages['en'][] = 'Analysis Proposal';
+        $this->messages['pt'][] = 'Análise Proposta';
+        $this->messages['es'][] = 'Análisis Propuesto';
+
+        $this->messages['en'][] = 'Speech Proposal';
+        $this->messages['pt'][] = 'Fala Proposta';
+        $this->messages['es'][] = 'Propuesta de discurso';
+
         //<entry-point>
         
         foreach ($this->messages as $lang => $messages)

@@ -1,6 +1,9 @@
 <?php
 
 use Adianti\Core\AdiantiApplicationConfig;
+use Adianti\Widget\Base\TElement;
+use Adianti\Widget\Dialog\TAlert;
+use Adianti\Widget\Util\TImage;
 
 class JediEducaRestService
 {
@@ -69,5 +72,31 @@ class JediEducaRestService
         }
             
         return $data;
+    }
+
+    /**
+     * Devolve um alerta (info/warning) quando a API respondeu sem dados; null se houver dados
+     */
+    public static function getAviso(array $apiData): ?TElement
+    {
+        $nivel = $apiData['nivel'] ?? 'sucesso';
+        if ($nivel === 'sucesso') return null;
+
+        $mensagem = $apiData['mensagem'] ?? 'Nenhum registro encontrado para os filtros selecionados.';
+        $tipo     = ($nivel === 'warning') ? 'warning' : 'info';
+
+        // Ícone conforme o nível; herda a cor do alerta
+        $icone = new TImage($tipo === 'warning' ? 'fa:exclamation-triangle' : 'fa:info-circle');
+        $icone->style = 'font-size: 1.6em; margin-right: 10px; vertical-align: middle;';
+
+        $conteudo = new TElement('span');
+        $conteudo->add($icone);
+        $conteudo->add($mensagem);
+
+        // Alinha à esquerda mesmo em painéis com text-align: center
+        $alerta = new TAlert($tipo, $conteudo, false);
+        $alerta->style = 'text-align: left;';
+
+        return $alerta;
     }
 }

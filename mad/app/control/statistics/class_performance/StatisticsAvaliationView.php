@@ -249,7 +249,7 @@ class StatisticsAvaliationView extends TStandardList
 
             if ($params === null)
             {
-                $this->panelImagem->add(new TLabel('Nenhum gráfico disponível para os filtros selecionados.'));
+                $this->panelImagem->add(JediEducaRestService::getAviso(['nivel' => 'info', 'mensagem' => 'Nenhum gráfico disponível para os filtros selecionados.']));
                 return;
             }
 
@@ -257,6 +257,12 @@ class StatisticsAvaliationView extends TStandardList
             $queryString = ClassesSchoolService::buildQueryString($params);
 
             $apiData = (array) JediEducaRestService::getData('/estatisticas/avaliacao'. $queryString);
+
+            // API respondeu sem dados: exibe o aviso no lugar do gráfico
+            if ($aviso = JediEducaRestService::getAviso($apiData)) {
+                $this->panelImagem->add($aviso);
+                return;
+            }
 
             if (isset($apiData['link_imagem']->grafico_avaliacao)){
                 $url = $apiData['link_imagem']->grafico_avaliacao;

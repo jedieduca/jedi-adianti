@@ -271,6 +271,12 @@ class DistributionNewsCategoryView extends TStandardList
 
             $apiData = (array) JediEducaRestService::getData('/estatisticas/perfil_noticia'. $queryString);
 
+            // API respondeu sem dados: exibe o aviso no lugar do gráfico
+            if ($aviso = JediEducaRestService::getAviso($apiData)) {
+                $this->panelImagem->add($aviso);
+                return;
+            }
+
             if (isset($apiData['link_imagem']->grafico_perfil_noticia)){
                 // Componente de Imagem
                 $this->imageContainer = new TImage($apiData['link_imagem']->grafico_perfil_noticia);

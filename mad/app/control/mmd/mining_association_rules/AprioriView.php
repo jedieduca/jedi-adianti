@@ -203,33 +203,36 @@ class AprioriView extends TPage
         parent::add($container);
     }
 
-    private static function applyLocalFilters(array $regras, $filterData): array
+    /**
+     * Converte os filtros do formulário Apriori nos parâmetros da API (/regras)
+     */
+    private static function getRuleFilters($filterData): array
     {
         if (empty($filterData)) {
-            return $regras;
+            return [];
         }
 
-        $ant_term = mb_strtolower(trim($filterData->filter_antecedent ?? ''));
-        $con_term = mb_strtolower(trim($filterData->filter_consequent ?? ''));
-        $min_sup  = $filterData->filter_support ?? null;
-        $min_conf = $filterData->filter_conf    ?? null;
-        $min_lift = $filterData->filter_lift    ?? null;
+        return array_filter([
+            'antecedente'   => trim($filterData->filter_antecedent ?? ''),
+            'consequente'   => trim($filterData->filter_consequent ?? ''),
+            'suporte_min'   => $filterData->filter_support ?? null,
+            'confianca_min' => $filterData->filter_conf    ?? null,
+            'lift_min'      => $filterData->filter_lift    ?? null,
+        ], fn($value) => !is_null($value) && $value !== '');
+    }
 
-        return array_filter($regras, function ($row) use ($ant_term, $con_term, $min_sup, $min_conf, $min_lift) {
-            if (!empty($min_sup)  && $row->support    < (float) $min_sup)  return false;
-            if (!empty($min_conf) && $row->confidence < (float) $min_conf) return false;
-            if (!empty($min_lift) && $row->lift       < (float) $min_lift) return false;
+    /**
+     * Monta o endpoint /regras com os filtros globais (AssociationRulesView) e os da tela Apriori
+     */
+    private static function buildEndpoint($filterObject): string
+    {
+        $params = [];
+        if (!empty($filterObject)) {
+            $params = array_filter((array) $filterObject, fn($value) => !is_null($value) && trim((string) $value) !== '');
+        }
+        $params = array_merge($params, self::getRuleFilters(TSession::getValue(__CLASS__.'_filter_data')));
 
-            if ($ant_term !== '') {
-                $ant = mb_strtolower(implode(', ', (array) $row->antecedents));
-                if (!str_contains($ant, $ant_term)) return false;
-            }
-            if ($con_term !== '') {
-                $con = mb_strtolower(implode(', ', (array) $row->consequents));
-                if (!str_contains($con, $con_term)) return false;
-            }
-            return true;
-        });
+        return '/regras' . ($params ? '?' . http_build_query($params) : '');
     }
 
     
@@ -272,16 +275,7 @@ class AprioriView extends TPage
             // ============================================================================
             // 3. PREPARAÇÃO DA REQUISIÇÃO (Monta a query string para a API Python)
             // ============================================================================
-            $cleanFilters = [];
-            
-            if (!empty($filterObject)) {
-                $cleanFilters = array_filter((array) $filterObject, function($value) {
-                    return !is_null($value) && trim((string) $value) !== '';
-                });
-            }
-
-            $queryParams = http_build_query($cleanFilters);
-            $endpoint = '/regras' . ($queryParams ? '?' . $queryParams : '');
+            $endpoint = self::buildEndpoint($filterObject);
 
             // ============================================================================
             // 4. CHAMADA À API E RENDERIZAÇÃO
@@ -294,9 +288,14 @@ class AprioriView extends TPage
                 $this->datagrid->clear();
                 $this->imageContainer->clearChildren();
 
-                // --- LÓGICA DE FILTRO ---
+                // API respondeu sem dados ou sem regras: exibe o aviso no lugar dos gráficos
+                if ($aviso = JediEducaRestService::getAviso($apiData)) {
+                    $this->imageContainer->add($aviso);
+                    return;
+                }
+
+                // Regras já filtradas pela API (mesmo conjunto usado nos gráficos)
                 $regras = (array) $apiData['regras'];
-                $regras = self::applyLocalFilters($regras, TSession::getValue(__CLASS__.'_filter_data'));
 
                 // Componente de Imagem
                 $this->image = new TImage($apiData['links_imagens']->grafico_lift);
@@ -373,24 +372,11 @@ class AprioriView extends TPage
     public static function onExportCsv($param)
     {
         try {
-            // Recupera os parâmetros guardados na sessão
-            $escola     = TSession::getValue(__CLASS__.'_escola');
-            $turma      = TSession::getValue(__CLASS__.'_turma');
-            $capacidade = TSession::getValue(__CLASS__.'_capacidade');
-            $nome       = TSession::getValue(__CLASS__.'_nome');
-
-            $queryParams = http_build_query(array_filter([
-                'escola'     => $escola,
-                'turma'      => $turma,
-                'capacidade' => $capacidade,
-                'nome'       => $nome
-            ], fn($value) => !is_null($value) && $value !== ''));
-
-            $endpoint = '/regras' . ($queryParams ? '?' . $queryParams : '');
+            // Mesmos filtros (globais + Apriori) usados no onReload
+            $endpoint = self::buildEndpoint(TSession::getValue(__CLASS__.'_filter_object'));
 
             $apiData = (array) JediEducaRestService::getData($endpoint);
             $regras  = (array) ($apiData['regras'] ?? []);
-            $regras  = self::applyLocalFilters($regras, TSession::getValue(__CLASS__.'_filter_data'));
 
             if ($regras) {
                 $file = 'tmp/regras_apriori_' . uniqid() . '.csv';
@@ -414,6 +400,8 @@ class AprioriView extends TPage
                 }
                 fclose($fp);
                 TPage::openFile($file);
+            } else {
+                new TMessage('info', $apiData['mensagem'] ?? 'Nenhuma regra para exportar.');
             }
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
