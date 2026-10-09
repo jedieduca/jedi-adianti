@@ -53,6 +53,13 @@ WORKDIR /var/www/html
 #COPY ./cadJEDI/adm ./adm
 #COPY ./cadJEDI/mad ./mad
 
+# Script de inicialização: corrige permissões das pastas de escrita a cada start
+COPY ./docker-entrypoint.sh /usr/local/bin/jedi-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/jedi-entrypoint.sh \
+    && chmod +x /usr/local/bin/jedi-entrypoint.sh
+ENTRYPOINT ["jedi-entrypoint.sh"]
+CMD ["php-fpm"]
+
 
 # 5. Expõe a porta padrão do FPM (9000)
 EXPOSE 9000

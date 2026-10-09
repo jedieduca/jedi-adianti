@@ -248,6 +248,52 @@ class ClassesSchoolService
     }
 
     /**
+     * Descreve em texto a restrição de acesso do perfil (mesmas regras do getSecurityCriteria)
+     * @param $useTurma false quando a tela não restringe por turma
+     */
+    public static function describeSecurity($useTurma = true)
+    {
+        $profile = self::getUserProfile();
+
+        if ($profile['is_admin'])
+        {
+            return 'administrador (sem restrição)';
+        }
+
+        $user_escolas = array_values(TSession::getValue('userescolanames') ?? []);
+
+        if (empty($user_escolas))
+        {
+            return 'nenhuma escola vinculada (sem acesso aos dados)';
+        }
+
+        $texto = 'Escolas vinculadas: ' . implode(', ', $user_escolas);
+
+        // Professor (sem perfil de gestão): restrito às turmas vinculadas a ele
+        if ($useTurma && self::isRestritoTurmas($profile))
+        {
+            // Abre transação somente se o chamador ainda não tiver aberto uma
+            $open_transaction = !TTransaction::get();
+
+            if ($open_transaction)
+            {
+                TTransaction::open('jedi');
+            }
+
+            $turmas = self::getTurmasProfessor();
+
+            if ($open_transaction)
+            {
+                TTransaction::close();
+            }
+
+            $texto .= ' · Turmas vinculadas: ' . ($turmas ? implode(', ', $turmas) : 'nenhuma');
+        }
+
+        return $texto;
+    }
+
+    /**
      * Ajusta os parâmetros enviados à API conforme o perfil do usuário
      * @param $params   parâmetros montados pela tela
      * @param $useTurma false quando o endpoint não filtra por turma

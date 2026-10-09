@@ -25,6 +25,8 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 
 class DistributionNewsCategoryView extends TStandardList
 {
+    use JediPdfExportTrait;
+
     protected $form;
     protected $panelImagem;
     protected $imageContainer;
@@ -244,7 +246,7 @@ class DistributionNewsCategoryView extends TStandardList
         $limit = $this->pageNavigation->getLimit(); // Registros por página
         $count = $this->pageNavigation->getCount(); // Total geral de registros no banco
 
-        $totalPages = ceil($count / $limit);
+        $totalPages = $limit > 0 ? ceil($count / $limit) : 1;
 
         // Se a página atual for maior ou igual ao total de páginas (ou se só houver 1 página)
         $this->isLastPage = ($page >= $totalPages) || ($totalPages <= 1);
@@ -278,6 +280,7 @@ class DistributionNewsCategoryView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_perfil_noticia)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_perfil_noticia;
                 $this->imageContainer = new TImage($apiData['link_imagem']->grafico_perfil_noticia);
                 $this->imageContainer->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($this->imageContainer);

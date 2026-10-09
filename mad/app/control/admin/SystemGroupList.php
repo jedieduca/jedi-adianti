@@ -11,6 +11,8 @@
  */
 class SystemGroupList extends TStandardList
 {
+    use JediPdfExportTrait;
+
     protected $form;     // registration form
     protected $datagrid; // listing
     protected $pageNavigation;

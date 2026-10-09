@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class NumMatchesView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -280,6 +281,7 @@ class NumMatchesView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_ranking_partidas)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_ranking_partidas;
                 $image = new TImage($apiData['link_imagem']->grafico_ranking_partidas);
                 $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);

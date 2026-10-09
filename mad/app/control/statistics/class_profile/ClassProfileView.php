@@ -25,6 +25,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class ClassProfileView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -282,6 +283,7 @@ class ClassProfileView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_analise_idade)) {
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_analise_idade;
                 $image = new TImage($apiData['link_imagem']->grafico_analise_idade);
                 $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);

@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class SchoolProfilesView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -230,6 +231,14 @@ class SchoolProfilesView extends TStandardList
         parent::add($container);
     }
 
+    /**
+     * Restrição de acesso no cabeçalho do PDF (sem turma, como no getSecurityCriteria acima)
+     */
+    protected function pdfSecurityDescription()
+    {
+        return ClassesSchoolService::describeSecurity(false);
+    }
+
     public function onReload($param = NULL)
     {
         // Carrega os dados do Banco de Dados local (Padrão TStandardList)
@@ -271,6 +280,7 @@ class SchoolProfilesView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_perfil_escolas)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_perfil_escolas;
                 $image = new TImage($apiData['link_imagem']->grafico_perfil_escolas);
                 $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);

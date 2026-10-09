@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class StatisticsCategoryView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -275,6 +276,7 @@ class StatisticsCategoryView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_categoria_turma)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_categoria_turma;
                 $image = new TImage($apiData['link_imagem']->grafico_categoria_turma);
                 $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);

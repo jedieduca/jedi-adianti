@@ -27,6 +27,7 @@ use Adianti\Widget\Base\TElement;
 class StatisticsAvaliationView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -265,6 +266,7 @@ class StatisticsAvaliationView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_avaliacao)){
                 $url = $apiData['link_imagem']->grafico_avaliacao;
+                $this->pdfCharts[] = $url;
 
                 // Imagem em tamanho real (só reduz em telas menores que a figura)
                 $imagem = new TImage($url);

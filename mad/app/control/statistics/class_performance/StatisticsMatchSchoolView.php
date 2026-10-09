@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class StatisticsMatchSchoolView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -268,6 +269,7 @@ class StatisticsMatchSchoolView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_escola_turma)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_escola_turma;
                 $this->imageContainer = new TImage($apiData['link_imagem']->grafico_escola_turma);
                 // $this->imageContainer->style = 'width: 85%; height: auto; margin-bottom: 20px; border: 1px solid #ddd';                
                 $this->imageContainer->style = 'width: 100%; height: auto; max-width: 1200px; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';

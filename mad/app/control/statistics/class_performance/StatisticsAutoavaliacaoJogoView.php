@@ -27,6 +27,7 @@ use Adianti\Widget\Base\TElement;
 class StatisticsAutoavaliacaoJogoView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $form;
     protected $panelImagem;
@@ -120,7 +121,7 @@ class StatisticsAutoavaliacaoJogoView extends TStandardList
 
         // Grupo vazio vem NULL da view: exibe "–" em vez de célula em branco
         $col_pct_no_grupo->setTransformer(function($value) {
-            return is_null($value) ? '–' : number_format($value, 1, ',', '.') . '%';
+            return ($value === '' || is_null($value)) ? '–' : number_format($value, 1, ',', '.') . '%';
         });
 
         // add the columns to the DataGrid
@@ -273,6 +274,7 @@ class StatisticsAutoavaliacaoJogoView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_autoavaliacao_jogo)){
                 $url = $apiData['link_imagem']->grafico_autoavaliacao_jogo;
+                $this->pdfCharts[] = $url;
 
                 // Imagem em tamanho real (só reduz em telas menores que a figura)
                 $imagem = new TImage($url);

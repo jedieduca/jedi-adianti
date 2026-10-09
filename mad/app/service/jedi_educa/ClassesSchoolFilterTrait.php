@@ -8,6 +8,14 @@ use Adianti\Registry\TSession;
  */
 trait ClassesSchoolFilterTrait
 {
+    /**
+     * Restrição de acesso por perfil, descrita no cabeçalho do PDF (JediPdfExportTrait)
+     */
+    protected function pdfSecurityDescription()
+    {
+        return ClassesSchoolService::describeSecurity();
+    }
+
     protected function applyDefaultProfileFilters()
     {
         // Respeita os filtros já pesquisados pelo usuário

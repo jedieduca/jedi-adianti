@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class AssociationRulesView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
+    use JediPdfExportTrait;
 
     protected $container;
     protected $form;
@@ -279,7 +280,8 @@ class AssociationRulesView extends TStandardList
         // parent::onReload($param);
         $objects = parent::onReload($param);
 
-        if (str_starts_with($_REQUEST['method'] ?? '', 'onExport')) {
+        // CSV não usa o gráfico: evita a chamada à API (o PDF precisa dela para imprimir o gráfico)
+        if (($_REQUEST['method'] ?? '') === 'onExportCSV') {
             return $objects;
         }
 
@@ -324,6 +326,7 @@ class AssociationRulesView extends TStandardList
 
             if (isset($apiData['link_imagem']->grafico_capacidade_critica)){
                 // Componente de Imagem
+                $this->pdfCharts[] = $apiData['link_imagem']->grafico_capacidade_critica;
                 $image = new TImage($apiData['link_imagem']->grafico_capacidade_critica);
                 $image->style = 'width: 100%; max-width: 750px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->panelImagem->add($image);
