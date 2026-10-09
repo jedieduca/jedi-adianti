@@ -27,6 +27,9 @@ use Adianti\Wrapper\BootstrapDatagridWrapper;
 
 class CloudWordView extends TStandardList
 {
+    use JediPdfExportTrait;
+    use JediCsvExportTrait;
+
     protected $panelImagem;
     protected $imageContainer;
     protected $datagrid;       // listing
@@ -63,7 +66,14 @@ class CloudWordView extends TStandardList
 
         $btn_search = TButton::create('btn_search', [$this, 'onSearch'], 'Filtrar', 'fa:search blue');
         $btn_clear  = TButton::create('btn_clear',  [$this, 'onClear'],  'Limpar',  'fa:eraser red');
-        $btn_export = TButton::create('btn_export', [$this, 'onExportCsv'], 'Exportar CSV', 'fa:file-csv green');
+        // Mesmas ações de exportação dos demais módulos (template de PDF e CSV padrão)
+        $btn_export = new TButton('btn_export');
+        $btn_export->setAction(new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'Exportar CSV');
+        $btn_export->setImage('fa:file-csv green');
+
+        $btn_pdf = new TButton('btn_pdf');
+        $btn_pdf->setAction(new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'Exportar PDF');
+        $btn_pdf->setImage('far:file-pdf red');
 
         // REGISTRO OBRIGATÓRIO DOS CAMPOS NO FORMULÁRIO
         $this->form->setFields([
@@ -71,7 +81,8 @@ class CloudWordView extends TStandardList
             $filter_answer,
             $btn_search,
             $btn_clear,
-            $btn_export
+            $btn_export,
+            $btn_pdf
         ]);
 
         // Recarrega os dados salvos na sessão para o formulário não "limpar" ao recarregar
@@ -85,6 +96,7 @@ class CloudWordView extends TStandardList
         $button_box->add($btn_search);
         $button_box->add($btn_clear);
         $button_box->add($btn_export);
+        $button_box->add($btn_pdf);
 
         // Criar o separador visual
         $separator = new TElement('hr');
@@ -255,8 +267,10 @@ class CloudWordView extends TStandardList
                 $this->image = new TImage($apiData['link_grafico']->link);
                 $this->image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->imageContainer->add($this->image);
+                $this->pdfCharts[] = $apiData['link_grafico']->link;   // nuvem impressa no PDF
 
-                $limit = 10;
+                // Exportação (CSV/PDF) usa limit = 0: todos os registros, não só a página
+                $limit = ($this->limit === 0) ? max(count($dados), 1) : 10;
                 $offset = isset($param['offset']) ? (int) $param['offset'] : 0;
                 // $total_registros = $apiData['total_registros']; // Total vindo do Python
                 $total_registros = count($dados);
@@ -333,53 +347,17 @@ class CloudWordView extends TStandardList
         $this->onReload();
     }
 
-    public function onExportCsv($param)
+    /**
+     * Cabeçalho do PDF: o formulário é um TForm simples, sem título nem rótulos que o template consiga ler
+     */
+    protected function pdfTitle()
     {
-        try {
-            $filterData = TSession::getValue(__CLASS__ . '_filter_data');
-            $query = [];
+        return _t('Word cloud');
+    }
 
-            // Mesmos parâmetros usados no onReload
-            if (!empty($filterData->filter_category)) $query['categoria'] = $filterData->filter_category;
-            if (!empty($filterData->filter_answer))   $query['resp_certa'] = $filterData->filter_answer;
-
-            $queryString = !empty($query) ? '?' . http_build_query($query) : '';
-
-            $apiData = (array) JediEducaRestService::getData('/nuvem_palavras' . $queryString);
-            $dados   = (array) ($apiData['dados'] ?? []);   // a API já devolve os dados filtrados
-
-            if (empty($dados)) {
-                new TMessage('info', 'Nenhum registro para exportar.');
-                return;
-            }
-
-            $file = 'tmp/nuvem_palavras_' . uniqid() . '.csv';
-            $handle = fopen($file, 'w');
-            if ($handle === false) {
-                throw new Exception("Não foi possível criar o arquivo {$file}. Verifique a permissão de escrita da pasta tmp.");
-            }
-
-
-            // BOM UTF-8 para o Excel exibir acentos corretamente
-            fwrite($handle, "\xEF\xBB\xBF");
-
-            // Cabeçalho = colunas do grid
-            fputcsv($handle, ['Id', _t('Category'), _t('News'), _t('News Classification')], ';');
-
-            foreach ($dados as $row) {
-                fputcsv($handle, [
-                    $row->id,
-                    implode(', ', (array) $row->categoria),
-                    $row->pergunta,
-                    $row->resp_certa,
-                ], ';');
-            }
-
-            fclose($handle);
-            TPage::openFile($file);
-        } catch (Exception $e) {
-            new TMessage('error', $e->getMessage());
-        }
+    protected function pdfFieldLabels()
+    {
+        return ['filter_category' => _t('Category'), 'filter_answer' => _t('News Classification')];
     }
 
 }

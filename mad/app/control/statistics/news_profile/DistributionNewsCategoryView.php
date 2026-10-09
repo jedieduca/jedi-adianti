@@ -26,6 +26,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class DistributionNewsCategoryView extends TStandardList
 {
     use JediPdfExportTrait;
+    use JediCsvExportTrait;
 
     protected $form;
     protected $panelImagem;

@@ -99,7 +99,10 @@ trait JediPdfExportTrait
         {
             $infoHtml .= '<div class="pdf-info"><b>' . $label . ':</b> ' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</div>';
         }
-        $title = htmlspecialchars(strip_tags((string) ($this->form->getFormTitle() ?? '')), ENT_QUOTES, 'UTF-8');
+        // Título: método pdfTitle() do módulo, se houver; senão, o título do formulário de busca
+        $title = method_exists($this, 'pdfTitle') ? $this->pdfTitle()
+               : (method_exists($this->form, 'getFormTitle') ? $this->form->getFormTitle() : '');
+        $title = htmlspecialchars(strip_tags((string) $title), ENT_QUOTES, 'UTF-8');
         $date  = date('d/m/Y H:i');
         $logo  = $this->pdfImage(self::$pdfLogo);
         $logo  = $logo ? "<img src=\"{$logo['src']}\" style=\"height:42pt\">" : '';
@@ -387,7 +390,7 @@ HTML;
             }
 
             // Combos: exibe o texto da opção no lugar da chave
-            $field = ($this->form instanceof BootstrapFormBuilder) ? $this->form->getField($name) : null;
+            $field = method_exists($this->form, 'getField') ? $this->form->getField($name) : null;
             $items = ($field instanceof TCombo) ? (array) $field->getItems() : [];
             $text  = implode(', ', array_map(fn($v) => (string) ($items[$v] ?? $v), (array) $value));
 
@@ -403,6 +406,12 @@ HTML;
      */
     private function pdfFormLabels(): array
     {
+        // Módulos com formulário simples (sem BootstrapFormBuilder) informam os rótulos diretamente
+        if (method_exists($this, 'pdfFieldLabels'))
+        {
+            return $this->pdfFieldLabels();
+        }
+
         if (!$this->form instanceof BootstrapFormBuilder)
         {
             return [];

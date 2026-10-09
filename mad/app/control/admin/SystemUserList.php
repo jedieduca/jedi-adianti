@@ -39,6 +39,7 @@ use Adianti\Wrapper\BootstrapFormBuilder;
 class SystemUserList extends TStandardList
 {
     use JediPdfExportTrait;
+    use JediCsvExportTrait;
 
     protected $form;     // registration form
     protected $datagrid; // listing

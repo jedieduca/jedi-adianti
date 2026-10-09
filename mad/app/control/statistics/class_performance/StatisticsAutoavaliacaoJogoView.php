@@ -28,6 +28,7 @@ class StatisticsAutoavaliacaoJogoView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
     use JediPdfExportTrait;
+    use JediCsvExportTrait;
 
     protected $form;
     protected $panelImagem;
