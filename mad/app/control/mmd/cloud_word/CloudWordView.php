@@ -51,6 +51,13 @@ class CloudWordView extends TStandardList
 
         $filter_category->setChangeAction(new TAction([$this, 'onChangeCategory']));
 
+        // Com categoria já filtrada, a combo de classificação mostra só as dela
+        // (senão, ao recarregar a tela, volta a listar todas)
+        $filter_data = TSession::getValue(__CLASS__ . '_filter_data');
+        if (!empty($filter_data->filter_category)) {
+            $filter_answer->addItems(self::getAnswerOptions($filter_data->filter_category));
+        }
+
         $filter_category->setSize('100%');
         $filter_answer->setSize('100%');
 
@@ -164,34 +171,43 @@ class CloudWordView extends TStandardList
     public static function onChangeCategory($param)
     {
         try {
-            $category_name = $param['filter_category'] ?? null; // Obtém o valor selecionado
-
-            TTransaction::open('jedi');
-
-            $repo = new TRepository('Question');
-            $criteria = new TCriteria;
-            $criteria->setProperty('order', 'resp_certa asc');
-
-            if (!empty($category_name)) {
-
-                $criteria->add(new TFilter('id', 'IN', "(SELECT pc.id_pergunta 
-                                                         FROM pergunta_categoria pc inner join categoria c on pc.id_categoria = c.id 
-                                                         WHERE c.descricao = '{$category_name}')"));
-
-                // Obtém um array indexado para o combo [valor => exibição]
-                $options = $repo->getIndexedArray('resp_certa', 'resp_certa', $criteria);
-            } else {
-                // Se a categoria for limpa, podemos carregar todas ou deixar vazio           
-                $options = $repo->getIndexedArray('resp_certa', 'resp_certa', $criteria);
-            }
-
-            TTransaction::close();
+            $options = self::getAnswerOptions($param['filter_category'] ?? null);
 
             // RECARREGA o combo de classificação ('filter_answer') dentro do formulário ('form_busca')
             TDBCombo::reload('form_busca', 'filter_answer', $options, true);
         } catch (Exception $e) {
+            TTransaction::rollback();
             new TMessage('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Classificações das notícias da categoria (sem categoria: todas) — [valor => exibição]
+     */
+    private static function getAnswerOptions($category_name)
+    {
+        TTransaction::open('jedi');
+
+        $repo = new TRepository('Question');
+        $criteria = new TCriteria;
+        $criteria->setProperty('order', 'resp_certa asc');
+
+        if (!empty($category_name)) {
+            // Ids das notícias da categoria, buscados com filtros parametrizados
+            // (o valor vem do navegador: não pode ser concatenado no SQL)
+            $category_ids = Category::where('descricao', '=', $category_name)->getIndexedArray('id', 'id');
+            $question_ids = $category_ids
+                ? QuestionCategory::where('id_categoria', 'in', array_values($category_ids))->getIndexedArray('id_pergunta', 'id_pergunta')
+                : [];
+
+            // Categoria sem notícias: deixa a combo vazia
+            $criteria->add(new TFilter('id', 'IN', $question_ids ? array_values($question_ids) : [0]));
+        }
+
+        $options = $repo->getIndexedArray('resp_certa', 'resp_certa', $criteria);
+
+        TTransaction::close();
+        return $options;
     }
 
 
@@ -204,13 +220,21 @@ class CloudWordView extends TStandardList
 
             // Monta os parâmetros da query com os nomes que o Python espera
             if (!empty($filterData->filter_category)) $query['categoria'] = $filterData->filter_category;
-            if (!empty($filterData->filter_answer))   $query['respcerta'] = $filterData->filter_answer;
+            if (!empty($filterData->filter_answer))   $query['resp_certa'] = $filterData->filter_answer;
 
             // Converte o array para uma string de query (ex: ?area=X&tema=Y)
             $queryString = !empty($query) ? '?' . http_build_query($query) : '';
 
-            // Chama a API passando os filtros na URL
-            $apiData = (array) JediEducaRestService::getData('/nuvem_palavras' . $queryString);
+            // Troca de página (a paginação envia 'page') com os mesmos filtros: reaproveita a resposta
+            // guardada, sem chamar a API e regerar a nuvem. Busca, limpeza e abertura da tela consultam a API.
+            // Validade de 30 min: menor que a 1h em que a API mantém a imagem gerada (arquivos_graficos.py)
+            $cache = TSession::getValue(__CLASS__ . '_api_cache');
+            if (isset($param['page']) && ($cache['query'] ?? null) === $queryString && time() - ($cache['time'] ?? 0) < 1800) {
+                $apiData = $cache['data'];
+            } else {
+                $apiData = (array) JediEducaRestService::getData('/nuvem_palavras' . $queryString);
+                TSession::setValue(__CLASS__ . '_api_cache', ['query' => $queryString, 'time' => time(), 'data' => $this->compactApiData($apiData)]);
+            }
 
             if ($apiData) {
 
@@ -224,34 +248,8 @@ class CloudWordView extends TStandardList
                     return;
                 }
 
-                // --- LÓGICA DE FILTRO ---
+                // A API já devolve os dados filtrados (categoria e classificação)
                 $dados = (array) $apiData['dados'];
-                if (!empty($filterData)) {
-                    $dados = array_filter($dados, function ($row) use ($filterData) {
-                        $match = true;
-
-                        // Filtro por Categoria
-                        if (!empty($filterData->filter_category)) {
-                            $term     = strtolower($filterData->filter_category);
-                            $category = strtolower(implode(', ', (array) $row->categoria));
-                            if (!str_contains($category, $term)) {
-                                $match = false;
-                            }
-                        }
-
-                        // Filtro por Categoria
-                        if (!empty($filterData->filter_answer)) {
-                            $term   = mb_strtolower(trim($filterData->filter_answer));
-                            $answer = mb_strtolower(trim((string) $row->resp_certa));
-
-                            if ($answer !== $term) {
-                                $match = false;
-                            }       
-                        }                       
-
-                        return $match;
-                    });
-                }
 
                 // Componente de Imagem/*
                 $this->image = new TImage($apiData['link_grafico']->link);
@@ -274,8 +272,6 @@ class CloudWordView extends TStandardList
                     $item->category = $row->categoria;
                     $item->news     = $row->pergunta;
                     $item->answer   = $row->resp_certa;
-                    $item->analise  = $row->analise_proposta;
-                    $item->fala     = $row->fala_proposta;
 
                     $this->datagrid->addItem($item);
                 }
@@ -288,6 +284,21 @@ class CloudWordView extends TStandardList
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Resposta da API reduzida ao que a tela usa (grid, aviso e link da nuvem), para guardar na sessão
+     */
+    private function compactApiData(array $apiData): array
+    {
+        $apiData['texto_completo'] = '';
+        $apiData['dados'] = array_map(fn($row) => (object) [
+            'id'         => $row->id,
+            'categoria'  => $row->categoria,
+            'pergunta'   => $row->pergunta,
+            'resp_certa' => $row->resp_certa,
+        ], (array) ($apiData['dados'] ?? []));
+        return $apiData;
     }
 
     public function onShow($param)
@@ -330,35 +341,12 @@ class CloudWordView extends TStandardList
 
             // Mesmos parâmetros usados no onReload
             if (!empty($filterData->filter_category)) $query['categoria'] = $filterData->filter_category;
-            if (!empty($filterData->filter_answer))   $query['respcerta'] = $filterData->filter_answer;
+            if (!empty($filterData->filter_answer))   $query['resp_certa'] = $filterData->filter_answer;
 
             $queryString = !empty($query) ? '?' . http_build_query($query) : '';
 
             $apiData = (array) JediEducaRestService::getData('/nuvem_palavras' . $queryString);
-            $dados   = (array) ($apiData['dados'] ?? []);
-
-            // Mesma lógica de filtro do onReload
-            if (!empty($filterData)) {
-                $dados = array_filter($dados, function ($row) use ($filterData) {
-                    if (!empty($filterData->filter_category)) {
-                        $term     = strtolower($filterData->filter_category);
-                        $category = strtolower(implode(', ', (array) $row->categoria));
-                        if (!str_contains($category, $term)) {
-                            return false;
-                        }
-                    }
-
-                    if (!empty($filterData->filter_answer)) {
-                        $term   = mb_strtolower(trim($filterData->filter_answer));
-                        $answer = mb_strtolower(trim((string) $row->resp_certa));
-                        if ($answer !== $term) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                });
-            }
+            $dados   = (array) ($apiData['dados'] ?? []);   // a API já devolve os dados filtrados
 
             if (empty($dados)) {
                 new TMessage('info', 'Nenhum registro para exportar.');

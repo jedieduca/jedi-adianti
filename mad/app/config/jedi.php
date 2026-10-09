@@ -6,5 +6,5 @@ return [
     'user'  =>  "root",
     'pass'  =>  "mys2Edu4Up@2025",
     'type'  =>  "mysql",
-    'prep'  =>  "0",
+    'prep'  =>  "1",
 ];
