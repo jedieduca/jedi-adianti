@@ -91,12 +91,21 @@ class CloudWordView extends TStandardList
             $this->form->setData($data);
         }
 
-        // Organizando os botões em uma caixa horizontal
-        $button_box = new THBox;
-        $button_box->add($btn_search);
-        $button_box->add($btn_clear);
-        $button_box->add($btn_export);
-        $button_box->add($btn_pdf);
+        // Botões numa linha: busca à esquerda, exportação à direita
+        $grupo_busca = new TElement('div');
+        $grupo_busca->style = 'display: flex; gap: 6px;';
+        $grupo_busca->add($btn_search);
+        $grupo_busca->add($btn_clear);
+
+        $grupo_exportacao = new TElement('div');
+        $grupo_exportacao->style = 'display: flex; gap: 6px;';
+        $grupo_exportacao->add($btn_export);
+        $grupo_exportacao->add($btn_pdf);
+
+        $button_box = new TElement('div');
+        $button_box->style = 'display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; width: 100%;';
+        $button_box->add($grupo_busca);
+        $button_box->add($grupo_exportacao);
 
         // Criar o separador visual
         $separator = new TElement('hr');
