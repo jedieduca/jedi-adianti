@@ -7,3 +7,24 @@
 [data-menu-theme="dark"] #module-menu * {
     background-color: rgb(60, 130, 166) !important;
 }
+
+/* Cabeçalho dos painéis de listagem (Filtros, Exportar, registros por página):
+   botões com a mesma altura e fonte, centralizados verticalmente e com espaço entre eles */
+.card-header .header-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card-header .header-actions > .btn,
+.card-header .header-actions > .btn-group > .btn {
+    height: 37px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 0.875rem;
+    line-height: 1;
+    margin: 0;
+}
