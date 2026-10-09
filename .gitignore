@@ -1,7 +1,9 @@
 # Pastas de cache e temporários do Adianti Framework
 mad/app/output/*
+!mad/app/output/.gitkeep
 mad/app/tmp/*
 adm/app/output/*
+!adm/app/output/.gitkeep
 adm/app/tmp/*
 adm/app/database/log.*
 

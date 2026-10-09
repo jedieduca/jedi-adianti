@@ -22,14 +22,15 @@ use Adianti\Widget\Util\TXMLBreadCrumb;
 use Adianti\Widget\Wrapper\TDBCombo;
 use Adianti\Wrapper\BootstrapDatagridWrapper;
 use Adianti\Wrapper\BootstrapFormBuilder;
+use Adianti\Widget\Base\TElement;
 
-class NumMatchesView extends TStandardList
+class StatisticsAutoavaliacaoJogoView extends TStandardList
 {
     use ClassesSchoolFilterTrait;
 
     protected $form;
     protected $panelImagem;
-    protected $imageContainer;    
+    protected $imageContainer;
     protected $datagrid;       // listing
     protected $pageNavigation; // Page Navigation
     protected $filter_label;
@@ -41,14 +42,12 @@ class NumMatchesView extends TStandardList
     {
         parent::__construct();
 
-        parent::setDatabase('jedi');                           // defines the database
-        parent::setActiveRecord('NumMatches');                 // defines the active record
-        parent::setDefaultOrder('numero_partidas', 'desc');    // defines the default order
-        parent::addFilterField('id', '=', 'id');               // filterField, operator, formField
-        parent::addFilterField('escola', '=', 'escola');       // filterField, operator, formField
-        parent::addFilterField('turma', '=', 'turma');         // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '>=', 'dt_jogo_ini'); // filterField, operator, formField
-        parent::addFilterField('dt_jogo', '<=', 'dt_jogo_fim'); // filterField, operator, formField
+        parent::setDatabase('jedi');                                     // defines the database
+        parent::setActiveRecord('StatisticsAutoavaliacaoJogo');          // defines the active record
+        parent::setDefaultOrder('id', 'asc');                            // defines the default order
+        parent::addFilterField('id', '=', 'id');                         // filterField, operator, formField
+        parent::addFilterField('escola', '=', 'escola');                 // filterField, operator, formField
+        parent::addFilterField('turma', '=', 'turma');                   // filterField, operator, formField
 
         // FILTRO DE SEGURANÇA NO GRID POR PERFIL (CONSUMO DA SERVICE)
         parent::setCriteria(ClassesSchoolService::getSecurityCriteria());
@@ -61,22 +60,13 @@ class NumMatchesView extends TStandardList
         parent::setAfterSearchCallback( [$this, 'onAfterSearch' ] );
 
         // creates the form
-        $this->form = new BootstrapFormBuilder('form_search_NumMatches');
-        $this->form->setFormTitle(_t('Number of matches played'));
+        $this->form = new BootstrapFormBuilder('form_search_StatisticsAutoavaliacaoJogo');
+        $this->form->setFormTitle(_t('Performance Distribution by Self-Assessment x JEDi Assessment'));
 
         // create the form fields
-        $id          = new TEntry('id');
-        $escola      = new TCombo('escola');  // Novo campo TCombo para Escola
-        $turma       = new TCombo('turma');   // Alterado de TEntry para TCombo        
-
-        $dt_jogo_ini = new TDate('dt_jogo_ini');
-        $dt_jogo_ini->setMask('dd/mm/yyyy');
-        $dt_jogo_ini->setDatabaseMask('yyyy-mm-dd');
-        
-        $dt_jogo_fim = new TDate('dt_jogo_fim');
-        $dt_jogo_fim->setMask('dd/mm/yyyy');
-        $dt_jogo_fim->setDatabaseMask('yyyy-mm-dd');
-
+        $id        = new TEntry('id');
+        $escola    = new TCombo('escola');
+        $turma     = new TCombo('turma');
 
         // Define a ação de alteração da escola para atualizar as turmas via AJAX
         $escola->setChangeAction(new TAction([__CLASS__, 'onChangeEscola']));
@@ -87,9 +77,6 @@ class NumMatchesView extends TStandardList
         // --- LÓGICA DE CARREGAMENTO DAS ESCOLAS (Perfil Admin vs Padrão) ---
         TTransaction::open('jedi');
 
-        // Intercepta a query e exibe diretamente na saída padrão
-        // TTransaction::setLogger(new TLoggerSTD);
-
         // 1. Carrega as Escolas e desabilita a combo se não for admin
         ClassesSchoolService::loadEscolas($escola);
 
@@ -98,21 +85,16 @@ class NumMatchesView extends TStandardList
         $options_turmas  = ClassesSchoolService::getOptionsTurmas($selected_escola);
         $turma->addItems($options_turmas);
 
-        TTransaction::close();        
+        TTransaction::close();
 
-        // $id->setEditable(false);
         $id->setSize('30%');
         $escola->setSize('70%');
         $turma->setSize('70%');
-        $dt_jogo_ini->setSize('50%');
-        $dt_jogo_fim->setSize('50%');
 
         // add the fields
         $this->form->addFields( [new TLabel('Id')], [$id] );
         $this->form->addFields( [new TLabel(_t('School'))], [$escola] );
         $this->form->addFields( [new TLabel(_t('Class'))], [$turma] );
-        $this->form->addFields( [new TLabel(_t('Initial Match Date'))], [$dt_jogo_ini] );
-        $this->form->addFields( [new TLabel(_t('Date of the Final Match'))], [$dt_jogo_fim] );
 
         // keep the form filled during navigation with session data
         $this->form->setData(TSession::getValue(__CLASS__ . '_filter_data') );
@@ -127,25 +109,29 @@ class NumMatchesView extends TStandardList
         $this->datagrid->setHeight(320);
 
         // creates the datagrid columns
-        $col_id            = new TDataGridColumn('id', 'Id', 'center', 50);
-        $col_escola        = new TDataGridColumn('escola', _t('School'), 'left');
-        $col_turma         = new TDataGridColumn('turma', _t('Class'), 'left');
-        $col_aluno         = new TDataGridColumn('aluno', _t('Student'), 'left');
-        $col_dt_jogo       = new TDataGridColumn('dt_jogo', _t('Game Date'), 'left');
-        $col_num_partidas  = new TDataGridColumn('numero_partidas', _t('Number of Matches'), 'right');
+        $col_id             = new TDataGridColumn('id', 'Id', 'center', 50);
+        $col_escola         = new TDataGridColumn('escola', _t('School'), 'left');
+        $col_turma          = new TDataGridColumn('turma', _t('Class'), 'left');
+        $col_autoavaliacao  = new TDataGridColumn('autoavaliacao', _t('Self-assessment'), 'left');
+        $col_avaliacao_jogo = new TDataGridColumn('avaliacao_jogo', _t('Game assessment'), 'left');
+        $col_qtd            = new TDataGridColumn('qtd', _t('Quantity'), 'right');
+        $col_total_grupo    = new TDataGridColumn('total_grupo', _t('Group total'), 'right');
+        $col_pct_no_grupo   = new TDataGridColumn('pct_no_grupo', _t('Percentage in group'), 'right');
 
-        // format the columns in the DataGrid
-        $col_num_partidas->setTransformer( function($value, $object, $row) {
-            return number_format($value, 0, ',', '.');
+        // Grupo vazio vem NULL da view: exibe "–" em vez de célula em branco
+        $col_pct_no_grupo->setTransformer(function($value) {
+            return is_null($value) ? '–' : number_format($value, 1, ',', '.') . '%';
         });
 
         // add the columns to the DataGrid
         $this->datagrid->addColumn($col_id);
         $this->datagrid->addColumn($col_escola);
         $this->datagrid->addColumn($col_turma);
-        $this->datagrid->addColumn($col_aluno);
-        $this->datagrid->addColumn($col_dt_jogo);
-        $this->datagrid->addColumn($col_num_partidas);
+        $this->datagrid->addColumn($col_autoavaliacao);
+        $this->datagrid->addColumn($col_avaliacao_jogo);
+        $this->datagrid->addColumn($col_qtd);
+        $this->datagrid->addColumn($col_total_grupo);
+        $this->datagrid->addColumn($col_pct_no_grupo);
 
         // creates the datagrid column actions
         $order_id = new TAction(array($this, 'onReload'));
@@ -160,20 +146,28 @@ class NumMatchesView extends TStandardList
         $order_turma->setParameter('order', 'turma');
         $col_turma->setAction($order_turma);
 
-        $order_aluno = new TAction(array($this, 'onReload'));
-        $order_aluno->setParameter('order', 'aluno');
-        $col_aluno->setAction($order_aluno);
+        $order_autoavaliacao = new TAction(array($this, 'onReload'));
+        $order_autoavaliacao->setParameter('order', 'autoavaliacao');
+        $col_autoavaliacao->setAction($order_autoavaliacao);
 
-        $order_dt_jogo = new TAction(array($this, 'onReload'));
-        $order_dt_jogo->setParameter('order', 'dt_jogo');
-        $col_dt_jogo->setAction($order_dt_jogo);
+        $order_avaliacao_jogo = new TAction(array($this, 'onReload'));
+        $order_avaliacao_jogo->setParameter('order', 'avaliacao_jogo');
+        $col_avaliacao_jogo->setAction($order_avaliacao_jogo);
 
-        $order_num_partidas = new TAction(array($this, 'onReload'));
-        $order_num_partidas->setParameter('order', 'num_partidas');
-        $col_num_partidas->setAction($order_num_partidas);
+        $order_qtd = new TAction(array($this, 'onReload'));
+        $order_qtd->setParameter('order', 'qtd');
+        $col_qtd->setAction($order_qtd);
+
+        $order_total_grupo = new TAction(array($this, 'onReload'));
+        $order_total_grupo->setParameter('order', 'total_grupo');
+        $col_total_grupo->setAction($order_total_grupo);
+
+        $order_pct_no_grupo = new TAction(array($this, 'onReload'));
+        $order_pct_no_grupo->setParameter('order', 'pct_no_grupo');
+        $col_pct_no_grupo->setAction($order_pct_no_grupo);
 
         // create EDIT action
-        $action_view = new TDataGridAction(array('NumMatchesForm', 'onView'), ['register_state' => 'false'] );
+        $action_view = new TDataGridAction(array('StatisticsAutoavaliacaoJogoForm', 'onView'), ['register_state' => 'false'] );
         $action_view->setButtonClass('btn btn-default');
         $action_view->setLabel(_t('See more'));
         $action_view->setImage('fa:eye orange');
@@ -192,7 +186,7 @@ class NumMatchesView extends TStandardList
         $panel = new TPanelGroup();
         $panel->add($this->datagrid)->style = 'overflow-x:auto';
         $panel->addFooter($this->pageNavigation);
-       
+
         $this->filter_label = $panel->addHeaderActionLink(_t('Filters'), new TAction([$this, 'onShowCurtainFilters']), 'fa:filter fa-fw');
 
         $dropdown = new TDropDown(_t('Export'), 'fa:list');
@@ -223,16 +217,17 @@ class NumMatchesView extends TStandardList
 
         // Panel que armazena o gráfico
         $this->panelImagem = new TPanelGroup();
-        $this->panelImagem->style = 'text-align: center; width: 100%; height: auto; overflow: visible;';
+        $this->panelImagem->style = 'text-align: center; width: 100%;';
+        $this->imageContainer = new THBox;
+        $this->imageContainer->style = 'width: 100%; margin-bottom: 20px; text-align: center;';
 
         // vertical box container
         $container = new TVBox;
         $container->style = 'width: 100%';
         $container->add(new TXMLBreadCrumb('menu.xml', __CLASS__));
-        //$container->add($this->form);
         $container->add($panel);
         $container->add($this->panelImagem);
-        
+
         parent::add($container);
     }
 
@@ -248,17 +243,14 @@ class NumMatchesView extends TStandardList
             $params = [];
             if (!empty($filterData)) {
                 // Convertemos o objeto de dados do formulário em um array para o service
-                // Ajuste as chaves abaixo para baterem com o que o seu FastAPI espera
-                $params['id']          = $filterData->id ?? null;
-                $params['escola']      = $filterData->escola ?? null;
-                $params['turma']       = $filterData->turma ?? null;
-                $params['dt_jogo_ini'] = $filterData->dt_jogo_ini ?? null;
-                $params['dt_jogo_fim'] = $filterData->dt_jogo_fim ?? null;
+                $params['id']        = $filterData->id ?? null;
+                $params['escola']    = $filterData->escola ?? null;
+                $params['turma']     = $filterData->turma ?? null;
 
                 // Removemos campos vazios para não enviar "?escola=&turma="
                 $params = array_filter($params);
             }
-            
+
             // FILTRO DE SEGURANÇA NOS PARÂMETROS DA API POR PERFIL (CONSUMO DA SERVICE)
             $params = ClassesSchoolService::applySecurityParams($params);
 
@@ -268,9 +260,10 @@ class NumMatchesView extends TStandardList
                 return;
             }
 
-            // 3. Montamos a Query String
+            // Montamos a Query String
             $queryString = ClassesSchoolService::buildQueryString($params);
-            $apiData = (array) JediEducaRestService::getData('/estatisticas/ranking_partidas'. $queryString);
+
+            $apiData = (array) JediEducaRestService::getData('/estatisticas/autoavaliacao_jogo'. $queryString);
 
             // API respondeu sem dados: exibe o aviso no lugar do gráfico
             if ($aviso = JediEducaRestService::getAviso($apiData)) {
@@ -278,16 +271,21 @@ class NumMatchesView extends TStandardList
                 return;
             }
 
-            if (isset($apiData['link_imagem']->grafico_ranking_partidas)){
-                // Componente de Imagem
-                $image = new TImage($apiData['link_imagem']->grafico_ranking_partidas);
-                $image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
-                $this->panelImagem->add($image);
-            } else {
-                $this->panelImagem->add(JediEducaRestService::getAviso(['nivel' => 'info', 'mensagem' => 'Nenhum gráfico disponível para os filtros selecionados.']));     
+            if (isset($apiData['link_imagem']->grafico_autoavaliacao_jogo)){
+                $url = $apiData['link_imagem']->grafico_autoavaliacao_jogo;
 
+                // Imagem em tamanho real (só reduz em telas menores que a figura)
+                $imagem = new TImage($url);
+                $imagem->style = 'width: 100%; max-width: 1200px; height: auto;';
+
+                // Várias turmas geram uma imagem alta
+                $this->imageContainer = new TElement('div');
+                $this->imageContainer->style = 'text-align: center; border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;';
+                $this->imageContainer->add($imagem);
+
+                $this->panelImagem->add($this->imageContainer);
             }
-    
+
         } catch (Exception $e) {
             new TMessage('error', $e->getMessage());
         }
@@ -297,7 +295,7 @@ class NumMatchesView extends TStandardList
     {
         $this->onReload();
         parent::show();
-    }    
+    }
 
     public static function onChangeLimit($param)
     {
@@ -319,7 +317,7 @@ class NumMatchesView extends TStandardList
         {
             $this->filter_label->class = 'btn btn-default';
             $this->filter_label->setLabel(_t('Filters'));
-        }    
+        }
     }
 
     /**
@@ -334,23 +332,23 @@ class NumMatchesView extends TStandardList
             $page->setTargetContainer('adianti_right_panel');
             $page->setProperty('override', 'true');
             $page->setPageName(__CLASS__);
-            
+
             $btn_close = new TButton('closeCurtain');
             $btn_close->onClick = "Template.closeRightPanel();";
             $btn_close->setLabel("Fechar");
             $btn_close->setImage('fas:times');
-            
-            // instantiate self class, populate filters in construct 
+
+            // instantiate self class, populate filters in construct
             $embed = new self;
             $embed->form->addHeaderWidget($btn_close);
-            
+
             // embed form inside curtain
             $page->add($embed->form);
             $page->show();
         }
-        catch (Exception $e) 
+        catch (Exception $e)
         {
-            new TMessage('error', $e->getMessage());    
+            new TMessage('error', $e->getMessage());
         }
     }
 
@@ -370,12 +368,12 @@ class NumMatchesView extends TStandardList
             TTransaction::close();
 
             // Recarrega o combo 'turma' do formulário atual
-            TCombo::reload('form_search_NumMatches', 'turma', $options_turmas, true);
+            TCombo::reload('form_search_StatisticsAutoavaliacaoJogo', 'turma', $options_turmas, true);
         }
         catch (Exception $e)
         {
             TTransaction::rollback();
             new TMessage('error', $e->getMessage());
         }
-    }    
+    }
 }

@@ -132,17 +132,21 @@
             <menuitem label='_t{Class performance}'>
                 <icon>fas:arrow-trend-up fa-fw</icon>
                 <menu>
-                    <menuitem label='_t{Distribution of Results by Self-Assessment Levels}'>
+                    <menuitem label='_t{Student performances in the first and last matches}'>
                         <icon>fas:chart-column fa-fw</icon>
-                        <action>StatisticsAvaliationView</action>
+                        <action>StatisticsMatchSchoolView</action>
+                    </menuitem>
+                    <menuitem label='_t{Performance Distribution by Self-Assessment x JEDi Assessment}'>
+                        <icon>fas:chart-column fa-fw</icon>
+                        <action>StatisticsAutoavaliacaoJogoView</action>
                     </menuitem>
                     <menuitem label='_t{Distribution of Results by News Categories}'>
                         <icon>fas:chart-column fa-fw</icon>
                         <action>StatisticsCategoryView</action>
                     </menuitem>
-                    <menuitem label='_t{Student performances in the first and last matches}'>
+                    <menuitem label='_t{Distribution of Results by Assessment Levels}'>
                         <icon>fas:chart-column fa-fw</icon>
-                        <action>StatisticsMatchSchoolView</action>
+                        <action>StatisticsAvaliationView</action>
                     </menuitem>
                 </menu>
             </menuitem>

@@ -21,7 +21,7 @@ class StatisticsAvaliationForm extends TPage
         parent::setTargetContainer('adianti_right_panel');
         // creates the form
         $this->form = new BootstrapFormBuilder('formStatisticsAvaliation');
-        $this->form->setFormTitle(_t('Distribution of Results by Self-Assessment Levels'));
+        $this->form->setFormTitle(_t('Distribution of Results by Assessment Levels'));
 
         $this->form->addHeaderActionLink(_t('Close'), new TAction([$this, 'onClose']), 'fa:times red');
 

@@ -61,7 +61,7 @@ class StatisticsAvaliationView extends TStandardList
 
         // creates the form
         $this->form = new BootstrapFormBuilder('form_search_StatisticsAvaliation');
-        $this->form->setFormTitle(_t('Distribution of Results by Self-Assessment Levels'));
+        $this->form->setFormTitle(_t('Distribution of Results by Assessment Levels'));
 
         // create the form fields
         $id        = new TEntry('id');
@@ -185,7 +185,6 @@ class StatisticsAvaliationView extends TStandardList
         $dropdown->setButtonClass('btn btn-default waves-effect dropdown-toggle');
         $dropdown->addAction( _t('Save as CSV'), new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static'=>'1']), 'fa:table fa-fw blue' );
         $dropdown->addAction( _t('Save as PDF'), new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static'=>'1']), 'far:file-pdf fa-fw red' );
-        $dropdown->addAction( _t('Save as XML'), new TAction([$this, 'onExportXML'], ['register_state' => 'false', 'static'=>'1']), 'fa:code fa-fw green' );
         $panel->addHeaderWidget( $dropdown );
 
         // header actions

@@ -163,9 +163,9 @@ class ApplicationTranslator
         $this->messages['pt'][] = 'Avaliação do jogo';
         $this->messages['es'][] = 'Reseña del juego';
 
-        $this->messages['en'][] = 'Distribution of Results by Self-Assessment Levels';
-        $this->messages['pt'][] = 'Distribuição dos Resultados pelos Níveis de Autoavaliação';
-        $this->messages['es'][] = 'Distribución de resultados por niveles de autoevaluación';
+        $this->messages['en'][] = 'Distribution of Results by Assessment Levels';
+        $this->messages['pt'][] = 'Distribuição dos Resultados pelos Níveis de Avaliação';
+        $this->messages['es'][] = 'Distribución de resultados por niveles de evaluación';
 
         $this->messages['en'][] = 'Average number of correct answers';
         $this->messages['pt'][] = 'Média de acertos';
@@ -178,6 +178,22 @@ class ApplicationTranslator
         $this->messages['en'][] = 'Student performances in the first and last matches';
         $this->messages['pt'][] = 'Desempenhos obtidos pelos alunos nas primeiras e últimas partidas';
         $this->messages['es'][] = 'Actuaciones de los estudiantes en el primer y último partido';
+
+        $this->messages['en'][] = 'Performance Distribution by Self-Assessment x JEDi Assessment';
+        $this->messages['pt'][] = 'Distribuição de Desempenho por Autoavaliação x Avaliação pelo JEDi';
+        $this->messages['es'][] = 'Distribución del Desempeño por Autoevaluación x Evaluación por JEDi';
+
+        $this->messages['en'][] = 'Game assessment';
+        $this->messages['pt'][] = 'Avaliação do jogo';
+        $this->messages['es'][] = 'Evaluación del juego';
+
+        $this->messages['en'][] = 'Group total';
+        $this->messages['pt'][] = 'Total do grupo';
+        $this->messages['es'][] = 'Total del grupo';
+
+        $this->messages['en'][] = 'Percentage in group';
+        $this->messages['pt'][] = '% no grupo';
+        $this->messages['es'][] = '% en el grupo';
 
         $this->messages['en'][] = 'The first match';
         $this->messages['pt'][] = 'Partida inicial';
