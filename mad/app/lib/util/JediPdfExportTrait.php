@@ -378,6 +378,17 @@ HTML;
      */
     private function pdfFilterDescription(): string
     {
+        // Módulos com filtros fora do formulário (ex.: herdados de outra tela) informam [rótulo => valor]
+        if (method_exists($this, 'pdfFilterValues'))
+        {
+            $parts = [];
+            foreach ($this->pdfFilterValues() as $label => $value)
+            {
+                $parts[] = "{$label}: {$value}";
+            }
+            return $parts ? implode(' · ', $parts) : 'nenhum (todos os registros)';
+        }
+
         $data   = (array) (TSession::getValue(get_class($this) . '_filter_data') ?? []);
         $labels = $this->pdfFormLabels();
         $parts  = [];

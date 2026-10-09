@@ -2,6 +2,7 @@
 
 use Adianti\Control\TAction;
 use Adianti\Control\TPage;
+use Adianti\Control\TWindow;
 use Adianti\Registry\TSession;
 use Adianti\Widget\Base\TElement;
 use Adianti\Widget\Container\THBox;
@@ -23,6 +24,13 @@ use Adianti\Wrapper\BootstrapDatagridWrapper;
 
 class AprioriView extends TPage
 {
+    use JediPdfExportTrait;
+    use JediCsvExportTrait;
+
+    // Usados pelos traits de exportação (a tela é um TPage, sem a estrutura do TStandardList)
+    protected $limit    = 10;
+    protected $database = 'jedi';
+
     protected $panelImagem;
     protected $imageContainer;
     protected $datagrid;       // listing
@@ -64,9 +72,14 @@ class AprioriView extends TPage
 
         $btn_search = TButton::create('btn_search', [$this, 'onSearch'], 'Filtrar Regras', 'fa:search blue');
         $btn_clear  = TButton::create('btn_clear',  [$this, 'onClear'],  'Limpar',  'fa:eraser red');
+        // Mesmas ações de exportação dos demais módulos (template de PDF e CSV padrão)
         $btn_export = new TButton('btn_export');
-        $btn_export->setAction(new TAction([__CLASS__, 'onExportCsv'], ['static' => '1']), 'Exportar CSV');
+        $btn_export->setAction(new TAction([$this, 'onExportCSV'], ['register_state' => 'false', 'static' => '1']), 'Exportar CSV');
         $btn_export->setImage('fa:file-csv green');
+
+        $btn_pdf = new TButton('btn_pdf');
+        $btn_pdf->setAction(new TAction([$this, 'onExportPDF'], ['register_state' => 'false', 'static' => '1']), 'Exportar PDF');
+        $btn_pdf->setImage('far:file-pdf red');
 
         // REGISTRO OBRIGATÓRIO DOS CAMPOS NO FORMULÁRIO
         $this->form->setFields([
@@ -77,7 +90,8 @@ class AprioriView extends TPage
             $filter_lift,
             $btn_search,
             $btn_clear,
-            $btn_export
+            $btn_export,
+            $btn_pdf
         ]);
 
         // Recarrega os dados salvos na sessão para o formulário não "limpar" ao recarregar
@@ -91,6 +105,7 @@ class AprioriView extends TPage
         $button_box->add($btn_search);
         $button_box->add($btn_clear);
         $button_box->add($btn_export);
+        $button_box->add($btn_pdf);
 
         // Organizando em uma grade para ficar visualmente limpo
         $table = new TTable;
@@ -247,7 +262,7 @@ class AprioriView extends TPage
                 // Caso venha via parâmetro explícito
                 $filterObject = (object) $param['filtros'];
                 TSession::setValue(__CLASS__.'_filter_object', $filterObject);
-            } else if (!isset($param['offset'])) {
+            } else if (!isset($param['offset']) && $this->limit !== 0) {
                 // Ao abrir a tela diretamente pelo menu/botão (sem paginação):
                 // Lê SEMPRE os filtros mais recentes salvos na sessão da AssociationRulesView
                 $sessao_filtros = (array) TSession::getValue('AssociationRulesView_filter_data');
@@ -260,7 +275,7 @@ class AprioriView extends TPage
                 $filterObject = !empty($filtros_ativos) ? (object) $filtros_ativos : null;
                 TSession::setValue(__CLASS__.'_filter_object', $filterObject);
             } else {
-                // Em navegações de paginação do DataGrid -> Mantém o filtro já ativo na sessão do AprioriView
+                // Paginação do DataGrid ou exportação (limit = 0) -> Mantém o filtro já ativo na sessão do AprioriView
                 $filterObject = TSession::getValue(__CLASS__.'_filter_object');
             }
 
@@ -307,7 +322,12 @@ class AprioriView extends TPage
                 $this->image->style = 'width: 100%; max-width: 1200px; height: auto; display: block; margin: 0 auto 20px auto; border: 1px solid #ddd;';
                 $this->imageContainer->add($this->image);
 
-                $limit = 10;
+                // Gráficos impressos no PDF
+                $this->pdfCharts[] = $apiData['links_imagens']->grafico_lift;
+                $this->pdfCharts[] = $apiData['links_imagens']->grafico_dispersao;
+
+                // Exportação (CSV/PDF) usa limit = 0: todas as regras, não só a página
+                $limit = ($this->limit === 0) ? max(count($regras), 1) : 10;
                 $offset = isset($param['offset']) ? (int) $param['offset'] : 0;
                 $total_registros = count($regras);
 
@@ -369,43 +389,83 @@ class AprioriView extends TPage
         $this->onReload($param);
     }
 
-    public static function onExportCsv($param)
+    /**
+     * Exportação CSV (a tela é um TPage: não herda as ações de exportação do TStandardList)
+     */
+    public function onExportCSV($param)
     {
-        try {
-            // Mesmos filtros (globais + Apriori) usados no onReload
-            $endpoint = self::buildEndpoint(TSession::getValue(__CLASS__.'_filter_object'));
-
-            $apiData = (array) JediEducaRestService::getData($endpoint);
-            $regras  = (array) ($apiData['regras'] ?? []);
-
-            if ($regras) {
-                $file = 'tmp/regras_apriori_' . uniqid() . '.csv';
-                $fp   = fopen($file, 'w');
-                if (!$fp) {
-                    throw new Exception("Não foi possível criar o arquivo {$file}. Verifique a permissão de escrita na pasta tmp/.");
-                }
-                
-                // BOM UTF-8: faz o Excel reconhecer a acentuação
-                fwrite($fp, "\xEF\xBB\xBF");
-
-                fputcsv($fp, ['Antecedentes', 'Consequentes', 'Suporte', 'Confiança', 'Lift'], ';');
-                foreach ($regras as $row) {
-                    fputcsv($fp, [
-                        implode(', ', (array) $row->antecedents),
-                        implode(', ', (array) $row->consequents),
-                        number_format($row->support,    4, ',', ''),
-                        number_format($row->confidence, 4, ',', ''),
-                        number_format($row->lift,       2, ',', ''),
-                    ], ';');
-                }
-                fclose($fp);
-                TPage::openFile($file);
-            } else {
-                new TMessage('info', $apiData['mensagem'] ?? 'Nenhuma regra para exportar.');
-            }
-        } catch (Exception $e) {
+        try
+        {
+            $output = 'app/output/' . uniqid() . '.csv';
+            $this->exportToCSV($output);
+            TPage::openFile($output);
+        }
+        catch (Exception $e)
+        {
             new TMessage('error', $e->getMessage());
         }
+    }
+
+    /**
+     * Exportação PDF, aberta numa janela de visualização (mesmo comportamento das demais telas)
+     */
+    public function onExportPDF($param)
+    {
+        try
+        {
+            $output = 'app/output/' . uniqid() . '.pdf';
+            $this->exportToPDF($output);
+
+            $window = TWindow::create('Export', 0.8, 0.8);
+            $object = new TElement('object');
+            $object->{'data'}  = 'download.php?file=' . $output;
+            $object->{'type'}  = 'application/pdf';
+            $object->{'style'} = 'width: 100%; height:calc(100% - 10px)';
+            $window->add($object);
+            $window->show();
+        }
+        catch (Exception $e)
+        {
+            new TMessage('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Cabeçalho do PDF: título e filtros (globais da tela de Regras de Associação + os desta tela)
+     */
+    protected function pdfTitle()
+    {
+        return _t('Mining Association Rules') . ' - ' . _t('Apriori');
+    }
+
+    protected function pdfFilterValues()
+    {
+        $valores = [];
+
+        $globais = ['escola' => 'Escola', 'turma' => 'Turma', 'capacidade' => 'Capacidade Crítica', 'nome' => 'Jogador', 'id' => 'ID'];
+        foreach ((array) TSession::getValue(__CLASS__.'_filter_object') as $campo => $valor) {
+            if (!is_null($valor) && trim((string) $valor) !== '') {
+                $valores[$globais[$campo] ?? ucfirst($campo)] = $valor;
+            }
+        }
+
+        // ">=" e não "≥": a fonte do PDF não tem o símbolo
+        $locais = [
+            'filter_antecedent' => _t('Antecedent'),
+            'filter_consequent' => _t('Consequent'),
+            'filter_support'    => _t('Support') . ' >=',
+            'filter_conf'       => _t('Trust') . ' >=',
+            'filter_lift'       => _t('Lift') . ' >=',
+        ];
+        $filterData = TSession::getValue(__CLASS__.'_filter_data');
+        foreach ($locais as $campo => $rotulo) {
+            $valor = $filterData->$campo ?? null;
+            if (!is_null($valor) && trim((string) $valor) !== '') {
+                $valores[$rotulo] = $valor;
+            }
+        }
+
+        return $valores;
     }
 
     /**
