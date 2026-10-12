@@ -39,6 +39,11 @@ RUN install-php-extensions \
 # 4. Instalar a versão do Imagick compatível com PHP 8.x
 RUN install-php-extensions https://github.com/Imagick/imagick/archive/refs/heads/master.tar.gz
 
+# 5. Xdebug: SOMENTE em desenvolvimento (docker-compose.debug.yml passa INSTALL_XDEBUG=true)
+#    Em produção o padrão é false e a imagem fica idêntica à atual.
+ARG INSTALL_XDEBUG=false
+RUN if [ "$INSTALL_XDEBUG" = "true" ]; then install-php-extensions xdebug; fi
+
 # Define o diretório de trabalho onde seu código PHP estará
 # Se o seu código PHP estiver em uma subpasta, ajuste o WORKDIR
 WORKDIR /var/www/html
